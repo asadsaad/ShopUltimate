@@ -44,7 +44,7 @@ export const loadUser = () => async (dispatch) => {
   }
 };
 
-export const signup = (formData) => async (dispatch) => {
+export const signup = (formData, navigate) => async (dispatch) => {
   try {
     const res = await axios.post("http://localhost:5000/user/signup", formData);
     dispatch({
@@ -52,6 +52,7 @@ export const signup = (formData) => async (dispatch) => {
       payload: res.data,
     });
     dispatch(setAlert(res.data.message, "success"));
+    navigate("/login");
   } catch (err) {
     console.log(err.response.data);
 

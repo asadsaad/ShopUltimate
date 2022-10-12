@@ -1,155 +1,150 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import {
+  Typography,
+  Box,
+  TextField,
+  Button,
+  Container,
+  InputLabel,
+} from "@mui/material";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import Nav from "../layouts/nav";
+import Loading from "../layouts/loading";
+
 import {
   signup,
   inprogress,
   clearalert,
 } from "../../redux/actions/authactions";
-import Nav from "../layouts/nav";
-import Box from "@mui/material/Box";
-import {
-  Grid,
-  TextField,
-  Button,
-  Typography,
-  Alert,
-  IconButton,
-} from "@mui/material";
-import { Navigate } from "react-router-dom";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import CloseIcon from "@mui/icons-material/Close";
-import Loading from "../layouts/loading";
-// import LoadingButton from '@mui';
-class Signup extends Component {
-  state = {
-    name: "",
-    email: "",
-    password: "",
-    error: "",
-    opensignup: false,
-  };
-  handleClose = () => {
-    this.setState({ opensignup: false });
-  };
-  handlechange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
-  };
-  submitform = async (event) => {
-    event.preventDefault();
-    let formData = {
-      email: this.state.email,
-      username: this.state.name,
-      password: this.state.password,
-    };
-    await this.props.dispatch(inprogress(true));
-    await this.props.dispatch(signup(formData));
-    // console.log(this.props)
-    // this.props.navigate('/login')
-    this.setState({ name: "", email: "", password: "" });
-  };
+import GoogleIcon from "@mui/icons-material/Google";
+import SendIcon from "@mui/icons-material/Send";
+import { Link, useNavigate } from "react-router-dom";
 
-  render() {
-    if (this.props.auth.nextstep) {
-      const userid = this.props.auth.registerstatus.user;
-      return <Navigate to={"/verify/" + userid} />;
-    }
-    if (this.props.auth.isAuthenticated) {
-      return <Navigate to="/dashboard" />;
-    }
-    // if (this.props.errors.message) {
-    //     this.setState({error:this.props.errors.message})
-    // }
-    return (
-      <Dialog
-        onClose={() => this.handleClose()}
-        aria-labelledby="customized-dialog-title"
-        open={this.props.opensignup}
-      >
-        <DialogTitle
-          id="customized-dialog-title"
-          onClose={() => this.handleClose()}
-        >
-          Register
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={() => this.props.setOpensignup(false)}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent dividers>
-          <Box
-            component="form"
-            method="post"
-            onSubmit={(event) => this.submitform(event)}
+export default function Register() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setconfirmPassword] = useState("");
+
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const loading = useSelector((state) => state.auth.inprogress);
+  const auth = useSelector((state) => state.auth.isAuthenticated);
+
+  const submitform = async (event) => {
+    event.preventDefault();
+
+    let formData = {
+      email: email,
+      username: name,
+      password: password,
+    };
+    dispatch(inprogress(true));
+    dispatch(signup(formData, navigate));
+  };
+  if (auth) {
+    return navigate("/");
+  }
+  return (
+    <>
+      <Nav />
+      <Container maxWidth="md">
+        <Box sx={{ mt: 3, p: 2 }}>
+          <Typography
+            variant="h4"
+            sx={{ mb: 2, fontWeight: "bold", color: "#333" }}
           >
+            Create Your Account
+          </Typography>
+          <Box component="form" method="post" onSubmit={submitform}>
+            <InputLabel sx={{ color: "#333", fontWeight: "bold" }}>
+              User Name
+            </InputLabel>
             <TextField
               variant="outlined"
-              label="User Name"
               fullWidth
               size="small"
-              style={{ marginBottom: "1em" }}
+              sx={{ mt: 1, mb: 1 }}
               type="text"
-              placeholder="name"
-              value={this.state.name}
-              onChange={(e) => this.handlechange(e)}
+              placeholder="Jon Doe"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
               name="name"
             />
+            <InputLabel sx={{ color: "#333", fontWeight: "bold" }}>
+              Email
+            </InputLabel>
+
             <TextField
               variant="outlined"
-              label="Email"
               fullWidth
               size="small"
-              style={{ marginBottom: "1em" }}
+              sx={{ mt: 1, mb: 1 }}
               type="email"
-              placeholder="email"
-              value={this.state.email}
-              onChange={(e) => this.handlechange(e)}
+              placeholder="myemail@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               name="email"
             />
+            <InputLabel sx={{ color: "#333", fontWeight: "bold" }}>
+              Password
+            </InputLabel>
+
             <TextField
               variant="outlined"
-              label="Password"
               fullWidth
               size="small"
-              style={{ marginBottom: "1em" }}
+              sx={{ mt: 1, mb: 1 }}
               type="password"
-              placeholder="password"
-              value={this.state.password}
-              onChange={(e) => this.handlechange(e)}
+              placeholder="*******"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               name="password"
             />
-            <DialogActions>
-              <Button
-                size="medium"
-                variant="contained"
-                color="primary"
-                type="submit"
-                fullWidth
-              >
-                Register
-              </Button>
-            </DialogActions>
-          </Box>
-        </DialogContent>
-        <Loading isloading={this.props.auth.inprogress} />
-      </Dialog>
-    );
-  }
-}
+            <InputLabel sx={{ color: "#333", fontWeight: "bold" }}>
+              Confirm Password
+            </InputLabel>
 
-const mapStateToProps = (state) => {
-  return {
-    auth: state.auth,
-  };
-};
-export default connect(mapStateToProps)(Signup);
+            <TextField
+              variant="outlined"
+              fullWidth
+              size="small"
+              sx={{ mt: 1, mb: 1 }}
+              type="password"
+              placeholder="*******"
+              value={confirmpassword}
+              onChange={(e) => setconfirmPassword(e.target.value)}
+              name="confirmpassword"
+            />
+            <Button
+              size="medium"
+              variant="contained"
+              color="primary"
+              type="submit"
+              fullWidth
+              endIcon={<SendIcon />}
+            >
+              Register
+            </Button>
+            <Button
+              sx={{ mt: 2 }}
+              color="success"
+              variant="contained"
+              startIcon={<GoogleIcon />}
+              fullWidth
+            >
+              Continue With Google
+            </Button>
+          </Box>
+        </Box>
+        <Box sx={{ pl: 2, pr: 2, pb: 2 }}>
+          <Typography align="center">
+            Already have an Account <Link to="/login">Login</Link>
+          </Typography>
+        </Box>
+      </Container>{" "}
+      <Loading isloading={loading} />
+    </>
+  );
+}

@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
 import Signup from "./components/user/signup";
-import Login from "./components/user/login";
 import Verify from "./components/user/verify";
 import { connect } from "react-redux";
 import { loadUser } from "./redux/actions/authactions";
@@ -26,7 +25,8 @@ import ProductView from "./components/product/productview";
 import Shipping from "./components/user/shipping";
 import Myorders from "./components/order/myorders";
 import OrderDetails from "./components/order/OrderDetails";
-
+import Register from "./components/user/signup";
+import Login from "./components/user/login";
 if (localStorage.token) {
   setauthtoken(localStorage.token);
 }
@@ -44,6 +44,9 @@ class App extends Component {
         <div>
           <Alert open={true} />
           <Routes>
+            <Route path="register" element={<Register />} />
+            <Route path="login" element={<Login />} />
+
             <Route path="/" element={<ShopHome />} />
             <Route path="/verify/:id" element={<Verify />} />
             <Route
@@ -60,7 +63,7 @@ class App extends Component {
             <Route path="/product/:id" element={<ProductView />} />
 
             <Route path="shops" element={<Shops />} />
-            <Route path="cart" element={<Cart />} />
+            {/* <Route path="cart" element={<Cart />} /> */}
             <Route path="cartitems" element={<CartItemlisting />} />
             <Route path="shipping" element={<Shipping />} />
             <Route path="order/:id" element={<OrderDetails />} />
@@ -70,6 +73,7 @@ class App extends Component {
               path="/addproduct"
               element={<PrivateRoute component={Addproduct} />}
             />
+            <Route path="cart" element={<PrivateRoute component={Cart} />} />
             {/* <Route path="/Dashboard" element={<Dashboard />} /> */}
           </Routes>
         </div>

@@ -15,6 +15,8 @@ import Signup from "../user/signup";
 import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import logo from "../../images/logo.png";
+
 // import MenuIcon from '@mui/icons-material/Menu';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -111,7 +113,16 @@ const Nav = () => {
                 sx={{ color: "#fff" }}
                 onClick={handleClickOpen}
               >
-                Login
+                <Link
+                  to="/login"
+                  style={{
+                    textDecoration: "none",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Login
+                </Link>
               </Button>
               <Button
                 variant="text"
@@ -119,13 +130,22 @@ const Nav = () => {
                 sx={{ color: "#fff" }}
                 onClick={handleClickOpenSignup}
               >
-                Register
+                <Link
+                  to="/register"
+                  style={{
+                    textDecoration: "none",
+                    color: "white",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Register
+                </Link>
               </Button>
             </Toolbar>
           </AppBar>
         </Box>
-        <Login open={open} setOpen={setOpen} />
-        <Signup opensignup={opensignup} setOpensignup={setOpensignup} />
+        {/* <Login open={open} setOpen={setOpen} /> */}
+        {/* <Signup opensignup={opensignup} setOpensignup={setOpensignup} /> */}
       </>
     );
   }
