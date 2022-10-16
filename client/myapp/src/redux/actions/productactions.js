@@ -13,12 +13,12 @@ import {
 import axios from "axios";
 import { setAlert } from "./alertactions";
 
-export const getproducts = (page) => async (dispatch) => {
+export const getproducts = () => async (dispatch) => {
   try {
     // const page = 1;
     dispatch({ type: PRODUCT_ACTION_ATTEMPT });
 
-    const res = await axios.get(`http://localhost:5000/product?page=${page}`);
+    const res = await axios.get(`http://localhost:5000/product`);
     console.log(res.data.data);
     dispatch({
       type: GET_PRODUCTS,
@@ -31,7 +31,6 @@ export const getproducts = (page) => async (dispatch) => {
 export const getuserproducts = () => async (dispatch) => {
   try {
     const res = await axios.get("http://localhost:5000/product/userproducts");
-    console.log(res.data.data);
     dispatch({
       type: GET_USER_PRODUCTS,
       payload: res.data,
@@ -74,6 +73,8 @@ export const addproduct = (formData) => async (dispatch) => {
 
 export const updateproduct = (product) => async (dispatch) => {
   try {
+    dispatch({ type: PRODUCT_ACTION_ATTEMPT });
+
     const res = await axios.put(
       `http://localhost:5000/product/update-product/${product.id}`,
       product
@@ -83,6 +84,7 @@ export const updateproduct = (product) => async (dispatch) => {
       type: UPDATE_PRODUCT,
       payload: res.data,
     });
+    dispatch(setAlert("Product Updated Successfully", "success"));
   } catch (error) {
     console.log(error);
   }

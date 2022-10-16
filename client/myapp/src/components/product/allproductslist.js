@@ -25,36 +25,28 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
 import Nav from "../layouts/nav";
-import InfiniteScroll from "react-infinite-scroll-component";
 import nopreview from "../../images/nopreview.png";
 
-import {
-  PRODUCT_ACTION_ATTEMPT,
-  SHOP_ACTION_ATTEMPT,
-  SHOP_ACTION_SUCCESS,
-} from "../../redux/types";
-import authreducer from "../../redux/reducers/authreducer";
-import { getallshops } from "../../redux/actions/shopactions";
-import Shopcard from "./shopcard";
+import { PRODUCT_ACTION_ATTEMPT } from "../../redux/types";
+
+import Productcard from "./productcard";
 import { Link, useParams } from "react-router-dom";
 import { FilterAlt, TextFieldsRounded } from "@mui/icons-material";
+import { getproducts } from "../../redux/actions/productactions";
 
-export default function ShopHome() {
+export default function Productlisting() {
   const [PageNumber, setPageNumber] = useState(1);
   // const [hasMore, setHasMore] = useState(false);
-  const shops = useSelector((state) => state.shop.shops);
-  const loading = useSelector((state) => state.shop.isLoading);
+  const products = useSelector((state) => state.products.products);
+  const loading = useSelector((state) => state.products.isLoadingp);
   const catageries = useSelector((state) => state.catageries.catageries);
 
-  const auth = useSelector((state) => state.auth);
-  const params = useParams();
-  const observer = useRef();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch({ type: SHOP_ACTION_ATTEMPT });
+    dispatch({ type: PRODUCT_ACTION_ATTEMPT });
 
-    dispatch(getallshops(PageNumber));
-  }, [PageNumber, dispatch]);
+    dispatch(getproducts());
+  }, []);
 
   const loadmore = () => {
     console.log(PageNumber);
@@ -71,13 +63,13 @@ export default function ShopHome() {
             <CircularProgress disableShrink />
           </Stack>
         )}
-        <Typography variant="h5">All Shops List</Typography>
+        <Typography variant="h5">All Products List</Typography>
 
         <Grid container spacing={1}>
           <Grid item md={3} xs={12}>
             <Paper sx={{ p: 2, mt: 2 }}>
               <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-                Filter Shops
+                Filter Products
               </Typography>
               <Box sx={{ borderBottom: "1px solid #d0d0d0", pb: 2 }}>
                 <InputLabel sx={{ mb: 1 }}>Shop Name</InputLabel>
@@ -232,38 +224,26 @@ export default function ShopHome() {
           </Grid>
 
           <Grid item md={9} xs={12}>
-            <ImageList
-              gap={12}
+            <Box
               sx={{
-                // width: 500,
-                // mb: 8,
-                // height: "100%",
+                display: "grid",
                 gridTemplateColumns:
-                  "repeat(auto-fill, minmax(280px, 1fr))!important",
+                  "repeat(auto-fill, minmax(230px, 1fr))!important",
+                gap: "10px",
               }}
             >
-              {shops ? (
-                // <Grid container spacing={2}>
-                shops.map((item) => (
-                  <Shopcard
-                    key={item._id}
-                    name={item.shopname}
-                    image={
-                      item.shopavatar.length > 0
-                        ? item.shopavatar[0]
-                        : nopreview
-                    }
-                    country={item.country && item.country}
-                    city={item.city && item.city}
-                    // owner={item.owner.username}
-                    id={item._id}
-                  />
-                ))
-              ) : (
-                // </Grid>
-                <h3>No Records</h3>
-              )}
-            </ImageList>
+              {products.length > 0
+                ? products.map((item) => (
+                    <Productcard
+                      key={item._id}
+                      name={item.productTitle}
+                      image={item.images && item.images}
+                      price={item.price}
+                      id={item._id}
+                    />
+                  ))
+                : "No product"}
+            </Box>
           </Grid>
         </Grid>
 
@@ -281,16 +261,16 @@ export default function ShopHome() {
         )}
       </Container>
       {/* {shopDetails}
-      <Typography align="center">
-        <Button
-          color="primary"
-          onClick={loadmore}
-          variant="contained"
-          sx={{ marginTop: 2 }}
-        >
-          Load More
-        </Button>
-      </Typography> */}
+        <Typography align="center">
+          <Button
+            color="primary"
+            onClick={loadmore}
+            variant="contained"
+            sx={{ marginTop: 2 }}
+          >
+            Load More
+          </Button>
+        </Typography> */}
     </div>
   );
 }

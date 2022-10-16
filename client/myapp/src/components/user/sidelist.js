@@ -198,7 +198,6 @@ const SideList = ({ open, setOpen }) => {
           {list.map((item) => (
             <Route key={item.title} path={item.link} element={item.component} />
           ))}
-          <Route path="create-shop" element={<Addshop />} />
         </Routes>
       </Box>
     </>

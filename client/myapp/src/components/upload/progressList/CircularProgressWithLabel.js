@@ -7,8 +7,8 @@ const CircularProgressWithLabel = ({ value }) => {
       <CircularProgress
         size={60}
         thickness={5}
-        variant="determinate"
-        value={value}
+        // variant="determinate"
+        // value={value}
       />
       <Box
         sx={{

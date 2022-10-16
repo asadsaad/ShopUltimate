@@ -3,14 +3,14 @@ const Shop = require("../models/shopModel");
 
 exports.getallproducts = async (req, res) => {
   try {
-    const page = req.query.page;
-    const limit = 9;
-    const startindex = (page - 1) * limit;
-    const lastindex = page * limit;
-    const products = await Product.find()
-      .limit(limit)
-      .skip(startindex)
-      .populate("shop");
+    // const page = req.query.page;
+    // const limit = 9;
+    // const startindex = (page - 1) * limit;
+    // const lastindex = page * limit;
+    const products = await Product.find().populate("shop");
+
+    // .limit(limit)
+    // .skip(startindex)
     const count = await Product.count({});
     return res
       .status(200)
@@ -30,7 +30,9 @@ exports.getuserproducts = async (req, res) => {
 };
 exports.getsingleproduct = async (req, res) => {
   try {
-    const product = await Product.findOne({ _id: req.params.id });
+    const product = await Product.findOne({ _id: req.params.id }).populate(
+      "shop"
+    );
     return res.status(200).json({ success: true, data: product });
   } catch (error) {
     console.log(error);
@@ -47,6 +49,8 @@ exports.addproduct = async (req, res) => {
       subcatagery,
       instock,
       shop,
+      brand,
+      discount,
     } = req.body;
     if (!productTitle) {
       return res
@@ -83,6 +87,11 @@ exports.addproduct = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Shop is Required" });
     }
+    if (!brand) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please Select Product Brand" });
+    }
     const product = await new Product({
       user: req.user,
       productTitle: productTitle,
@@ -93,6 +102,8 @@ exports.addproduct = async (req, res) => {
       subcatagery,
       instock,
       shop,
+      brand,
+      discount,
     });
     const data = await product.save();
     const producttoshop = await Shop.findById({ _id: shop });
@@ -108,11 +119,11 @@ exports.addproduct = async (req, res) => {
 };
 exports.updateproduct = async (req, res) => {
   try {
-    // console.log(req.body)
-    const { productTitle, productDescription, images } = req.body;
+    console.log(req.body);
+    const { productTitle, productDescription, images, isActive } = req.body;
     const productp = await Product.findOneAndUpdate(
       { _id: req.params.id },
-      { productTitle, productDescription, images },
+      { productTitle, productDescription, images, isActive },
       { new: true }
     );
     const product = await productp.save();

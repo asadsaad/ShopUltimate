@@ -1,10 +1,11 @@
-import { React, useEffect } from "react";
+import { React, useEffect, useMemo, useRef } from "react";
 import Nav from "../layouts/nav";
 import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import JoditEditor from "jodit-react";
 
 import {
   Grid,
@@ -15,6 +16,7 @@ import {
   ImageListItem,
   IconButton,
   ImageListItemBar,
+  Avatar,
 } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -28,14 +30,15 @@ import { clearalert, inprogress } from "../../redux/actions/authactions";
 import { styled } from "@mui/material/styles";
 import { storage } from "../../firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { DeleteOutlineOutlined } from "@mui/icons-material";
+import { DeleteOutlineOutlined, Send } from "@mui/icons-material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
-import { PRODUCT_ACTION_ATTEMPT } from "../../redux/types";
+import { CLEAR_PRODUCT_IMAGE, PRODUCT_ACTION_ATTEMPT } from "../../redux/types";
 import Alert from "../layouts/alerts";
 import { addproduct } from "../../redux/actions/productactions";
 import { getusershops } from "../../redux/actions/shopactions";
 import ProgressList from "../upload/progressList/progressList";
+import Loading from "../layouts/loading";
 const Input = styled("input")({
   display: "none",
 });
@@ -49,6 +52,10 @@ export default function Addproduct(props) {
   const [instock, setinstock] = useState();
   const [store, setstore] = useState("");
   const [images, setImages] = useState([]);
+  const [brand, setbrand] = useState();
+  const [discount, setdiscount] = useState();
+  const editor = useRef(null);
+
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getusershops());
@@ -58,11 +65,19 @@ export default function Addproduct(props) {
     (state) => state.productimages.imagestosend
   );
 
-  //   const isLoading = useSelector((state) => state.shop.isLoading);
+  const isLoading = useSelector((state) => state.products.isLoadingp);
   console.log(productimage);
   const handleClose = () => {
     props.setproductaddOpen(false);
   };
+  const placeholder = "Start typing";
+  const config = useMemo(
+    () => ({
+      readonly: false,
+      placeholder: placeholder || "Start typings...",
+    }),
+    [placeholder]
+  );
   const submitform = async (event) => {
     event.preventDefault();
     dispatch({ type: PRODUCT_ACTION_ATTEMPT });
@@ -76,9 +91,22 @@ export default function Addproduct(props) {
       price: price,
       instock: instock,
       shop: store,
+      brand: brand,
+      discount: discount,
     };
     console.log(formData);
     dispatch(addproduct(formData));
+    setproductTitle("");
+    setproductDescription("");
+    setcatagery("");
+    setsubcatagery("");
+    setproductimage([]);
+    setprice("");
+    setinstock("");
+    setstore("");
+    setbrand("");
+    setdiscount("");
+    dispatch({ type: CLEAR_PRODUCT_IMAGE });
 
     // if (productimage.length > 0) {
     //   const promises = [];
@@ -135,25 +163,32 @@ export default function Addproduct(props) {
         <CloseIcon />
       </IconButton>
       <DialogContent dividers>
-        <Box
-          component="form"
-          style={{ marginTop: "2em" }}
-          method="post"
-          onSubmit={submitform}
-        >
+        <Box component="form" style={{}} method="post" onSubmit={submitform}>
+          <InputLabel sx={{ color: "#333" }}>Product Title</InputLabel>
           <TextField
             variant="outlined"
-            label="Product Name"
             fullWidth
             size="small"
             style={{ marginBottom: "1em" }}
             type="text"
-            placeholder="Product Name"
+            placeholder="My Awesome Product"
             value={productTitle}
             onChange={(e) => setproductTitle(e.target.value)}
             name="Product Name"
           />
-          <TextField
+          <InputLabel sx={{ color: "#333" }}>Product Description</InputLabel>
+          <JoditEditor
+            ref={editor}
+            value={productDescription}
+            config={config}
+            tabIndex={2} // tabIndex of textarea
+            onBlur={(newContent) => setproductDescription(newContent)} // preferred to use only this option to update the content for performance reasons
+            // preferred to use only this option to update the content for performance reasons
+            onChange={(newContent) => {
+              setproductDescription(newContent);
+            }}
+          />
+          {/* <TextField
             variant="outlined"
             label="Product Description"
             fullWidth
@@ -166,22 +201,24 @@ export default function Addproduct(props) {
             value={productDescription}
             onChange={(e) => setproductDescription(e.target.value)}
             name="Product Description"
-          />
+          /> */}
+          <InputLabel sx={{ color: "#333", mt: 2 }}>Catagery</InputLabel>
+
           <TextField
             variant="outlined"
-            label="Catagery"
             fullWidth
             size="small"
             style={{ marginBottom: "1em" }}
             type="text"
-            placeholder="Catagery"
+            placeholder="Catagery...."
             value={catagery}
             onChange={(e) => setcatagery(e.target.value)}
             name="catagery"
           />
+          <InputLabel sx={{ color: "#333" }}>Sub Catagery</InputLabel>
+
           <TextField
             variant="outlined"
-            label="Sub Catagery"
             fullWidth
             size="small"
             style={{ marginBottom: "1em" }}
@@ -191,9 +228,23 @@ export default function Addproduct(props) {
             onChange={(e) => setsubcatagery(e.target.value)}
             name="subcatagery"
           />
+          <InputLabel sx={{ color: "#333" }}>Brand</InputLabel>
+
           <TextField
             variant="outlined"
-            label="Price"
+            fullWidth
+            size="small"
+            style={{ marginBottom: "1em" }}
+            type="text"
+            placeholder="Brand...."
+            value={brand}
+            onChange={(e) => setbrand(e.target.value)}
+            name="brand"
+          />
+          <InputLabel sx={{ color: "#333" }}>Price</InputLabel>
+
+          <TextField
+            variant="outlined"
             fullWidth
             size="small"
             style={{ marginBottom: "1em" }}
@@ -203,9 +254,25 @@ export default function Addproduct(props) {
             onChange={(e) => setprice(e.target.value)}
             name="price"
           />
+          <InputLabel sx={{ color: "#333" }}>
+            Discount (Percentage) (Optional)
+          </InputLabel>
+
           <TextField
             variant="outlined"
-            label="In Stock"
+            fullWidth
+            size="small"
+            style={{ marginBottom: "1em" }}
+            type="number"
+            placeholder="Discount in %age"
+            value={discount}
+            onChange={(e) => setdiscount(e.target.value)}
+            name="discount"
+          />
+          <InputLabel sx={{ color: "#333" }}>Avalaible Stock</InputLabel>
+
+          <TextField
+            variant="outlined"
             fullWidth
             size="small"
             style={{ marginBottom: "1em" }}
@@ -222,7 +289,9 @@ export default function Addproduct(props) {
             label="Select Store"
             onChange={(e) => setstore(e.target.value)}
             fullWidth
+            defaultValue={shop.length && shop[0]}
             value={store}
+            size="small"
           >
             {shop.length > 0
               ? shop.map((item) => (
@@ -232,7 +301,12 @@ export default function Addproduct(props) {
                 ))
               : null}
           </Select>
-          <Typography component="h5" variant="h5" align="center">
+          <Typography
+            component="h5"
+            variant="h5"
+            align="center"
+            sx={{ mt: 2, mb: 1 }}
+          >
             Select Images
           </Typography>
           <Typography align="center">
@@ -244,21 +318,39 @@ export default function Addproduct(props) {
                 multiple
                 onChange={(e) => setproductimage([...e.target.files])}
               />
-              <IconButton
-                color="primary"
-                aria-label="upload picture"
-                component="span"
-                align="center"
+              <Avatar
+                sx={{ width: "100%", height: "300px", cursor: "pointer" }}
+                variant="rounded"
               >
-                <PhotoCamera />
-              </IconButton>
+                <IconButton
+                  color="primary"
+                  aria-label="upload picture"
+                  component="span"
+                  align="center"
+                >
+                  <PhotoCamera />
+                </IconButton>
+              </Avatar>
             </label>
           </Typography>
-          <ProgressList
-            files={productimage}
-            images={images}
-            setproductimages={setImages}
-          />
+          {productimages.length > 0 ? (
+            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+              {productimages.map((img) => (
+                <Avatar
+                  src={img}
+                  variant="rounded"
+                  sx={{ width: 200, height: 200, m: 1 }}
+                ></Avatar>
+              ))}
+            </Box>
+          ) : (
+            <ProgressList
+              files={productimage}
+              images={images}
+              setproductimages={setImages}
+            />
+          )}
+
           {/* {productimage.length > 0 ? (
             <ImageList
               sx={{ width: 700, maxheight: 450 }}
@@ -303,16 +395,17 @@ export default function Addproduct(props) {
           <DialogActions>
             <Button
               variant="contained"
-              color="primary"
-              autoFocus
+              color="success"
               type="submit"
               fullWidth
+              endIcon={<Send />}
             >
-              Add Product
+              Create New Product
             </Button>
           </DialogActions>
         </Box>
       </DialogContent>
+      <Loading isloading={isLoading} />
     </Dialog>
   );
 }

@@ -1,6 +1,7 @@
 import { React, useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteshop, getusershops } from "../../redux/actions/shopactions";
+import moment from "moment";
 
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -51,37 +52,58 @@ export default function Shops() {
     () => [
       {
         field: "shopavatar",
-        headerName: "Shop",
-        width: 90,
+        headerName: "Title",
+        width: 180,
         renderCell: (params) => {
-          return params.value ? (
-            <Avatar src={params.value} />
-          ) : (
-            <Avatar>A</Avatar>
+          return (
+            <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+              <Avatar src={params?.row?.shopavatar} variant="rounded"></Avatar>
+              <Typography>{params?.row?.shopname}</Typography>
+            </Stack>
           );
         },
-      },
-      {
-        field: "shopname",
-        headerName: "Shop Name",
-        width: 150,
       },
       {
         field: "catagery",
         headerName: "Catagery",
         width: 150,
+        renderCell: (params) => {
+          return <Typography>{params.value}</Typography>;
+        },
       },
       {
         field: "Shoptype",
         headerName: "Shop Type",
         width: 150,
+        renderCell: (params) => {
+          return <Typography>{params.value}</Typography>;
+        },
       },
+
       {
         field: "createdat",
         headerName: "Create At",
-        width: 150,
+        width: 180,
+        renderCell: (params) => {
+          return (
+            <Typography>
+              {moment(params.row.createdat).format("MMMM Do YYYY")}
+            </Typography>
+          );
+        },
       },
-
+      {
+        field: "shopcity",
+        headerName: "Location",
+        width: "180",
+        renderCell: (params) => {
+          return (
+            <Typography>
+              {params?.row?.city + ", " + params?.row?.country}
+            </Typography>
+          );
+        },
+      },
       {
         field: "actions",
         headerName: "Actions",
@@ -131,7 +153,7 @@ export default function Shops() {
           checkboxSelection
           disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
-          // loading={isloading}
+          loading={isloading}
         />
         {/* <Link to="/dashboard/create-shop" style={{ textDecoration: "none" }}> */}
         <Button
@@ -143,6 +165,7 @@ export default function Shops() {
           Create New Shop
         </Button>
         <Addshop shopaddopen={shopaddopen} setshopaddOpen={setshopaddOpen} />
+
         {/* </Link> */}
       </Box>
     </Container>

@@ -15,7 +15,10 @@ export default function Loading(props) {
   return (
     <div>
       <Backdrop
-        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 100 }}
+        sx={{
+          color: "#fff",
+          zIndex: (theme) => theme.zIndex.drawer + 100000000,
+        }}
         open={props.isloading}
       >
         <CircularProgress color="inherit" />

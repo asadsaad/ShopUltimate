@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo, useRef } from "react";
 import Nav from "../layouts/nav";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
@@ -7,7 +7,9 @@ import { useDropzone } from "react-dropzone";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
+import JoditEditor from "jodit-react";
 import {
+  Avatar,
   Grid,
   TextField,
   Button,
@@ -18,6 +20,7 @@ import {
   ImageListItemBar,
   Container,
   FormControl,
+  CircularProgress,
 } from "@mui/material";
 import Autocomplete from "@mui/material/Autocomplete";
 import Dialog from "@mui/material/Dialog";
@@ -32,7 +35,7 @@ import { clearalert, inprogress } from "../../redux/actions/authactions";
 import { addshop } from "../../redux/actions/shopactions";
 import { styled } from "@mui/material/styles";
 import { storage } from "../../firebase";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { DeleteOutlineOutlined } from "@mui/icons-material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
@@ -40,6 +43,8 @@ import { SHOP_ACTION_ATTEMPT } from "../../redux/types";
 import Alert from "../layouts/alerts";
 import { useNavigate } from "react-router-dom";
 import Slide from "@mui/material/Slide";
+import ProgressList from "../upload/progressList/progressList";
+import Loading from "../layouts/loading";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -48,13 +53,16 @@ const Input = styled("input")({
   display: "none",
 });
 export default function Addshop(props) {
+  const [shoplogoupload, setShoplogoupload] = useState(false);
+  const [shopbannerupload, setShopbannerupload] = useState(false);
+
   const [shopname, setshopname] = useState();
   const [aboutShop, setaboutShop] = useState();
   const [catagery, setcatagery] = useState();
   const [subcatagery, setsubcatagery] = useState();
   const [brand, setbrand] = useState([]);
 
-  const [shoptype, setshoptype] = useState();
+  const [shoptype, setshoptype] = useState("");
   const [shopcountry, setshopcountry] = useState();
   const [shopcity, setshopcity] = useState();
   const [shopstreetaddress, setshopstreetaddress] = useState();
@@ -62,11 +70,19 @@ export default function Addshop(props) {
 
   const [storeimage, setstoreimage] = useState([]);
   const [storebannerimage, setstorebannerimage] = useState([]);
+  const [storelogo, setstorelogo] = useState([]);
+  const [storebanner, setstorebanner] = useState([]);
+
+  const [progress, setProgress] = useState(0);
+  const [bannerprogress, setbannerProgress] = useState(0);
+
+  const [content, setContent] = useState("");
 
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const isLoading = useSelector((state) => state.shop.isLoading);
   const catageries = useSelector((state) => state.catageries.catageries);
+  const editor = useRef(null);
 
   const alerts = useSelector((state) => state.alerts);
   const navigate = useNavigate();
@@ -74,66 +90,144 @@ export default function Addshop(props) {
   const handleClose = () => {
     props.setshopaddOpen(false);
   };
+  const placeholder = "Start typing";
+  const config = useMemo(
+    () => ({
+      readonly: false,
+      placeholder: placeholder || "Start typings...",
+    }),
+    [placeholder]
+  );
+
+  const handlestorelogoupload = (e) => {
+    setShoplogoupload(true);
+    setstoreimage([e.target.files[0]]);
+    const file = e.target.files[0];
+    console.log(file);
+    const storageRef = ref(storage, "storelogo" + "/" + file.name);
+    const upload = uploadBytesResumable(storageRef, file);
+    upload.on(
+      "state_change",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(progress);
+      },
+      (error) => {
+        console.log(error);
+      },
+      async () => {
+        try {
+          const url = await getDownloadURL(storageRef);
+          setstorelogo([url]);
+          setShoplogoupload(false);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    );
+  };
+  const handlestorebannerupload = (e) => {
+    setShopbannerupload(true);
+    setstorebannerimage([e.target.files[0]]);
+    const file = e.target.files[0];
+    const storageRef = ref(storage, "storebanner" + "/" + file.name);
+    const upload = uploadBytesResumable(storageRef, file);
+    upload.on(
+      "state_change",
+      (snapshot) => {
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setbannerProgress(progress);
+      },
+      (error) => {
+        console.log(error);
+      },
+      async () => {
+        try {
+          const url = await getDownloadURL(storageRef);
+          setstorebanner([url]);
+          setShopbannerupload(false);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    );
+  };
   const submitform = async (event) => {
     event.preventDefault();
     dispatch({ type: SHOP_ACTION_ATTEMPT });
 
     const formData = {
       shopname: shopname,
-      aboutShop: aboutShop,
+      aboutShop: content,
       catagery: catagery,
       subcatagery: subcatagery,
-      shopavatar: [],
+      shopavatar: storelogo,
       country: shopcountry,
       city: shopcity,
       streetaddress: shopstreetaddress,
       shopphone: shopphone,
       Shoptype: shoptype,
       Brands: brand,
-      shopbanner: [],
+      shopbanner: storebanner,
     };
+    dispatch(addshop(formData, props.setshopaddOpen));
+    setshopname("");
+    setcatagery("");
+    setsubcatagery("");
+    setContent("");
+    setstorelogo([]);
+    setstorebanner([]);
+    setshopcity("");
+    setshopcountry("");
+    setshopstreetaddress("");
+    setbrand("");
+    setshoptype("");
+    setstorebannerimage([]);
+    setstoreimage([]);
+    setshopphone("");
     // if (storeimage.length > 0) {
-    const promises = [];
-    // for (let index = 0; index < storeimage.length; index++) {
-    const element = storeimage[0];
-    const imageref = ref(storage, `images/${element.name}`);
-    const upload = uploadBytes(imageref, element).then(async () => {
-      await getDownloadURL(imageref).then((url) => {
-        formData.shopavatar.push(url);
-      });
-    });
-    const element1 = storebannerimage[0];
-    const imageref1 = ref(storage, `images/${element1.name}`);
-    const upload1 = uploadBytes(imageref1, element1).then(async () => {
-      await getDownloadURL(imageref1).then((url) => {
-        formData.shopbanner.push(url);
-      });
-    });
-    promises.push(upload1);
-    // console.log(promises)
-    // upload.then(async ()=>{
-    //     await getDownloadURL(imageref).then(url=>{
-    //         console.log(url)
-    //         formData.shopavatar.push(url)
-    //         console.log(formData)
+    //   const promises = [];
+    //   // for (let index = 0; index < storeimage.length; index++) {
+    //   const element = storeimage[0];
+    //   const imageref = ref(storage, `images/${element.name}`);
+    //   const upload = uploadBytes(imageref, element).then(async () => {
+    //     await getDownloadURL(imageref).then((url) => {
+    //       formData.shopavatar.push(url);
+    //     });
+    //   });
+    //   const element1 = storebannerimage[0];
+    //   const imageref1 = ref(storage, `images/${element1.name}`);
+    //   const upload1 = uploadBytes(imageref1, element1).then(async () => {
+    //     await getDownloadURL(imageref1).then((url) => {
+    //       formData.shopbanner.push(url);
+    //     });
+    //   });
+    //   promises.push(upload1);
+    //   // console.log(promises)
+    //   // upload.then(async ()=>{
+    //   //     await getDownloadURL(imageref).then(url=>{
+    //   //         console.log(url)
+    //   //         formData.shopavatar.push(url)
+    //   //         console.log(formData)
+    //   //     })
+    //   // })
+    //   // }
+    //   Promise.all(promises)
+    //     .then(() => {
+    //       dispatch(addshop(formData, navigate));
     //     })
-    // })
-    // }
-    Promise.all(promises)
-      .then(() => {
-        dispatch(addshop(formData, navigate));
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    // }
-    // else {
-    // dispatch(addshop(formData));
-    // setshopname("");
-    // setaboutShop("");
-    // setcatagery("");
-    // setsubcatagery("");
-    // setstoreimage([]);
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // } else {
+    //   dispatch(addshop(formData));
+    //   setshopname("");
+    //   setaboutShop("");
+    //   setcatagery("");
+    //   setsubcatagery("");
+    //   setstoreimage([]);
     // }
   };
   return (
@@ -142,7 +236,7 @@ export default function Addshop(props) {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={props.shopaddopen}
-        sx={{ zIndex: 10000 }}
+        sx={{}}
         fullScreen
         TransitionComponent={Transition}
       >
@@ -163,38 +257,41 @@ export default function Addshop(props) {
         </IconButton>
         <DialogContent dividers>
           <Box component="form" method="post" onSubmit={submitform}>
-            <Typography component="h5" variant="h5" sx={{ mt: 1, mb: 1 }}>
+            {/* <Typography component="h5" variant="h5" sx={{ mt: 1, mb: 1 }}>
               Shop Details
-            </Typography>
+            </Typography> */}
+            <InputLabel sx={{ color: "black" }}>Store Name</InputLabel>
             <TextField
               variant="outlined"
-              label="Shop Name"
               fullWidth
               size="small"
               style={{ marginBottom: "1em" }}
               type="text"
-              placeholder="Shop Name"
+              placeholder="e.g My Brand New Store..."
               value={shopname}
               onChange={(e) => setshopname(e.target.value)}
               name="shopname"
             />
-            <TextField
-              variant="outlined"
-              label="About Shop"
-              fullWidth
-              multiline
-              rows={5}
-              size="small"
-              style={{ marginBottom: "1em" }}
-              type="text"
-              placeholder="Description"
+            <InputLabel sx={{ color: "black", mb: 1 }}>
+              Store Description
+            </InputLabel>
+
+            <JoditEditor
+              ref={editor}
               value={aboutShop}
-              onChange={(e) => setaboutShop(e.target.value)}
-              name="aboutShop"
+              config={config}
+              tabIndex={2} // tabIndex of textarea
+              onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+              // preferred to use only this option to update the content for performance reasons
+              onChange={(newContent) => {
+                setContent(newContent);
+              }}
             />
+            <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
+              Catagery
+            </InputLabel>
             <TextField
               variant="outlined"
-              label="Catagery"
               fullWidth
               size="small"
               style={{ marginBottom: "1em" }}
@@ -204,9 +301,9 @@ export default function Addshop(props) {
               onChange={(e) => setcatagery(e.target.value)}
               name="catagery"
             />
+            <InputLabel sx={{ color: "black" }}>Sub Catagery</InputLabel>
             <TextField
               variant="outlined"
-              label="Sub Catagery"
               fullWidth
               size="small"
               style={{ marginBottom: "1em" }}
@@ -216,6 +313,7 @@ export default function Addshop(props) {
               onChange={(e) => setsubcatagery(e.target.value)}
               name="subcatagery"
             />
+            <InputLabel sx={{ color: "black", mb: 1 }}>Store Brands</InputLabel>
             <Autocomplete
               multiple
               id="tags-filled"
@@ -237,20 +335,19 @@ export default function Addshop(props) {
                   {...params}
                   variant="outlined"
                   size="small"
-                  label="Select Brands"
-                  placeholder="Brands"
+                  placeholder="e.g red,blue,greed"
                 />
               )}
             />
-            <FormControl size="small" sx={{ width: "100%", mt: 2 }}>
-              <InputLabel id="demo-simple-select-helper-label">
-                Select Type
-              </InputLabel>
+            <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
+              Store Type
+            </InputLabel>
+            <FormControl size="small" sx={{ width: "100%" }}>
               <Select
                 labelId="demo-simple-select-helper-label"
                 id="demo-simple-select-helper"
+                defaultValue=""
                 value={shoptype}
-                label="Select Type"
                 onChange={(e) => {
                   setshoptype(e.target.value);
                 }}
@@ -264,16 +361,16 @@ export default function Addshop(props) {
               </Select>
             </FormControl>
 
-            <Typography component="h5" variant="h5" sx={{ mt: 1, mb: 1 }}>
-              Select Shop Logo
-            </Typography>
+            <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
+              Store Logo
+            </InputLabel>
             <Typography align="center">
               <label htmlFor="icon-button-file">
                 <Input
                   accept="image/*"
                   id="icon-button-file"
                   type="file"
-                  onChange={(e) => setstoreimage([...e.target.files])}
+                  onChange={handlestorelogoupload}
                 />
                 <IconButton
                   color="primary"
@@ -283,63 +380,45 @@ export default function Addshop(props) {
                   variant="contained"
                   size="large"
                 >
-                  <PhotoCamera />
+                  <Avatar
+                    sx={{
+                      width: 150,
+                      height: 150,
+                      bgcolor: shoplogoupload && "green",
+                    }}
+                    src={
+                      !shoplogoupload && storeimage[0]
+                        ? URL.createObjectURL(storeimage[0])
+                        : ""
+                    }
+                  >
+                    {shoplogoupload ? (
+                      <Box>
+                        <CircularProgress sx={{ color: "white" }} />
+                        <Typography>Uploading {progress}%</Typography>
+                      </Box>
+                    ) : (
+                      <PhotoCamera />
+                    )}
+                  </Avatar>
                 </IconButton>
               </label>
             </Typography>
-            {storeimage.length > 0 ? (
-              <ImageList
-                sx={{ width: 700, maxheight: 450 }}
-                cols={3}
-                rowHeight={200}
-              >
-                {[...storeimage].map((item) => (
-                  <ImageListItem key={item} variant="standard">
-                    <img
-                      src={URL.createObjectURL(item)}
-                      srcSet={URL.createObjectURL(item)}
-                      alt={item}
-                      loading="lazy"
-                      sx={{ height: 200 }}
-                    />
-                    <ImageListItemBar
-                      sx={{
-                        background:
-                          "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
-                          "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
-                      }}
-                      position="right"
-                      actionIcon={
-                        <IconButton
-                          sx={{ color: "white" }}
-                          aria-label={"delete"}
-                          onClick={() =>
-                            setstoreimage(
-                              storeimage.filter((image) => image !== item)
-                            )
-                          }
-                        >
-                          <DeleteOutlineOutlined />
-                        </IconButton>
-                      }
-                      actionPosition="right"
-                    />
-                  </ImageListItem>
-                ))}
-              </ImageList>
-            ) : null}
-            <Typography component="h5" variant="h5" sx={{ mt: 1, mb: 1 }}>
-              Select Shop Banner
-            </Typography>
-            <Typography align="center">
+            {/* <ProgressList files={storeimage} setstorelogo={setstorelogo} /> */}
+
+            <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
+              Store Banner Image
+            </InputLabel>
+            <Typography align="center" sx={{ width: "100%" }}>
               <label htmlFor="icon-button-file1">
                 <Input
                   accept="image/*"
                   id="icon-button-file1"
                   type="file"
-                  onChange={(e) => setstorebannerimage([...e.target.files])}
+                  onChange={handlestorebannerupload}
                 />
                 <IconButton
+                  sx={{ width: "100%" }}
                   color="primary"
                   aria-label="upload banner"
                   component="span"
@@ -347,110 +426,94 @@ export default function Addshop(props) {
                   variant="contained"
                   size="large"
                 >
-                  <PhotoCamera />
+                  <Avatar
+                    sx={{
+                      width: "100%",
+                      height: "300px",
+                      bgcolor: shopbannerupload && "green",
+                    }}
+                    variant="rounded"
+                    src={
+                      !shopbannerupload && storebannerimage[0]
+                        ? URL.createObjectURL(storebannerimage[0])
+                        : ""
+                    }
+                  >
+                    {shopbannerupload ? (
+                      <Box>
+                        <CircularProgress sx={{ color: "white" }} />
+                        <Typography>Uploading {bannerprogress}%</Typography>
+                      </Box>
+                    ) : (
+                      <PhotoCamera />
+                    )}
+                  </Avatar>
                 </IconButton>
               </label>
             </Typography>
-            {storebannerimage.length > 0 ? (
-              <ImageList sx={{}} cols={1} rowHeight={300}>
-                {[...storebannerimage].map((item) => (
-                  <ImageListItem key={item} variant="standard">
-                    <img
-                      src={URL.createObjectURL(item)}
-                      srcSet={URL.createObjectURL(item)}
-                      alt={item}
-                      loading="lazy"
-                      sx={{ width: "100%", height: 300 }}
-                    />
-                    <ImageListItemBar
-                      sx={{
-                        background:
-                          "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
-                          "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
-                      }}
-                      position="right"
-                      actionIcon={
-                        <IconButton
-                          sx={{ color: "white" }}
-                          aria-label={"delete"}
-                          onClick={() =>
-                            setstorebannerimage(
-                              storebannerimage.filter((image) => image !== item)
-                            )
-                          }
-                        >
-                          <DeleteOutlineOutlined />
-                        </IconButton>
-                      }
-                      actionPosition="right"
-                    />
-                  </ImageListItem>
-                ))}
-              </ImageList>
-            ) : null}
-            <Typography component="h5" variant="h5" sx={{ mt: 1, mb: 1 }}>
-              Shop Location Details
-            </Typography>
+
+            <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
+              Store Location (Country)
+            </InputLabel>
             <TextField
               variant="outlined"
-              label="Country"
               fullWidth
               size="small"
               style={{ marginBottom: "1em" }}
               type="text"
-              placeholder="Country"
+              placeholder="e.g United State"
               value={shopcountry}
               onChange={(e) => setshopcountry(e.target.value)}
               name="shopcountry"
             />
+            <InputLabel sx={{ color: "black", mb: 1 }}>
+              Store Location (City)
+            </InputLabel>
             <TextField
               variant="outlined"
-              label="City"
               fullWidth
               size="small"
               style={{ marginBottom: "1em" }}
               type="text"
-              placeholder="City"
+              placeholder="e.g New Your"
               value={shopcity}
               onChange={(e) => setshopcity(e.target.value)}
               name="shopcity"
             />
+            <InputLabel sx={{ color: "black", mb: 1 }}>
+              Store Location (Street Address)
+            </InputLabel>
+
             <TextField
               variant="outlined"
-              label="Street Address"
               fullWidth
               size="small"
               style={{ marginBottom: "1em" }}
               type="text"
-              placeholder="Street Address"
+              placeholder="e.g Shop no 12 ......."
               value={shopstreetaddress}
               onChange={(e) => setshopstreetaddress(e.target.value)}
-              name="shopstreetaddress"
+              name="streetaddress"
             />
+            <InputLabel sx={{ color: "black", mb: 1 }}>Store Phone</InputLabel>
             <TextField
               variant="outlined"
-              label="Phone"
               fullWidth
               size="small"
               style={{ marginBottom: "1em" }}
               type="text"
-              placeholder="Phone"
+              placeholder="+1 345678181..."
               value={shopphone}
               onChange={(e) => setshopphone(e.target.value)}
               name="shopphone"
             />
-            <Button
-              variant="contained"
-              color="primary"
-              type="submit"
-              fullWidth
-              disabled={isLoading}
-            >
+            <Button variant="contained" color="primary" type="submit" fullWidth>
               Create Shop
             </Button>
           </Box>
         </DialogContent>
       </Dialog>
+      <Loading isloading={isLoading} />
     </>
   );
 }

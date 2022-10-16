@@ -27,6 +27,8 @@ import Myorders from "./components/order/myorders";
 import OrderDetails from "./components/order/OrderDetails";
 import Register from "./components/user/signup";
 import Login from "./components/user/login";
+import Productlisting from "./components/product/allproductslist";
+
 if (localStorage.token) {
   setauthtoken(localStorage.token);
 }
@@ -46,6 +48,7 @@ class App extends Component {
           <Routes>
             <Route path="register" element={<Register />} />
             <Route path="login" element={<Login />} />
+            <Route path="products" element={<Productlisting />} />
 
             <Route path="/" element={<ShopHome />} />
             <Route path="/verify/:id" element={<Verify />} />
