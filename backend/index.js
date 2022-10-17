@@ -26,7 +26,7 @@ app.use("/shipping", shippingRoutes);
 app.use("/order", orderRoutes);
 
 mongoose
-  .connect("mongodb://localhost/appdb", { useNewUrlParser: true })
+  .connect("mongodb://0.0.0.0:27017/appdb", { useNewUrlParser: true })
   .then(() => {
     console.log("db connected");
   });
