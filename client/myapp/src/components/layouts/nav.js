@@ -172,11 +172,6 @@ const Nav = () => {
               onClose={handleCloseUserMenu}
             >
               <MenuItem>
-                <Link to="/profile" style={{ textDecoration: "none" }}>
-                  Profile
-                </Link>
-              </MenuItem>
-              <MenuItem>
                 <Link
                   to=""
                   style={{ textDecoration: "none" }}
