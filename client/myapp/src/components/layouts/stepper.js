@@ -54,7 +54,7 @@ function SwipeableTextMobileStepper(props) {
   console.log(props);
 
   return (
-    <Box sx={{ maxWidth: 400, flexGrow: 1 }}>
+    <Box sx={{ maxWidth: 400, flexGrow: 1, margin:"auto" }}>
       <Paper
         square
         elevation={0}

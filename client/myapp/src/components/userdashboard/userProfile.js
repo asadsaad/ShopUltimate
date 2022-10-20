@@ -91,7 +91,7 @@ const UserProfile = () => {
                             </IconButton>
                         </Box>
                     </Box>
-                    <Grid container sx={{display:"flex", justifyContent:"space-between", alignItems:"center"}}>
+                    <Grid container sx={{mt:"20px", display:"flex", justifyContent:"space-between", alignItems:"center"}}>
                         <Grid item xs={12} md={6} sx={{flex:"4", padding:"20px 0px 0px 0px"}}>
                             <Paper sx={{padding:"15px",display:"flex" , alignItems:"center", justifyContent:"space-between"}}>
                             <Box display="flex">

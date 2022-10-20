@@ -29,6 +29,10 @@ import Register from "./components/user/signup";
 import Login from "./components/user/login";
 import Productlisting from "./components/product/allproductslist";
 import AddAddress from "./components/userdashboard/AddAddress";
+import Support from "./components/userdashboard/support";
+import SupportTicket from "./components/userdashboard/supportTicket";
+import Whitelist from "./components/userdashboard/whitelist";
+import LandingPage from "./components/user/landingPage";
 
 if (localStorage.token) {
   setauthtoken(localStorage.token);
@@ -47,7 +51,7 @@ class App extends Component {
         <div>
           <Alert open={true} />
           <Routes>
-          <Route path="test" element={<AddAddress />} />
+          <Route path="test" element={<LandingPage />} />
 
             <Route path="register" element={<Register />} />
             <Route path="login" element={<Login />} />

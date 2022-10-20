@@ -5,6 +5,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { Grid, Paper, Stack, Rating } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -27,8 +28,11 @@ export default function Productcard(props) {
 
   return (
     <Card sx={{}}>
-      <CardMedia>
-        <SwipeableTextMobileStepper images={props.image && props.image} />
+      <Box sx={{m:1,fontSize:"12px", backgroundColor:"#d32f2f", width:"fit-content",color:"white",padding:"5px", borderRadius:"5px", position:"absolite", top:"0%", left:"0%"}}>
+        25% OFF
+      </Box>
+      <CardMedia >
+        <SwipeableTextMobileStepper sx={{margin:"auto"}} images={props.image && props.image} />
       </CardMedia>
       {/* <CardMedia
           component="img"

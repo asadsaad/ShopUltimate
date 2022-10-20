@@ -1,7 +1,7 @@
 import * as React from "react";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import { useState } from "react";
-import { makeStyles } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import {

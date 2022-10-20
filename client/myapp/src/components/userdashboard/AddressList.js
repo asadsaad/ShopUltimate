@@ -63,7 +63,7 @@ const AddressList = () => {
 
                     </Box>
                     <Box mt="20px">
-                        <Paper sx={{ m: "16px, 0px", p: "8px 16px", borderRadius: "5px" }}>
+                        <Paper sx={{ mt: "20px", p: "8px 16px", borderRadius: "5px" }}>
                             <Grid container sx={{ alignItems: "center", justifyContent: "space-between" }} spacing={2}>
                                 <Grid item xs={2} >
                                     <Typography>Ralf Edward</Typography>
