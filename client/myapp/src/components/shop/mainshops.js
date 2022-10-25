@@ -253,6 +253,7 @@ export default function ShopHome() {
                         ? item.shopavatar[0]
                         : nopreview
                     }
+                    banner={item.shopbanner[0]}
                     country={item.country && item.country}
                     city={item.city && item.city}
                     // owner={item.owner.username}

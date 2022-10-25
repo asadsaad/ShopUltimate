@@ -54,7 +54,7 @@ export default function Shopcard(props) {
             position="top"
           />
           <img
-            src={props.image}
+            src={props.banner}
             alt={props.name}
             style={{ cursor: "pointer" }}
 

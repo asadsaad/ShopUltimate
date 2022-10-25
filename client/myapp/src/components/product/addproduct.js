@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import JoditEditor from "jodit-react";
-
+import Imagelist from '../upload/progressList/productimagelist'
 import {
   Grid,
   TextField,
@@ -17,7 +17,11 @@ import {
   IconButton,
   ImageListItemBar,
   Avatar,
+  Fab,
+  Input
 } from "@mui/material";
+import AddIcon from '@mui/icons-material/Add';
+
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
@@ -39,9 +43,7 @@ import { addproduct } from "../../redux/actions/productactions";
 import { getusershops } from "../../redux/actions/shopactions";
 import ProgressList from "../upload/progressList/progressList";
 import Loading from "../layouts/loading";
-const Input = styled("input")({
-  display: "none",
-});
+
 export default function Addproduct(props) {
   const [productTitle, setproductTitle] = useState();
   const [productDescription, setproductDescription] = useState();
@@ -64,7 +66,10 @@ export default function Addproduct(props) {
   const productimages = useSelector(
     (state) => state.productimages.imagestosend
   );
-
+  const fileRef = useRef();
+  const handleClick = () => {
+    fileRef.current.click();
+  };
   const isLoading = useSelector((state) => state.products.isLoadingp);
   console.log(productimage);
   const handleClose = () => {
@@ -108,36 +113,7 @@ export default function Addproduct(props) {
     setdiscount("");
     dispatch({ type: CLEAR_PRODUCT_IMAGE });
 
-    // if (productimage.length > 0) {
-    //   const promises = [];
-    //   for (let index = 0; index < productimage.length; index++) {
-    //     const element = productimage[index];
-    //     const imageref = ref(storage, `images/${element.name}`);
-    //     const upload = uploadBytes(imageref, element).then(async () => {
-    //       await getDownloadURL(imageref).then((url) => {
-    //         formData.images.push(url);
-    //       });
-    //     });
-    //     promises.push(upload);
-    //     // console.log(promises)
-    //     // upload.then(async ()=>{
-    //     //     await getDownloadURL(imageref).then(url=>{
-    //     //         console.log(url)
-    //     //         formData.shopavatar.push(url)
-    //     //         console.log(formData)
-    //     //     })
-    //     // })
-    //   }
-    //   Promise.all(promises)
-    //     .then(() => {
-    //       console.log("promisses");
-    //       dispatch(addproduct(formData));
-    //     })
-    //     .catch((err) => {
-    //       console.log(err);
-    //     });
-    // } else {
-    // }
+   
   };
   return (
     <Dialog
@@ -188,20 +164,7 @@ export default function Addproduct(props) {
               setproductDescription(newContent);
             }}
           />
-          {/* <TextField
-            variant="outlined"
-            label="Product Description"
-            fullWidth
-            multiline
-            rows={5}
-            size="small"
-            style={{ marginBottom: "1em" }}
-            type="text"
-            placeholder="Product Description"
-            value={productDescription}
-            onChange={(e) => setproductDescription(e.target.value)}
-            name="Product Description"
-          /> */}
+          
           <InputLabel sx={{ color: "#333", mt: 2 }}>Catagery</InputLabel>
 
           <TextField
@@ -310,7 +273,17 @@ export default function Addproduct(props) {
             Select Images
           </Typography>
           <Typography align="center">
-            <label htmlFor="icon-button-file">
+          <Input
+        type="file"
+        inputProps={{ multiple: true }}
+        sx={{ display: 'none' }}
+        inputRef={fileRef}
+        onChange={(e) => setproductimage([...e.target.files])}
+      />
+      <Fab color="primary" aria-label="add" onClick={handleClick}>
+        <AddIcon fontSize="large" />
+      </Fab>
+            {/* <label htmlFor="icon-button-file">
               <Input
                 accept="image/*"
                 id="icon-button-file"
@@ -318,80 +291,33 @@ export default function Addproduct(props) {
                 multiple
                 onChange={(e) => setproductimage([...e.target.files])}
               />
-              <Avatar
+              <Fab color="primary" aria-label="upload picture">
+              <AddIcon />
+            </Fab> */}
+              {/* <Avatar
                 sx={{ width: "100%", height: "300px", cursor: "pointer" }}
                 variant="rounded"
               >
                 <IconButton
                   color="primary"
-                  aria-label="upload picture"
+                  
                   component="span"
                   align="center"
                 >
                   <PhotoCamera />
                 </IconButton>
-              </Avatar>
-            </label>
+              </Avatar> */}
+            {/* </label> */}
           </Typography>
-          {productimages.length > 0 ? (
-            <Box sx={{ display: "flex", flexWrap: "wrap" }}>
-              {productimages.map((img) => (
-                <Avatar
-                  src={img}
-                  variant="rounded"
-                  sx={{ width: 200, height: 200, m: 1 }}
-                ></Avatar>
-              ))}
-            </Box>
-          ) : (
-            <ProgressList
+          <ProgressList
               files={productimage}
               images={images}
               setproductimages={setImages}
             />
-          )}
+            <Imagelist />
+          
 
-          {/* {productimage.length > 0 ? (
-            <ImageList
-              sx={{ width: 700, maxheight: 450 }}
-              cols={3}
-              rowHeight={200}
-            >
-              {[...productimage].map((item) => (
-                <ImageListItem key={item} variant="standard">
-                  <img
-                    src={URL.createObjectURL(item)}
-                    srcSet={URL.createObjectURL(item)}
-                    alt={item}
-                    loading="lazy"
-                    sx={{ height: 200 }}
-                  />
-                  <ImageListItemBar
-                    sx={{
-                      background:
-                        "linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, " +
-                        "rgba(0,0,0,0.3) 70%, rgba(0,0,0,0) 100%)",
-                    }}
-                    position="right"
-                    actionIcon={
-                      <IconButton
-                        sx={{ color: "white" }}
-                        aria-label={"delete"}
-                        onClick={() =>
-                          setproductimage(
-                            productimage.filter((image) => image !== item)
-                          )
-                        }
-                      >
-                        <DeleteOutlineOutlined />
-                      </IconButton>
-                    }
-                    actionPosition="right"
-                  />
-                </ImageListItem>
-              ))}
-            </ImageList>
-          ) : null} */}
+          
           <DialogActions>
             <Button
               variant="contained"

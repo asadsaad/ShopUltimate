@@ -37,7 +37,7 @@ const ProgressItem = ({ file }) => {
         //     uPhoto: currentUser?.photoURL || "",
         //   };
         //   await addDocument("gallery", galleryDoc, imageName);
-        //   setImageURL(null);
+          setImageURL(null);
       } catch (error) {
         //   setAlert({
         //     isAlert: true,
