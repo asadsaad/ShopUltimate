@@ -181,6 +181,24 @@ const Nav = () => {
                 </Link>
               </MenuItem>
               <MenuItem>
+                <Link
+                  to=""
+                  style={{ textDecoration: "none" }}
+                  onClick={handlelogout}
+                >
+                  Profile
+                </Link>
+              </MenuItem>
+              <MenuItem>
+                <Link
+                  to=""
+                  style={{ textDecoration: "none" }}
+                  onClick={handlelogout}
+                >
+                  Fake
+                </Link>
+              </MenuItem>
+              <MenuItem>
                 <Link to="/settings" style={{ textDecoration: "none" }}>
                   Settings
                 </Link>

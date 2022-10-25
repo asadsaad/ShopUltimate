@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
 import "./App.css";
 import Signup from "./components/user/signup";
 import Verify from "./components/user/verify";
@@ -28,6 +28,11 @@ import OrderDetails from "./components/order/OrderDetails";
 import Register from "./components/user/signup";
 import Login from "./components/user/login";
 import Productlisting from "./components/product/allproductslist";
+import AddAddress from "./components/userdashboard/AddAddress";
+import Support from "./components/userdashboard/support";
+import SupportTicket from "./components/userdashboard/supportTicket";
+import Whitelist from "./components/userdashboard/whitelist";
+import LandingPage from "./components/user/landingPage";
 
 if (localStorage.token) {
   setauthtoken(localStorage.token);
@@ -46,6 +51,8 @@ class App extends Component {
         <div>
           <Alert open={true} />
           <Routes>
+          <Route path="test" element={<LandingPage />} />
+
             <Route path="register" element={<Register />} />
             <Route path="login" element={<Login />} />
             <Route path="products" element={<Productlisting />} />
