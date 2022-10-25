@@ -33,7 +33,7 @@ import Support from "./components/userdashboard/support";
 import SupportTicket from "./components/userdashboard/supportTicket";
 import Whitelist from "./components/userdashboard/whitelist";
 import LandingPage from "./components/user/landingPage";
-
+import AddressList from "./components/userdashboard/AddressList";
 if (localStorage.token) {
   setauthtoken(localStorage.token);
 }
@@ -51,7 +51,8 @@ class App extends Component {
         <div>
           <Alert open={true} />
           <Routes>
-          <Route path="test" element={<LandingPage />} />
+            <Route path="test" element={<AddAddress />} />
+            <Route path="test1" element={<AddressList />} />
 
             <Route path="register" element={<Register />} />
             <Route path="login" element={<Login />} />
