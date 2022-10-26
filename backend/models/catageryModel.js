@@ -1,14 +1,27 @@
 const mongoose = require("mongoose");
 
 const catageryModel = new mongoose.Schema({
-  catagery: {
+  catagery_name: {
     type: String,
     require: true,
+    unique: true,
   },
-  subcatagery: [],
+  categoryImage: { type: String },
+  parentId: {
+    type: String,
+  },
   createdat: {
     type: Date,
     default: Date.now,
+  },
+  updatesat: {
+    type: Date,
+    default: Date.now,
+  },
+  created_by: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
   },
 });
 

@@ -5,7 +5,7 @@ import alertReducer from "./alertreducer";
 import cart from "./cartreducer";
 import shop from "./shopreducer";
 import catageries from "./catageryreducer";
-import shipping from "./shippingreducer";
+import address from "./addressreducer";
 import order from "./orderreducer";
 import productimagesreducer from "./productimagesreducer";
 export default combineReducers({
@@ -15,7 +15,7 @@ export default combineReducers({
   cart: cart,
   shop: shop,
   catageries: catageries,
-  shipping: shipping,
+  address: address,
   order: order,
   productimages: productimagesreducer,
 });

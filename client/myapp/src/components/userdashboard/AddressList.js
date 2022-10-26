@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import MenuIcon from "@mui/icons-material/Menu";
-
 import {
   Container,
   Box,
@@ -18,10 +17,18 @@ import {
   IconButton,
 } from "@mui/material";
 import Nav from "../layouts/nav";
+import { useDispatch, useSelector } from "react-redux";
+
 import UserSideBar from "./userSideBar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { deleteaddress, getaddress } from "../../redux/actions/addressactions";
+import Updateaddress from "./updateaddress";
 
 const AddressList = () => {
+  const [open, setOpen] = useState(false);
+  const [currentaddress, setcurrentaddress] = useState(null);
+
+  const dispatch = useDispatch();
   const bar = document.getElementById("sidebar");
   const handleSlide = () => {
     if (bar.style.left === "-60%") {
@@ -30,7 +37,15 @@ const AddressList = () => {
       bar.style.left = "-60%";
     }
   };
+  useEffect(() => {
+    dispatch(getaddress());
+  }, []);
 
+  const address_ = useSelector((state) => state.address.addressess);
+  const handleupdate = async (address) => {
+    setcurrentaddress(address);
+    setOpen(true);
+  };
   return (
     <>
       <Nav />
@@ -71,7 +86,57 @@ const AddressList = () => {
             </Box>
           </Box>
           <Box mt="20px">
-            <Paper sx={{ mt: "20px", p: "8px 16px", borderRadius: "5px" }}>
+            {address_?.length > 0
+              ? address_.map((address) => (
+                  <Paper
+                    sx={{ mt: "20px", p: "8px 16px", borderRadius: "5px" }}
+                  >
+                    <Grid
+                      container
+                      sx={{
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                      spacing={2}
+                    >
+                      <Grid item xs={2}>
+                        <Typography>{address?.user?.username}</Typography>
+                      </Grid>
+                      <Grid item xs={5}>
+                        <Typography noWrap>
+                          {address?.streetaddress} {", "}
+                          {address?.city} {", "}
+                          {address?.country}
+                        </Typography>
+                      </Grid>
+
+                      <Grid item xs={2}>
+                        <Typography>{address?.phone}</Typography>
+                      </Grid>
+
+                      <Grid item xs={2}>
+                        <Typography>
+                          <IconButton
+                            onClick={() => {
+                              handleupdate(address);
+                            }}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                          <IconButton
+                            onClick={() =>
+                              dispatch(deleteaddress(address?._id))
+                            }
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Typography>
+                      </Grid>
+                    </Grid>
+                  </Paper>
+                ))
+              : "No address found"}
+            {/* <Paper sx={{ mt: "20px", p: "8px 16px", borderRadius: "5px" }}>
               <Grid
                 container
                 sx={{ alignItems: "center", justifyContent: "space-between" }}
@@ -101,10 +166,15 @@ const AddressList = () => {
                   </Typography>
                 </Grid>
               </Grid>
-            </Paper>
+            </Paper> */}
           </Box>
         </Box>
       </Box>
+      <Updateaddress
+        open={open}
+        setOpen={setOpen}
+        currentaddress={currentaddress}
+      />
     </>
   );
 };

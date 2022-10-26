@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const shipping = mongoose.Schema({
-  user: { type: mongoose.Types.ObjectId, require: true },
+const deliveryaddress = mongoose.Schema({
+  user: { type: mongoose.Types.ObjectId, ref: "Users", require: true },
   email: { type: String, required: true },
   phone: { type: Number, required: true },
   country: { type: String, required: true },
@@ -10,6 +10,6 @@ const shipping = mongoose.Schema({
   streetaddress: { type: String, required: true },
 });
 
-const Shipping = mongoose.model("Shipping", shipping);
+const DeliveryAddress = mongoose.model("DeliveryAddress", deliveryaddress);
 
-module.exports = Shipping;
+module.exports = DeliveryAddress;

@@ -13,7 +13,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
-import { addshipping, getshipping } from "../../redux/actions/shippingactions";
+// import { addshipping, getshipping } from "../../redux/actions/shippingactions";
 
 const Input = styled("input")({
   display: "none",
@@ -30,25 +30,25 @@ export default function Shipping(props) {
   const loading = useSelector((state) => state.shipping.loading);
 
   //   const error = useSelector((state) => state.errors);
-  useEffect(() => {
-    dispatch(getshipping());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getshipping());
+  // }, []);
 
-  const submitform = (event) => {
-    event.preventDefault();
-    const formData = { email, phone, country, city, postalcode, streetaddress };
-    dispatch(addshipping(formData));
-    if (!loading) {
-      props.next();
-    }
-  };
-  if (loading) {
-    return "loading";
-  }
+  // const submitform = (event) => {
+  //   event.preventDefault();
+  //   const formData = { email, phone, country, city, postalcode, streetaddress };
+  //   dispatch(addshipping(formData));
+  //   if (!loading) {
+  //     props.next();
+  //   }
+  // };
+  // if (loading) {
+  //   return "loading";
+  // }
   return (
     <div>
-      <Container>
-        <Typography variant="h4" sx={{ mt: 5 }}>
+      {/* <Container> */}
+      {/* <Typography variant="h4" sx={{ mt: 5 }}>
           Shipping Detailss
         </Typography>
         <Box
@@ -143,7 +143,7 @@ export default function Shipping(props) {
             Save changes
           </Button>
         </Box>
-      </Container>
+      </Container> */}
     </div>
   );
 }

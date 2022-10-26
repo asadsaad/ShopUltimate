@@ -6,7 +6,7 @@ const userRoutes = require("./Routes/userRoutes");
 const productRoutes = require("./Routes/productRoutes");
 const cartRoutes = require("./Routes/cartRoutes");
 const shopRoutes = require("./Routes/shopRoutes");
-const shippingRoutes = require("./Routes/shippingRoutes");
+const AddressRoutes = require("./Routes/DeliveryAddressRoutes");
 
 const catageryRoutes = require("./Routes/catageryRoutes");
 const orderRoutes = require("./Routes/orderRoutes");
@@ -22,7 +22,7 @@ app.use("/shop", shopRoutes);
 app.use("/product", productRoutes);
 app.use("/cart", cartRoutes);
 app.use("/catagery", catageryRoutes);
-app.use("/shipping", shippingRoutes);
+app.use("/address", AddressRoutes);
 app.use("/order", orderRoutes);
 
 mongoose
