@@ -15,9 +15,11 @@ import {
 import axios from "axios";
 import { setAlert } from "./alertactions";
 
-export const getallshops = (page) => async (dispatch) => {
+export const getallshops = (data) => async (dispatch) => {
   try {
-    const res = await axios.get(`http://localhost:5000/shop?page=${page}`);
+    const res = await axios.post("http://localhost:5000/shop", {
+      data: data && data,
+    });
     // console.log(res.data.data)
     dispatch({
       type: GET_ALL_SHOPS,

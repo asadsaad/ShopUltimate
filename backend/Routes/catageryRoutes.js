@@ -8,7 +8,7 @@ const {
 } = require("../Controllers/catageryController");
 const { auth } = require("../middleware/auth");
 
-router.post("/addcatagery", addcatagery);
+router.post("/addcatagery", auth, addcatagery);
 router.get("/", getallcatageries);
 router.get("/list", getallcatagerieslist);
 

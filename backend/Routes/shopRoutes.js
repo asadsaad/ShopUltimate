@@ -11,7 +11,7 @@ const {
 } = require("../Controllers/shopController");
 const { auth } = require("../middleware/auth");
 
-router.get("/", getallshops);
+router.post("/", getallshops);
 router.get("/usershops", auth, getusershops);
 
 router.get("/:id", getsingleshop);

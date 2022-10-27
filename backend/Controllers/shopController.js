@@ -3,14 +3,29 @@ const Shop = require("../models/shopModel");
 
 exports.getallshops = async (req, res) => {
   try {
-    const page = req.query.page;
-    const limit = 9;
-    const startindex = (page - 1) * limit;
-    const lastindex = page * limit;
-    const shops = await Shop.find()
-      .limit(limit)
-      .skip(startindex)
-      .populate(["products", "owner"]);
+    let shops;
+
+    console.log(req.body);
+    // const page = req.query.page;
+    // const limit = 9;
+    // const startindex = (page - 1) * limit;
+    // const lastindex = page * limit;
+
+    if (req.body.data) {
+      shops = await Shop.find({
+        $or: [
+          { shopname: req.body.data.shopname },
+          { catagery: req.body.data.catagery },
+          { country: req.body.data.country },
+        ],
+      }).populate(["products", "owner"]);
+      console.log(shops);
+    } else {
+      shops = await Shop.find().populate(["products", "owner"]);
+    }
+
+    // .limit(limit)
+    // .skip(startindex)
     // console.log(shops);
     if (shops) {
       return res.status(200).json({ success: true, data: shops });
@@ -129,7 +144,6 @@ exports.addshop = async (req, res) => {
 };
 exports.updateshop = async (req, res) => {
   try {
-    console.log(req.body);
     const {
       shopname,
       aboutShop,

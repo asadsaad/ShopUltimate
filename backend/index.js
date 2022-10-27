@@ -10,6 +10,7 @@ const AddressRoutes = require("./Routes/DeliveryAddressRoutes");
 
 const catageryRoutes = require("./Routes/catageryRoutes");
 const orderRoutes = require("./Routes/orderRoutes");
+const brandRoutes = require("./Routes/brandsRoutes");
 
 const app = express();
 
@@ -24,6 +25,8 @@ app.use("/cart", cartRoutes);
 app.use("/catagery", catageryRoutes);
 app.use("/address", AddressRoutes);
 app.use("/order", orderRoutes);
+app.use("/brand", brandRoutes);
+// app.use("/order", orderRoutes);
 
 mongoose
   .connect("mongodb://0.0.0.0:27017/appdb", { useNewUrlParser: true })

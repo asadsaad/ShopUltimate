@@ -14,6 +14,7 @@ import {
   TextField,
   Button,
   Typography,
+  Paper,
   ImageList,
   ImageListItem,
   IconButton,
@@ -81,7 +82,7 @@ export default function Addshop(props) {
   const dispatch = useDispatch();
   const auth = useSelector((state) => state.auth);
   const isLoading = useSelector((state) => state.shop.isLoading);
-  const catageries = useSelector((state) => state.catageries.catageries);
+  const catageries = useSelector((state) => state.catageries.catagerieslist);
   const editor = useRef(null);
 
   const alerts = useSelector((state) => state.alerts);
@@ -232,288 +233,240 @@ export default function Addshop(props) {
   };
   return (
     <>
-      <Dialog
+      <Paper sx={{ p: 3 }}>
+        {/* <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={props.shopaddopen}
         sx={{}}
         fullScreen
         TransitionComponent={Transition}
-      >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-          Create New Shop
-        </DialogTitle>
-        <IconButton
-          aria-label="close"
-          onClick={() => props.setshopaddOpen(false)}
-          sx={{
-            position: "absolute",
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <DialogContent dividers>
-          <Box component="form" method="post" onSubmit={submitform}>
-            {/* <Typography component="h5" variant="h5" sx={{ mt: 1, mb: 1 }}>
+      > */}
+
+        <Box component="form" method="post" onSubmit={submitform}>
+          {/* <Typography component="h5" variant="h5" sx={{ mt: 1, mb: 1 }}>
               Shop Details
             </Typography> */}
-            <InputLabel sx={{ color: "black" }}>Store Name</InputLabel>
-            <TextField
-              variant="outlined"
-              fullWidth
-              size="small"
-              style={{ marginBottom: "1em" }}
-              type="text"
-              placeholder="e.g My Brand New Store..."
-              value={shopname}
-              onChange={(e) => setshopname(e.target.value)}
-              name="shopname"
-            />
-            <InputLabel sx={{ color: "black", mb: 1 }}>
-              Store Description
-            </InputLabel>
+          <InputLabel sx={{ color: "black" }}>Store Name</InputLabel>
+          <TextField
+            variant="outlined"
+            fullWidth
+            size="small"
+            style={{ marginBottom: "1em" }}
+            type="text"
+            placeholder="e.g My Brand New Store..."
+            value={shopname}
+            onChange={(e) => setshopname(e.target.value)}
+            name="shopname"
+          />
+          <InputLabel sx={{ color: "black", mb: 1 }}>
+            Store Description
+          </InputLabel>
 
-            <JoditEditor
-              ref={editor}
-              value={aboutShop}
-              config={config}
-              tabIndex={2} // tabIndex of textarea
-              onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-              // preferred to use only this option to update the content for performance reasons
-              onChange={(newContent) => {
-                setContent(newContent);
+          <JoditEditor
+            ref={editor}
+            value={aboutShop}
+            config={config}
+            tabIndex={2} // tabIndex of textarea
+            onBlur={(newContent) => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+            // preferred to use only this option to update the content for performance reasons
+            onChange={(newContent) => {
+              setContent(newContent);
+            }}
+          />
+          <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
+            Catagery
+          </InputLabel>
+
+          <Autocomplete
+            id="free-solo-demo"
+            options={catageries && catageries}
+            getOptionLabel={(option) => option.catagery_name}
+            onChange={(event, value) => setcatagery(value?.catagery_name)}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                size="small"
+                placeholder="Search By Catageries....."
+              />
+            )}
+          />
+
+          <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
+            Store Type
+          </InputLabel>
+          <FormControl size="small" sx={{ width: "100%" }}>
+            <Select
+              labelId="demo-simple-select-helper-label"
+              id="demo-simple-select-helper"
+              defaultValue=""
+              value={shoptype}
+              onChange={(e) => {
+                setshoptype(e.target.value);
               }}
-            />
-            <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
-              Catagery
-            </InputLabel>
-            <TextField
-              variant="outlined"
-              fullWidth
-              size="small"
-              style={{ marginBottom: "1em" }}
-              type="text"
-              placeholder="Catagery"
-              value={catagery}
-              onChange={(e) => setcatagery(e.target.value)}
-              name="catagery"
-            />
-            <InputLabel sx={{ color: "black" }}>Sub Catagery</InputLabel>
-            <TextField
-              variant="outlined"
-              fullWidth
-              size="small"
-              style={{ marginBottom: "1em" }}
-              type="text"
-              placeholder="Sub Catagery"
-              value={subcatagery}
-              onChange={(e) => setsubcatagery(e.target.value)}
-              name="subcatagery"
-            />
-            <InputLabel sx={{ color: "black", mb: 1 }}>Store Brands</InputLabel>
-            <Autocomplete
-              multiple
-              id="tags-filled"
-              options={[]}
-              freeSolo={true}
-              onChange={(event, value) => setbrand(value)}
-              // value={brand}
-              renderTags={(value, getTagProps) =>
-                value.map((option, index) => (
-                  <Chip
-                    variant="outlined"
-                    label={option}
-                    {...getTagProps({ index })}
-                  />
-                ))
-              }
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  variant="outlined"
-                  size="small"
-                  placeholder="e.g red,blue,greed"
-                />
-              )}
-            />
-            <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
-              Store Type
-            </InputLabel>
-            <FormControl size="small" sx={{ width: "100%" }}>
-              <Select
-                labelId="demo-simple-select-helper-label"
-                id="demo-simple-select-helper"
-                defaultValue=""
-                value={shoptype}
-                onChange={(e) => {
-                  setshoptype(e.target.value);
-                }}
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              <MenuItem value="Retail">Retail</MenuItem>
+              <MenuItem value="Whole Sale">Whole Sale</MenuItem>
+              <MenuItem value="Service">Service</MenuItem>
+            </Select>
+          </FormControl>
+
+          <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
+            Store Logo
+          </InputLabel>
+          <Typography align="center">
+            <label htmlFor="icon-button-file">
+              <Input
+                accept="image/*"
+                id="icon-button-file"
+                type="file"
+                onChange={handlestorelogoupload}
+              />
+              <IconButton
+                color="primary"
+                aria-label="upload picture"
+                component="span"
+                align="center"
+                variant="contained"
+                size="large"
               >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value="Retail">Retail</MenuItem>
-                <MenuItem value="Whole Sale">Whole Sale</MenuItem>
-                <MenuItem value="Service">Service</MenuItem>
-              </Select>
-            </FormControl>
-
-            <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
-              Store Logo
-            </InputLabel>
-            <Typography align="center">
-              <label htmlFor="icon-button-file">
-                <Input
-                  accept="image/*"
-                  id="icon-button-file"
-                  type="file"
-                  onChange={handlestorelogoupload}
-                />
-                <IconButton
-                  color="primary"
-                  aria-label="upload picture"
-                  component="span"
-                  align="center"
-                  variant="contained"
-                  size="large"
+                <Avatar
+                  sx={{
+                    width: 150,
+                    height: 150,
+                    bgcolor: shoplogoupload && "green",
+                  }}
+                  src={
+                    !shoplogoupload && storeimage[0]
+                      ? URL.createObjectURL(storeimage[0])
+                      : ""
+                  }
                 >
-                  <Avatar
-                    sx={{
-                      width: 150,
-                      height: 150,
-                      bgcolor: shoplogoupload && "green",
-                    }}
-                    src={
-                      !shoplogoupload && storeimage[0]
-                        ? URL.createObjectURL(storeimage[0])
-                        : ""
-                    }
-                  >
-                    {shoplogoupload ? (
-                      <Box>
-                        <CircularProgress sx={{ color: "white" }} />
-                        <Typography>Uploading {progress}%</Typography>
-                      </Box>
-                    ) : (
-                      <PhotoCamera />
-                    )}
-                  </Avatar>
-                </IconButton>
-              </label>
-            </Typography>
-            {/* <ProgressList files={storeimage} setstorelogo={setstorelogo} /> */}
+                  {shoplogoupload ? (
+                    <Box>
+                      <CircularProgress sx={{ color: "white" }} />
+                      <Typography>Uploading {progress}%</Typography>
+                    </Box>
+                  ) : (
+                    <PhotoCamera />
+                  )}
+                </Avatar>
+              </IconButton>
+            </label>
+          </Typography>
+          {/* <ProgressList files={storeimage} setstorelogo={setstorelogo} /> */}
 
-            <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
-              Store Banner Image
-            </InputLabel>
-            <Typography align="center" sx={{ width: "100%" }}>
-              <label htmlFor="icon-button-file1">
-                <Input
-                  accept="image/*"
-                  id="icon-button-file1"
-                  type="file"
-                  onChange={handlestorebannerupload}
-                />
-                <IconButton
-                  sx={{ width: "100%" }}
-                  color="primary"
-                  aria-label="upload banner"
-                  component="span"
-                  align="center"
-                  variant="contained"
-                  size="large"
+          <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
+            Store Banner Image
+          </InputLabel>
+          <Typography align="center" sx={{ width: "100%" }}>
+            <label htmlFor="icon-button-file1">
+              <Input
+                accept="image/*"
+                id="icon-button-file1"
+                type="file"
+                onChange={handlestorebannerupload}
+              />
+              <IconButton
+                sx={{ width: "100%" }}
+                color="primary"
+                aria-label="upload banner"
+                component="span"
+                align="center"
+                variant="contained"
+                size="large"
+              >
+                <Avatar
+                  sx={{
+                    width: "100%",
+                    height: "300px",
+                    bgcolor: shopbannerupload && "green",
+                  }}
+                  variant="rounded"
+                  src={
+                    !shopbannerupload && storebannerimage[0]
+                      ? URL.createObjectURL(storebannerimage[0])
+                      : ""
+                  }
                 >
-                  <Avatar
-                    sx={{
-                      width: "100%",
-                      height: "300px",
-                      bgcolor: shopbannerupload && "green",
-                    }}
-                    variant="rounded"
-                    src={
-                      !shopbannerupload && storebannerimage[0]
-                        ? URL.createObjectURL(storebannerimage[0])
-                        : ""
-                    }
-                  >
-                    {shopbannerupload ? (
-                      <Box>
-                        <CircularProgress sx={{ color: "white" }} />
-                        <Typography>Uploading {bannerprogress}%</Typography>
-                      </Box>
-                    ) : (
-                      <PhotoCamera />
-                    )}
-                  </Avatar>
-                </IconButton>
-              </label>
-            </Typography>
+                  {shopbannerupload ? (
+                    <Box>
+                      <CircularProgress sx={{ color: "white" }} />
+                      <Typography>Uploading {bannerprogress}%</Typography>
+                    </Box>
+                  ) : (
+                    <PhotoCamera />
+                  )}
+                </Avatar>
+              </IconButton>
+            </label>
+          </Typography>
 
-            <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
-              Store Location (Country)
-            </InputLabel>
-            <TextField
-              variant="outlined"
-              fullWidth
-              size="small"
-              style={{ marginBottom: "1em" }}
-              type="text"
-              placeholder="e.g United State"
-              value={shopcountry}
-              onChange={(e) => setshopcountry(e.target.value)}
-              name="shopcountry"
-            />
-            <InputLabel sx={{ color: "black", mb: 1 }}>
-              Store Location (City)
-            </InputLabel>
-            <TextField
-              variant="outlined"
-              fullWidth
-              size="small"
-              style={{ marginBottom: "1em" }}
-              type="text"
-              placeholder="e.g New Your"
-              value={shopcity}
-              onChange={(e) => setshopcity(e.target.value)}
-              name="shopcity"
-            />
-            <InputLabel sx={{ color: "black", mb: 1 }}>
-              Store Location (Street Address)
-            </InputLabel>
+          <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
+            Store Location (Country)
+          </InputLabel>
+          <TextField
+            variant="outlined"
+            fullWidth
+            size="small"
+            style={{ marginBottom: "1em" }}
+            type="text"
+            placeholder="e.g United State"
+            value={shopcountry}
+            onChange={(e) => setshopcountry(e.target.value)}
+            name="shopcountry"
+          />
+          <InputLabel sx={{ color: "black", mb: 1 }}>
+            Store Location (City)
+          </InputLabel>
+          <TextField
+            variant="outlined"
+            fullWidth
+            size="small"
+            style={{ marginBottom: "1em" }}
+            type="text"
+            placeholder="e.g New Your"
+            value={shopcity}
+            onChange={(e) => setshopcity(e.target.value)}
+            name="shopcity"
+          />
+          <InputLabel sx={{ color: "black", mb: 1 }}>
+            Store Location (Street Address)
+          </InputLabel>
 
-            <TextField
-              variant="outlined"
-              fullWidth
-              size="small"
-              style={{ marginBottom: "1em" }}
-              type="text"
-              placeholder="e.g Shop no 12 ......."
-              value={shopstreetaddress}
-              onChange={(e) => setshopstreetaddress(e.target.value)}
-              name="streetaddress"
-            />
-            <InputLabel sx={{ color: "black", mb: 1 }}>Store Phone</InputLabel>
-            <TextField
-              variant="outlined"
-              fullWidth
-              size="small"
-              style={{ marginBottom: "1em" }}
-              type="text"
-              placeholder="+1 345678181..."
-              value={shopphone}
-              onChange={(e) => setshopphone(e.target.value)}
-              name="shopphone"
-            />
-            <Button variant="contained" color="primary" type="submit" fullWidth>
-              Create Shop
-            </Button>
-          </Box>
-        </DialogContent>
-      </Dialog>
-      <Loading isloading={isLoading} />
+          <TextField
+            variant="outlined"
+            fullWidth
+            size="small"
+            style={{ marginBottom: "1em" }}
+            type="text"
+            placeholder="e.g Shop no 12 ......."
+            value={shopstreetaddress}
+            onChange={(e) => setshopstreetaddress(e.target.value)}
+            name="streetaddress"
+          />
+          <InputLabel sx={{ color: "black", mb: 1 }}>Store Phone</InputLabel>
+          <TextField
+            variant="outlined"
+            fullWidth
+            size="small"
+            style={{ marginBottom: "1em" }}
+            type="text"
+            placeholder="+1 345678181..."
+            value={shopphone}
+            onChange={(e) => setshopphone(e.target.value)}
+            name="shopphone"
+          />
+          <Button variant="contained" color="primary" type="submit" fullWidth>
+            Create Shop
+          </Button>
+        </Box>
+        {/* </Dialog> */}
+        <Loading isloading={isLoading} />
+      </Paper>
     </>
   );
 }

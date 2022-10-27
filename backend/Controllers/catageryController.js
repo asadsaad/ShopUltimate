@@ -12,8 +12,7 @@ function createCategories(categories, parentId = null) {
   for (let cate of category) {
     categoryList.push({
       _id: cate._id,
-      name: cate.name,
-      slug: cate.slug,
+      name: cate.catagery_name,
       parentId: cate.parentId,
       type: cate.type,
       children: createCategories(categories, cate._id),
@@ -25,26 +24,24 @@ function createCategories(categories, parentId = null) {
 
 exports.addcatagery = async (req, res) => {
   try {
-    if (!req.body.catagery) {
+    if (!req.body.catagery_name) {
       return res
         .status(400)
         .json({ success: false, message: "Catagery Name is required" });
     }
-    const isunique = Catagery.findOne({ catagery_name: req.body.catagery });
+    const isunique = await Catagery.findOne({
+      catagery_name: req.body.catagery_name,
+    });
 
-    if (!req.body.subcatagery) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Subcatagery is required" });
-    }
     if (isunique) {
+      console.log(isunique);
       return res
         .status(400)
         .json({ success: false, message: "Catagery Already Exists" });
     }
     const categoryObj = {
       catagery_name: req.body.catagery_name,
-      created_byy: req.user,
+      created_by: req.user,
     };
 
     if (req.body.categoryImage) {
@@ -55,7 +52,7 @@ exports.addcatagery = async (req, res) => {
       categoryObj.parentId = req.body.parentId;
     }
 
-    const cat = await new Category(categoryObj);
+    const cat = await new Catagery(categoryObj);
     const catageries = await cat.save();
     return res.status(200).json({
       success: true,
@@ -63,7 +60,7 @@ exports.addcatagery = async (req, res) => {
       message: "Catagery Added Successfully",
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
 

@@ -7,6 +7,13 @@ import {
   NotificationsActive,
   PeopleAlt,
 } from "@mui/icons-material";
+import Collapse from "@mui/material/Collapse";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import DraftsIcon from "@mui/icons-material/Drafts";
+import SendIcon from "@mui/icons-material/Send";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import StarBorder from "@mui/icons-material/StarBorder";
 import {
   Avatar,
   Box,
@@ -29,6 +36,9 @@ import Addshop from "../shop/createshop";
 // import { useValue } from "../../context/ContextProvider";
 import Shops from "../shop/shops";
 import Products from "../user/products";
+import Brands from "./brands";
+import Catagery from "./catagery";
+
 // import Requests from "./requests/Requests";
 // import Rooms from "./rooms/Rooms";
 // import Users from "./users/Users";
@@ -89,6 +99,7 @@ const SideList = ({ open, setOpen }) => {
   //   } = useValue();
 
   const [selectedLink, setSelectedLink] = useState("");
+  const [openl, setopenl] = useState(false);
 
   const list = useMemo(
     () => [
@@ -116,6 +127,25 @@ const SideList = ({ open, setOpen }) => {
         link: "orders",
         component: <Orders {...{ setSelectedLink, link: "orders" }} />,
       },
+      {
+        title: "Categeries",
+        icon: <KingBed />,
+        link: "catagery",
+        component: <Catagery {...{ setSelectedLink, link: "catagery" }} />,
+      },
+      {
+        title: "Brand",
+        icon: <KingBed />,
+        link: "brands",
+        component: <Brands {...{ setSelectedLink, link: "brands" }} />,
+      },
+      {
+        title: "Create Shop",
+        icon: <KingBed />,
+        link: "create-shop",
+        component: <Addshop {...{ setSelectedLink, link: "create-shop" }} />,
+      },
+
       //   {
       //     title: "Messages",
       //     icon: <MarkChatUnread />,
@@ -132,6 +162,9 @@ const SideList = ({ open, setOpen }) => {
   //     dispatch({ type: "UPDATE_USER", payload: null });
   //     navigate("/");
   //   };
+  const handleClick = () => {
+    setOpen(!open);
+  };
   return (
     <>
       <Drawer variant="permanent" open={open}>
@@ -170,6 +203,7 @@ const SideList = ({ open, setOpen }) => {
             </ListItem>
           ))}
         </List>
+
         <Divider />
         <Box sx={{ mx: "auto", mt: 3, mb: 1 }}>
           {/* <Tooltip title={currentUser?.name || ""}>

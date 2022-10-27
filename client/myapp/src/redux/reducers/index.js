@@ -6,8 +6,11 @@ import cart from "./cartreducer";
 import shop from "./shopreducer";
 import catageries from "./catageryreducer";
 import address from "./addressreducer";
+import brands from "./brandreducers";
+
 import order from "./orderreducer";
 import productimagesreducer from "./productimagesreducer";
+
 export default combineReducers({
   auth: auth,
   products: product,
@@ -18,4 +21,5 @@ export default combineReducers({
   address: address,
   order: order,
   productimages: productimagesreducer,
+  brands: brands,
 });

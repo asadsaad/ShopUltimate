@@ -18,7 +18,10 @@ import { getproducts } from "./redux/actions/productactions";
 import { getcart } from "./redux/actions/cartactions";
 import Cart from "./components/cart/cartsteps";
 import CartItemlisting from "./components/cart/cartItemlisting";
-import { getcatageries } from "./redux/actions/catageryactions";
+import {
+  getcatageries,
+  getcatagerieslist,
+} from "./redux/actions/catageryactions";
 import ShopHome from "./components/shop/mainshops";
 import ShopView from "./components/shop/shopview";
 import ProductView from "./components/product/productview";
@@ -34,6 +37,7 @@ import SupportTicket from "./components/userdashboard/supportTicket";
 import Whitelist from "./components/userdashboard/whitelist";
 import LandingPage from "./components/user/landingPage";
 import AddressList from "./components/userdashboard/AddressList";
+
 if (localStorage.token) {
   setauthtoken(localStorage.token);
 }
@@ -43,6 +47,7 @@ class App extends Component {
     this.props.loadUser();
     this.props.getcart();
     this.props.getcatageries();
+    this.props.getcatagerieslist();
   }
 
   render() {
@@ -104,4 +109,5 @@ export default connect(mapStateToProps, {
   getproducts,
   getcart,
   getcatageries,
+  getcatagerieslist,
 })(App);
