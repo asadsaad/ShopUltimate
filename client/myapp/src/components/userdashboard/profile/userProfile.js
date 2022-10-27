@@ -17,10 +17,10 @@ import {
     Grid,
     TextField,
 } from "@mui/material";
-import Nav from "../layouts/nav";
-import { setAlert } from "../../redux/actions/alertactions";
+import { setAlert } from "../../../redux/actions/alertactions";
 import { useDispatch } from "react-redux";
-import UserSidebar from "../layouts/userSideBar";
+import UserSidebar from "../userSideBar";
+import Nav from "../../layouts/nav";
 
 const UserProfile = () => {
     const bar = document.getElementById("sidebar");

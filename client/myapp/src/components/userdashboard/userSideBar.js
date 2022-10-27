@@ -80,7 +80,7 @@ const useStyles = makeStyles({
                 
             }
         >
-            <NavLink to="/orders" className={classes.a}>
+            <NavLink to="/userorders" className={classes.a}>
                 <ListItemButton>
                 <ListItemIcon>
                     <ShoppingBagOutlinedIcon />
@@ -89,7 +89,7 @@ const useStyles = makeStyles({
                 <Typography>12</Typography>
             </ListItemButton>
             </NavLink >
-            <NavLink to="/whitelist" className={classes.a}>
+            <NavLink to="/userwhitelist" className={classes.a}>
             <ListItemButton>
                 <ListItemIcon>
                     <FavoriteBorderOutlinedIcon />
@@ -98,7 +98,7 @@ const useStyles = makeStyles({
                 <Typography>12</Typography>
             </ListItemButton>
             </NavLink>
-            <NavLink to="support" className={classes.a}>
+            <NavLink to="/usersupporttickets" className={classes.a}>
             <ListItemButton>
                 <ListItemIcon>
                     <SupportAgentOutlinedIcon />
@@ -119,7 +119,7 @@ const useStyles = makeStyles({
                 
             }
         >
-            <NavLink to="profile" className={classes.a}>
+            <NavLink to="/userprofile" className={classes.a}>
             <ListItemButton>
                 <ListItemIcon>
                     <PersonOutlinedIcon />
@@ -128,7 +128,7 @@ const useStyles = makeStyles({
                 <Typography>12</Typography>
             </ListItemButton>
             </NavLink>
-            <NavLink to="address" className={classes.a}>
+            <NavLink to="/useraddresslist" className={classes.a}>
             <ListItemButton>
                 <ListItemIcon>
                     <LocationOnOutlinedIcon />
@@ -137,7 +137,7 @@ const useStyles = makeStyles({
                 <Typography>12</Typography>
             </ListItemButton>
             </NavLink>
-            <NavLink to="payment" className={classes.a}>
+            <NavLink to="/userpayment" className={classes.a}>
             <ListItemButton>
                 <ListItemIcon>
                     <CreditCardOutlinedIcon />

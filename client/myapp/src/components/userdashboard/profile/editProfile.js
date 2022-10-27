@@ -20,11 +20,11 @@ import {
     Grid,
     TextField,
 } from "@mui/material";
-import Nav from "../layouts/nav";
-import { setAlert } from "../../redux/actions/alertactions";
+import Nav from "../../layouts/nav";
+import { setAlert } from "../../../redux/actions/alertactions";
 import { useDispatch } from "react-redux";
+import UserSideBar from "../userSideBar";
 
-import UserSidebar from "../layouts/userSideBar";
 
 const EditProfile = () => {
 
@@ -80,7 +80,7 @@ const EditProfile = () => {
             <Nav />
             <Box sx={{ display: "flex" }}>
                 <Box sx={{ margin: {md:"25px 20px 25px 40px"}, display: { xs: "none", md: "block" } }} >
-                    <UserSidebar id="sidebar"/>
+                    <UserSideBar id="sidebar"/>
                 </Box>
                 <Box sx={{ width: "100%", margin: "25px 40px 25px 20px" }}>
                     <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>

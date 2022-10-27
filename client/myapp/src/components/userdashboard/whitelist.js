@@ -103,7 +103,9 @@ const Whitelist = () => {
 
                     </Grid>
 
-
+                    <Box textAlign="center">
+                        <Button variant="contained" color="error" > Load more</Button>
+                    </Box>
                 </Box>
             </Box>
         </>

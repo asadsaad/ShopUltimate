@@ -4,6 +4,8 @@ import { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
+import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
+
 import {
   Container,
   Box,
@@ -16,23 +18,21 @@ import {
   Grid,
   TextField,
 } from "@mui/material";
-import Nav from "../layouts/nav";
-import { setAlert } from "../../redux/actions/alertactions";
+import Nav from "../../layouts/nav";
+import { setAlert } from "../../../redux/actions/alertactions";
 import { useDispatch, useSelector } from "react-redux";
-import UserSideBar from "./userSideBar";
-import { addaddress } from "../../redux/actions/addressactions";
-import { useNavigate } from "react-router-dom";
+import UserSideBar from "../userSideBar";
+import { addaddress } from "../../../redux/actions/addressactions";
+import { Link, useNavigate } from "react-router-dom";
+import { SimCardDownloadTwoTone } from "@mui/icons-material";
 
-const AddAddress = () => {
+const AddMethod = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [email, setemail] = useState();
-  const [phone, setphone] = useState();
-  const [country, setcountry] = useState();
-  const [city, setcity] = useState();
-  const [postalcode, setpostalcode] = useState();
-  const [streetaddress, setstreetaddress] = useState();
+  const [name, setname] = useState();
+  const [cardNo, setcardNo] = useState();
+  const [expiry, setexpiry] = useState();
 
   const loading = useSelector((state) => state.address.loading);
 
@@ -44,10 +44,10 @@ const AddAddress = () => {
       bar.style.left = "-60%";
     }
   };
+
   const submitform = async (event) => {
     event.preventDefault();
-    const formData = { email, phone, country, city, postalcode, streetaddress };
-    dispatch(addaddress(formData, navigate));
+    const formData = { name, cardNo, expiry };
   };
 
   return (
@@ -60,24 +60,27 @@ const AddAddress = () => {
         <Box sx={{ width: "100%", margin: "25px 40px 25px 20px" }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
             <Stack direction="row" spacing={1} alignItems="center">
-              <LocationOnIcon fontSize="large" sx={{ color: "red " }} />
+              <CreditCardOutlinedIcon fontSize="large" sx={{ color: "red " }} />
 
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                Add Address
+                Add Payment Method
               </Typography>
             </Stack>
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex", '& a':{textDecoration : "none"}}}>
+              <Link to="/userpayment" >
               <Button
                 component="h2"
                 sx={{
+                  
                   color: "#f44336",
                   backgroundColor: "#ffebee",
                   textTransform: "capitalize",
                   padding: "10px 20px",
                 }}
               >
-                Back to addresses
+                Back to Payments
               </Button>
+              </Link>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -100,78 +103,46 @@ const AddAddress = () => {
                 <Grid item md={6} xs={12}>
                   <TextField
                     id="outlined-basic"
-                    label="Email"
+                    label="Name on card"
                     variant="outlined"
                     color="error"
                     fullWidth
-                    value={email}
+                    value={name}
                     size="small"
                     // error={nameErr}
-                    onChange={(e) => setemail(e.target.value)}
+                    onChange={(e) => setname(e.target.value)}
                   />
                 </Grid>
                 <Grid item md={6} xs={12}>
                   <TextField
                     id="outlined-basic"
-                    label="Phone"
-                    value={phone}
+                    label="Card Number"
+                    value={cardNo}
                     variant="outlined"
                     color="error"
                     fullWidth
                     size="small"
                     type={Number}
                     //   error={numberErr}
-                    onChange={(e) => setphone(e.target.value)}
+                    onChange={(e) => setcardNo(e.target.value)}
                   />
+                  </Grid>
+                <Grid item md={6} xs={12}>
+
                   <TextField
                     id="outlined-basic"
-                    label="Postal Code"
-                    value={postalcode}
+                    label="Date of issuence"
+                    value={expiry}
                     variant="outlined"
                     color="error"
                     fullWidth
                     size="small"
                     //   type={Number}
                     //   error={numberErr}
-                    onChange={(e) => setpostalcode(e.target.value)}
+                    onChange={(e) => setexpiry(e.target.value)}
                   />
-                  <TextField
-                    id="outlined-basic"
-                    label="City"
-                    value={city}
-                    variant="outlined"
-                    color="error"
-                    fullWidth
-                    size="small"
-                    //   type={Number}
-                    //   error={numberErr}
-                    onChange={(e) => setcity(e.target.value)}
-                  />
-                  <TextField
-                    id="outlined-basic"
-                    label="Countrye"
-                    value={country}
-                    variant="outlined"
-                    color="error"
-                    fullWidth
-                    size="small"
-                    //   type={Number}
-                    //   error={numberErr}
-                    onChange={(e) => setcountry(e.target.value)}
-                  />
-                  <TextField
-                    id="outlined-basic"
-                    label="Strret Address"
-                    value={streetaddress}
-                    variant="outlined"
-                    color="error"
-                    fullWidth
-                    size="small"
-                    //   type={Number}
-                    //   error={numberErr}
-                    onChange={(e) => setstreetaddress(e.target.value)}
-                  />
-                </Grid>
+                  </Grid>
+               
               </Grid>
               <Button
                 type="submit"
@@ -190,4 +161,4 @@ const AddAddress = () => {
   );
 };
 
-export default AddAddress;
+export default AddMethod;

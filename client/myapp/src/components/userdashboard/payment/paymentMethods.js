@@ -18,11 +18,15 @@ import {
     TextField,
     IconButton,
 } from "@mui/material";
-import Nav from '../layouts/nav';
-import UserSideBar from './userSideBar';
+import Nav from '../../layouts/nav';
+import UserSideBar from '../userSideBar';
 import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 const PaymentMethods = () => {
+  const dispatch = useDispatch();
+  const payments_ = useSelector((state) => state.payment.paymentMethods);
+
     const bar = document.getElementById("sidebar");
     const handleSlide = () => {
         if (bar.style.left === "-60%") {
@@ -49,8 +53,8 @@ const PaymentMethods = () => {
                                 Payment Methods
                             </Typography>
                         </Stack>
-                        <Box sx={{ display: "flex", }}>
-                            <Button component="p" sx={{ color: "#f44336", backgroundColor: "#ffebee", textTransform:"capitalize", padding:"10px 20px" }}>Add addresses</Button>
+                        <Box sx={{ display: "flex", '& a':{textDecoration:"none"}}}>
+                            <Link to="/useraddmethod"><Button component="p" sx={{ color: "#f44336", backgroundColor: "#ffebee", textTransform:"capitalize", padding:"10px 20px" }}>Add Payment Metod</Button></Link>
                             <IconButton
                                 color="inherit"
                                 aria-label="open drawer"
@@ -66,12 +70,14 @@ const PaymentMethods = () => {
                     <Box mt="20px">
                         <Paper sx={{ mt: "20px", p: "8px 16px", borderRadius: "5px" }}>
                             <Grid container sx={{ alignItems: "center", justifyContent: "space-between" }} spacing={2}>
-                                <Grid item xs={3} sx={{display:"flex", justifyContent:"space-around", alignItems:"center"}}>
-                                    <Paper><Avatar sx={{  }} variant="rounded"  src="https://bazar-react.vercel.app/assets/images/payment-methods/PayPal.svg">
+                                <Grid item xs={2} sx={{display:"flex", justifyContent:"space-around", alignItems:"center"}}>
+                                    <Paper><Avatar variant="rounded"  src="https://bazar-react.vercel.app/assets/images/payment-methods/PayPal.svg">
                                     </Avatar></Paper>
-                                    <Typography fontWeight="bold">Ralf Edward</Typography>
                                 </Grid>
-                                <Grid item xs={3}>
+                                <Grid item xs={3} sx={{display:"flex", justifyContent:"center"}}>
+                                <Typography fontWeight="bold">Ralf Edward</Typography>
+                                </Grid>
+                                <Grid item xs={2}>
                                     <Typography noWrap>1234************</Typography>
                                 </Grid>
 
@@ -79,8 +85,8 @@ const PaymentMethods = () => {
                                     <Typography>08/2025</Typography>
                                 </Grid>
 
-                                <Grid item xs={3}>
-                                    <Typography>
+                                <Grid item xs={2}>
+                                    <Typography sx={{display:"flex", justifyContent:"center"}}>
                                         <IconButton>
                                             <EditIcon />
                                         </IconButton>

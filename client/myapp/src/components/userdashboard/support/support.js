@@ -16,17 +16,17 @@ import {
     TextField,
     IconButton,
 } from "@mui/material";
-import Nav from '../layouts/nav';
+import Nav from '../../layouts/nav';
 import { useEffect } from 'react';
-import UserSideBar from './userSideBar';
+import UserSideBar from '../userSideBar';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 const Support = () => {
     const bar = document.getElementById("sidebar");
-    const handleSlide = ()=>{
-        if(bar.style.left === "-60%"){
+    const handleSlide = () => {
+        if (bar.style.left === "-60%") {
             bar.style.left = "0%";
         }
-        else{
+        else {
             bar.style.left = "-60%";
         }
     }
@@ -47,13 +47,14 @@ const Support = () => {
                                 Support Tickets
                             </Typography>
                         </Stack>
-                        <Box sx={{display:"flex"}}>
+                        <Box sx={{ display: "flex" }}>
+                            
                             <IconButton
                                 color="inherit"
                                 aria-label="open drawer"
                                 edge="start"
                                 onClick={handleSlide}
-                                sx={{ mr: 2, display: { md: 'none' }, marginLeft:"16px" }}
+                                sx={{ mr: 2, display: { md: 'none' }, marginLeft: "16px" }}
                             >
                                 <MenuIcon />
                             </IconButton>
@@ -61,32 +62,18 @@ const Support = () => {
 
                     </Box>
                     <Box mt="20px">
-                        <Paper sx={{ mt: "20px", p: "8px 16px", borderRadius: "5px", display:"flex", justifyContent:"space-between",alignItems:"center" }}>
+                        <Paper sx={{ marginTop: "20px", p: "8px 16px", borderRadius: "5px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                             <Box>
                                 <Box>
                                     <Typography>My product is broken and I need refund.</Typography>
                                 </Box>
-                                <Box sx={{display:"flex", gap:"20px", color:"gray"}}>
+                                <Box sx={{ display: "flex", gap: "20px", color: "gray" }}>
                                     <Typography>Oct 2,2022</Typography>
                                     <Typography>Website Problem</Typography>
                                 </Box>
                             </Box>
-                            <Box>
-                                <IconButton> <ArrowForwardIcon/> </IconButton>
-                            </Box>
-                        </Paper>
-                        <Paper sx={{ marginTop: "20px", p: "8px 16px", borderRadius: "5px", display:"flex", justifyContent:"space-between",alignItems:"center" }}>
-                            <Box>
-                                <Box>
-                                    <Typography>My product is broken and I need refund.</Typography>
-                                </Box>
-                                <Box sx={{display:"flex", gap:"20px", color:"gray"}}>
-                                    <Typography>Oct 2,2022</Typography>
-                                    <Typography>Website Problem</Typography>
-                                </Box>
-                            </Box>
-                            <Box>
-                                <IconButton> <ArrowForwardIcon/> </IconButton>
+                            <Box sx={{'& a':{color : "black", lineHeight:"0"}}}>
+                                <IconButton><Link to="/usersupportchat"> <ArrowForwardIcon /></Link> </IconButton>
                             </Box>
                         </Paper>
                     </Box>

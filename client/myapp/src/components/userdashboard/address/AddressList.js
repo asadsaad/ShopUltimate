@@ -16,12 +16,12 @@ import {
   TextField,
   IconButton,
 } from "@mui/material";
-import Nav from "../layouts/nav";
+import Nav from "../../layouts/nav";
 import { useDispatch, useSelector } from "react-redux";
 
-import UserSideBar from "./userSideBar";
+import UserSideBar from "../userSideBar";
 import { useEffect, useState } from "react";
-import { deleteaddress, getaddress } from "../../redux/actions/addressactions";
+import { deleteaddress, getaddress } from "../../../redux/actions/addressactions";
 import Updateaddress from "./updateaddress";
 
 const AddressList = () => {
@@ -62,7 +62,8 @@ const AddressList = () => {
                 Address List
               </Typography>
             </Stack>
-            <Box sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex", '& a':{textDecoration : "none"} }}>
+              <Link to="/useraddaddress" >
               <Button
                 component="h2"
                 sx={{
@@ -74,6 +75,7 @@ const AddressList = () => {
               >
                 Add addresses
               </Button>
+              </Link>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -85,6 +87,48 @@ const AddressList = () => {
               </IconButton>
             </Box>
           </Box>
+
+
+
+
+
+
+          {/* Header */}
+          <Box mt="20px">
+                 
+                    <Grid
+                      container
+                      sx={{
+                        color:"gray",
+                        padding:"0px 16px",
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                      }}
+                      spacing={2}
+                    >
+                      <Grid item xs={2} fontSize="18px">
+                        <Typography>Name</Typography>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Typography fontSize="18px" >
+                          Address
+                        </Typography>
+                      </Grid>
+
+                      <Grid item xs={2}>
+                        <Typography fontSize="18px">Number</Typography>
+                      </Grid>
+
+                      <Grid item xs={3}>
+                        <Typography sx={{display:"flex", justifyContent:"center"}}>
+                          
+                        </Typography>
+                      </Grid>
+                    </Grid>
+          </Box>
+
+
+          {/* Addresses */}
           <Box mt="20px">
             {address_?.length > 0
               ? address_.map((address) => (
@@ -102,7 +146,7 @@ const AddressList = () => {
                       <Grid item xs={2}>
                         <Typography>{address?.user?.username}</Typography>
                       </Grid>
-                      <Grid item xs={5}>
+                      <Grid item xs={4}>
                         <Typography noWrap>
                           {address?.streetaddress} {", "}
                           {address?.city} {", "}
@@ -114,8 +158,8 @@ const AddressList = () => {
                         <Typography>{address?.phone}</Typography>
                       </Grid>
 
-                      <Grid item xs={2}>
-                        <Typography>
+                      <Grid item xs={3}>
+                        <Typography sx={{display:"flex", justifyContent:"center"}}>
                           <IconButton
                             onClick={() => {
                               handleupdate(address);

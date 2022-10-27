@@ -4,7 +4,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import MenuIcon from '@mui/icons-material/Menu';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import CardHeader from '@mui/material/CardHeader';
-import { setAlert } from "../../redux/actions/alertactions";
+import { setAlert } from "../../../redux/actions/alertactions";
 import { useDispatch } from "react-redux";
 import {
     Container,
@@ -19,9 +19,9 @@ import {
     TextField,
     IconButton,
 } from "@mui/material";
-import Nav from '../layouts/nav';
+import Nav from '../../layouts/nav';
 import { useEffect, useState } from 'react';
-import UserSideBar from './userSideBar';
+import UserSideBar from '../userSideBar';
 import SupportAgentIcon from '@mui/icons-material/SupportAgent';
 const SupportTicket = () => {
     const bar = document.getElementById("sidebar");
@@ -60,7 +60,21 @@ const SupportTicket = () => {
                                 Support Tickets
                             </Typography>
                         </Stack>
-                        <Box sx={{ display: "flex" }}>
+                        <Box sx={{ display: "flex" , '& a':{textDecoration : "none"}}}>
+                        <Link to="/usersupporttickets" >
+                                <Button
+                                    component="h2"
+                                    sx={{
+
+                                        color: "#f44336",
+                                        backgroundColor: "#ffebee",
+                                        textTransform: "capitalize",
+                                        padding: "10px 20px",
+                                    }}
+                                >
+                                    Back to Support Tickets
+                                </Button>
+                            </Link>
                             <IconButton
                                 color="inherit"
                                 aria-label="open drawer"

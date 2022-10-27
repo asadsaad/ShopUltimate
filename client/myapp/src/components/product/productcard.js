@@ -28,11 +28,12 @@ export default function Productcard(props) {
 
   return (
     <Card sx={{}}>
-      <Box sx={{m:1,fontSize:"12px", backgroundColor:"#d32f2f", width:"fit-content",color:"white",padding:"5px", borderRadius:"5px", position:"absolite", top:"0%", left:"0%"}}>
+      
+      <CardMedia sx={{position:"relative"}}>
+        <SwipeableTextMobileStepper sx={{margin:"auto"}} images={props.image && props.image} />
+        <Box sx={{m:1,fontSize:"12px", backgroundColor:"#d32f2f", width:"fit-content",color:"white",padding:"5px", borderRadius:"5px", position:"absolute", top:"0%", left:"0%"}}>
         25% OFF
       </Box>
-      <CardMedia >
-        <SwipeableTextMobileStepper sx={{margin:"auto"}} images={props.image && props.image} />
       </CardMedia>
       {/* <CardMedia
           component="img"
