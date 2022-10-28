@@ -55,14 +55,24 @@ export default function BasicTable(props) {
             {cart?.carts?.map((cartt) => {
               return (
                 <Paper sx={{ borderRadius: "0", mt: 2, mb: 2, p: 2 }}>
-                  <Stack
-                    direction="row"
-                    spacing={1}
-                    sx={{ borderBottom: "1px solid #d0d0d0", pb: 1 }}
+                  <Box
+                    sx={{
+                      borderBottom: "1px solid #d0d0d0",
+                      pb: 1,
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
                   >
-                    <StorefrontOutlinedIcon />
-                    <Typography>{cartt?.store?.shopname}</Typography>
-                  </Stack>
+                    <Box sx={{ display: "flex" }}>
+                      <StorefrontOutlinedIcon sx={{ mr: 1 }} />
+                      <Typography>{cartt?.store?.shopname}</Typography>
+                    </Box>
+                    <Box>
+                      <Typography>
+                        <b>Total ${cartt?.carttotal}</b>
+                      </Typography>
+                    </Box>
+                  </Box>
 
                   {cartt?.cartItems &&
                     cartt?.cartItems?.map((row) => (

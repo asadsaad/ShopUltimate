@@ -7,11 +7,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { updateaddress } from "../../redux/actions/addressactions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "@mui/material";
+import { CLEAR_CURRENT_ADDRESS } from "../../redux/types";
 export default function Updateaddress(props) {
   const dispatch = useDispatch();
-
+  const currentaddress = useSelector((state) => state.address.currentaddress);
   const [open, setOpen] = React.useState(false);
   const [email, setemail] = useState();
   const [phone, setphone] = useState();
@@ -25,11 +26,19 @@ export default function Updateaddress(props) {
   };
 
   useEffect(() => {
-    console.log(props.currentaddress);
-  }, [props]);
-
+    setemail(currentaddress?.email);
+    setphone(currentaddress?.phone);
+    setcountry(currentaddress?.country);
+    setcity(currentaddress?.city);
+    setpostalcode(currentaddress?.postalcode);
+    setstreetaddress(currentaddress?.streetaddress);
+  }, [currentaddress]);
+  // useEffect(() => {
+  //   props.setcurrentaddress(null);
+  // }, [dispatch]);
   const handleClose = () => {
     props.setOpen(false);
+    dispatch({ type: CLEAR_CURRENT_ADDRESS });
   };
   const handleupdate = () => {
     const formData = {
@@ -39,9 +48,10 @@ export default function Updateaddress(props) {
       city,
       postalcode,
       streetaddress,
-      id: props.currentaddress?._id,
+      id: currentaddress?._id,
     };
     dispatch(updateaddress(formData, props.setOpen));
+    dispatch({ type: CLEAR_CURRENT_ADDRESS });
   };
   return (
     <Dialog open={props.open} onClose={handleClose}>
@@ -55,7 +65,7 @@ export default function Updateaddress(props) {
               variant="outlined"
               color="error"
               fullWidth
-              defaultValue={props.currentaddress?.email}
+              // defaultValue={currentaddress?.email}
               value={email}
               size="small"
               // error={nameErr}
@@ -67,7 +77,6 @@ export default function Updateaddress(props) {
               id="outlined-basic"
               label="Phone"
               value={phone}
-              defaultValue={props.currentaddress?.phone}
               variant="outlined"
               color="error"
               fullWidth
@@ -79,7 +88,6 @@ export default function Updateaddress(props) {
             <TextField
               id="outlined-basic"
               label="Postal Code"
-              defaultValue={props.currentaddress?.postalcode}
               value={postalcode}
               variant="outlined"
               color="error"
@@ -92,7 +100,6 @@ export default function Updateaddress(props) {
             <TextField
               id="outlined-basic"
               label="City"
-              defaultValue={props.currentaddress?.city}
               value={city}
               variant="outlined"
               color="error"
@@ -106,7 +113,6 @@ export default function Updateaddress(props) {
               id="outlined-basic"
               label="Countrye"
               value={country}
-              defaultValue={props.currentaddress?.country}
               variant="outlined"
               color="error"
               fullWidth
@@ -119,7 +125,6 @@ export default function Updateaddress(props) {
               id="outlined-basic"
               label="Strret Address"
               value={streetaddress}
-              defaultValue={props.currentaddress?.streetaddress}
               variant="outlined"
               color="error"
               fullWidth

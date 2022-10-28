@@ -199,7 +199,7 @@ const Nav = () => {
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/settings" style={{ textDecoration: "none" }}>
+                <Link to="/" style={{ textDecoration: "none" }}>
                   Settings
                 </Link>
               </MenuItem>

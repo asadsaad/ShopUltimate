@@ -6,6 +6,8 @@ import {
   ADDRESS_ACTION_FAILED,
   DELETE_ADDRESS,
   UPDATE_ADDRESS,
+  SET_CURRENT_ADDRESS,
+  CLEAR_CURRENT_ADDRESS,
 } from "../types";
 import axios from "axios";
 import { setAlert } from "./alertactions";
@@ -78,8 +80,25 @@ export const updateaddress = (formData, open) => async (dispatch) => {
       type: UPDATE_ADDRESS,
       payload: res.data,
     });
+    dispatch({
+      type: CLEAR_CURRENT_ADDRESS,
+    });
     dispatch(setAlert("Address Updated Successfully", "success"));
     open(false);
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const setcurrentaddress = (address) => async (dispatch) => {
+  // caches.log(address);
+  try {
+    // const page = 1;
+    // dispatch({ type: ADDRESS_ACTION_ATTEMPT });
+
+    dispatch({
+      type: SET_CURRENT_ADDRESS,
+      payload: address,
+    });
   } catch (error) {
     console.log(error);
   }

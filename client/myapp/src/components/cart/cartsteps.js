@@ -14,7 +14,7 @@ import Shipping from "../user/shipping";
 import Initorder from "../order/initorder";
 import Nav from "../layouts/nav";
 
-const steps = ["Cart", "Shipping Details", "Review your order"];
+const steps = ["Cart", "Review and Checkout", "Payment"];
 
 export default function CheckoutPage() {
   const [activeStep, setActiveStep] = useState(0);

@@ -40,7 +40,10 @@ import {
   FilterAlt,
   Phone,
   NearMe,
+  Preview,
+  Description,
 } from "@mui/icons-material";
+import { green } from "@mui/material/colors";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -103,255 +106,151 @@ export default function ShopView() {
     <div>
       <Nav />
       <Container sx={{ mt: 3 }} maxWidth="xl">
-        <Box
-          sx={{
-            wdith: "100%",
-            height: "300px",
-            backgroundImage: `url(${shopdata[0]?.shopbanner[0]})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            borderRadius: "12px",
-          }}
-        ></Box>
+        <Grid container spacing={2}>
+          <Grid item md={3} xs={12}>
+            <Paper sx={{ p: 2, height: "80vh" }}>
+              <Box
+                sx={{
+                  pb: 2,
+                  borderBottom: "1px solid #d0d0d0",
+                  // display: "flex",
+                  // justifyContent: "space-between",
+                  // alignItems: "center",
+                }}
+              >
+                <Stack spacing={2} sx={{}}>
+                  <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <Avatar
+                      src={shopdata[0]?.shopavatar[0]}
+                      variant="rounded"
+                      sx={{
+                        width: 150,
+                        height: 150,
+                        border: "1px solid #d0d0d0",
+                      }}
+                    ></Avatar>
+                  </Box>
+                  <Box>
+                    <Typography
+                      variant="h6"
+                      sx={{ fontWeight: "bold", textAlign: "center" }}
+                    >
+                      {shopdata[0]?.shopname}
+                    </Typography>
+                    <Stack
+                      direction="row"
+                      spacing={1}
+                      sx={{ alignItems: "center", justifyContent: "center" }}
+                    >
+                      <Rating
+                        name="read-only"
+                        value={5}
+                        readOnly
+                        size="small"
+                      />
+                      <Typography sx={{ textAlign: "center" }}>(5)</Typography>
+                    </Stack>
+                  </Box>
+                </Stack>
+                <Stack
+                  spacing={1}
+                  direction="row"
+                  sx={{ justifyContent: "center", mt: 1 }}
+                >
+                  <Box>
+                    <Button
+                      variant="outlined"
+                      endIcon={<MessageOutlined />}
+                      color="success"
+                      size="small"
+                    >
+                      Message
+                    </Button>
+                  </Box>
+                  <Box>
+                    <Button
+                      variant="contained"
+                      endIcon={<Description />}
+                      color="success"
+                      size="small"
+                    >
+                      View Description
+                    </Button>
+                  </Box>
+                </Stack>
+              </Box>
+              <Box sx={{ p: 2 }}>
+                <Box sx={{ mb: 2 }}>
+                  <Typography sx={{ fontWeight: "bold" }}>Address</Typography>
+                  <Typography>
+                    {" "}
+                    {shopdata[0]?.streetaddress +
+                      ", " +
+                      shopdata[0]?.city +
+                      ", " +
+                      shopdata[0]?.country}
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography sx={{ fontWeight: "bold" }}>Phone</Typography>
+                  <Typography>{shopdata[0]?.shopphone}</Typography>
+                </Box>
+              </Box>
+            </Paper>
+          </Grid>
+          <Grid item md={9} xs={12}>
+            <Box
+              sx={{
+                wdith: "100%",
+                height: "300px",
+                backgroundImage: `url(${shopdata[0]?.shopbanner[0]})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                borderRadius: "12px",
+              }}
+            ></Box>
+            <Box>
+              {shopdata[0] ? (
+                <Box
+                  sx={{
+                    mt: 2,
+                    display: "grid",
+                    gridTemplateColumns:
+                      "repeat(auto-fill, minmax(230px, 1fr))!important",
+                    gap: "10px",
+                  }}
+                >
+                  {shopdata[0].products.length > 0
+                    ? shopdata[0].products.map((item) => (
+                        <Productcard
+                          key={item._id}
+                          name={item.productTitle}
+                          image={item.images && item.images}
+                          price={item.price}
+                          id={item._id}
+                          shopid={shopdata[0]._id}
+                        />
+                      ))
+                    : "This Shop Has No Active Products"}
+                </Box>
+              ) : (
+                <Stack
+                  alignItems="center"
+                  sx={{ marginTop: 2, marginBottom: 2 }}
+                >
+                  <CircularProgress disableShrink />
+                </Stack>
+              )}
+            </Box>
+          </Grid>
+        </Grid>
 
         {/* <img
             src={shopdata[0]?.shopbanner[0]}
             width="100%"
             height="200vh"
           ></img> */}
-        <Paper sx={{ mt: 2, borderRadius: "12px", p: 2 }}>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
-            <Stack direction="row" spacing={2} sx={{ alignItems: "center" }}>
-              <Avatar
-                src={shopdata[0]?.shopavatar[0]}
-                variant="rounded"
-                sx={{
-                  width: 100,
-                  height: 100,
-                }}
-              ></Avatar>
-              <Box>
-                <Typography variant="h6" sx={{ fontWeight: "bold" }}>
-                  {shopdata[0]?.shopname}
-                </Typography>
-                <Stack
-                  direction="row"
-                  spacing={1}
-                  sx={{ alignItems: "center" }}
-                >
-                  <Rating name="read-only" value={5} readOnly size="small" />
-                  <Typography>(5)</Typography>
-                </Stack>
-                <Box sx={{ display: "flex" }}>
-                  <Box>
-                    <Typography sx={{ fontSize: "12px", mt: 0.5 }}>
-                      5 Reviews | 52 Orders
-                    </Typography>
-                    {/* <Typography>
-                    {shopdata[0]?.streetaddress},{shopdata[0]?.city},
-                    {shopdata[0]?.country}
-                  </Typography>
-                  <Typography>{shopdata[0]?.shopphone}</Typography> */}
-                  </Box>
-                </Box>
-              </Box>
-            </Stack>
-            <Stack spacing="1">
-              <Box>
-                <Button
-                  variant="outlined"
-                  endIcon={<MessageOutlined />}
-                  color="success"
-                >
-                  Message
-                </Button>
-              </Box>
-            </Stack>
-          </Box>
-        </Paper>
-        <Grid container spacing={1}>
-          <Grid item md={3} xs={12}>
-            <Paper sx={{ p: 2, mt: 2 }}>
-              <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }}>
-                Filter Products
-              </Typography>
-              <Box sx={{ borderBottom: "1px solid #d0d0d0", pb: 2 }}>
-                <InputLabel sx={{ mb: 1 }}>Product Name</InputLabel>
-                <TextField
-                  variant="outlined"
-                  placeholder="Red Football"
-                  fullWidth
-                  size="small"
-                />
-                <InputLabel sx={{ mt: 1, mb: 1 }}>Catagery</InputLabel>
-
-                <Autocomplete
-                  id="free-solo-demo"
-                  freeSolo
-                  options={[]}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      sx={{ mb: 1 }}
-                      size="small"
-                      placeholder="Sports"
-                    />
-                  )}
-                />
-                <InputLabel sx={{ mb: 1 }}>Brands</InputLabel>
-              </Box>
-              <Box>
-                <InputLabel sx={{ mt: 2 }}>Ratings</InputLabel>
-                <Stack>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Checkbox />
-                    <Rating
-                      name="read-only"
-                      readOnly
-                      value="5"
-                      // onChange={(event, newValue) => {
-                      //   setValue(newValue);
-                      // }}
-                    />
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Checkbox />
-                    <Rating
-                      name="read-only"
-                      readOnly
-                      value="4"
-                      // onChange={(event, newValue) => {
-                      //   setValue(newValue);
-                      // }}
-                    />
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Checkbox />
-                    <Rating
-                      name="read-only"
-                      readOnly
-                      value="3"
-                      // onChange={(event, newValue) => {
-                      //   setValue(newValue);
-                      // }}
-                    />
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Checkbox />
-                    <Rating
-                      name="read-only"
-                      readOnly
-                      value="2"
-                      // onChange={(event, newValue) => {
-                      //   setValue(newValue);
-                      // }}
-                    />
-                  </Box>
-                  <Box sx={{ display: "flex", alignItems: "center" }}>
-                    <Checkbox />
-                    <Rating
-                      name="read-only"
-                      readOnly
-                      value="1"
-                      // onChange={(event, newValue) => {
-                      //   setValue(newValue);
-                      // }}
-                    />
-                  </Box>
-                </Stack>
-              </Box>
-              <Button variant="contained" fullWidth endIcon={<FilterAlt />}>
-                Apply Filters
-              </Button>
-            </Paper>
-          </Grid>
-
-          <Grid item md={9} xs={12}>
-            {shopdata[0] ? (
-              <Box
-                sx={{
-                  mt: 2,
-                  display: "grid",
-                  gridTemplateColumns:
-                    "repeat(auto-fill, minmax(230px, 1fr))!important",
-                  gap: "10px",
-                }}
-              >
-                {shopdata[0].products.length > 0
-                  ? shopdata[0].products.map((item) => (
-                      <Productcard
-                        key={item._id}
-                        name={item.productTitle}
-                        image={item.images && item.images}
-                        price={item.price}
-                        id={item._id}
-                        shopid={shopdata[0]._id}
-                      />
-                    ))
-                  : "This Shop Has No Active Products"}
-              </Box>
-            ) : (
-              <Stack alignItems="center" sx={{ marginTop: 2, marginBottom: 2 }}>
-                <CircularProgress disableShrink />
-              </Stack>
-            )}
-            <Box sx={{ p: 2, display: "flex", justifyContent: "center" }}>
-              <Pagination count={10} color="primary" variant="outlined" />
-            </Box>
-          </Grid>
-        </Grid>
-
-        <Box
-          sx={{
-            border: "1px solid #d0d0d0",
-            p: 2,
-            mt: 2,
-            mb: 2,
-          }}
-        >
-          <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="basic tabs example"
-            >
-              <Tab label="Shop Details" {...a11yProps(0)} />
-              <Tab label="Shop Contact" {...a11yProps(1)} />
-            </Tabs>
-          </Box>
-          <TabPanel value={value} index={0}>
-            <Typography
-              dangerouslySetInnerHTML={{ __html: shopdata[0]?.aboutShop }}
-            >
-              {/* {shopdata[0]?.aboutShop} */}
-            </Typography>
-          </TabPanel>
-          <TabPanel value={value} index={1}>
-            <Stack>
-              <Box sx={{ display: "flex", alignItems: "center", mb: 1 }}>
-                <Phone sx={{ ml: 1 }} />
-                <Typography>{shopdata[0]?.shopphone}</Typography>
-              </Box>
-              <Box sx={{ display: "flex", alignItems: "center" }}>
-                <NearMe />
-                <Typography sx={{ ml: 1 }}>
-                  {shopdata[0]?.streetaddress +
-                    ", " +
-                    shopdata[0]?.city +
-                    ", " +
-                    shopdata[0]?.country}
-                </Typography>
-              </Box>
-            </Stack>
-          </TabPanel>
-        </Box>
       </Container>
     </div>
   );

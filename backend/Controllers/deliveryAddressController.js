@@ -85,6 +85,7 @@ exports.deleteaddress = async (req, res) => {
 };
 exports.updateaddress = async (req, res) => {
   try {
+    console.log(req.body);
     const user = req.user;
     const { email, phone, country, city, postalcode, streetaddress } = req.body;
     const addressdata = await DeliveryAddress.findOneAndUpdate(

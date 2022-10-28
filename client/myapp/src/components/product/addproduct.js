@@ -6,7 +6,7 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import JoditEditor from "jodit-react";
-import Imagelist from '../upload/progressList/productimagelist'
+import Imagelist from "../upload/progressList/productimagelist";
 import {
   Grid,
   TextField,
@@ -18,9 +18,9 @@ import {
   ImageListItemBar,
   Avatar,
   Fab,
-  Input
+  Input,
 } from "@mui/material";
-import AddIcon from '@mui/icons-material/Add';
+import AddIcon from "@mui/icons-material/Add";
 
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -101,19 +101,17 @@ export default function Addproduct(props) {
     };
     console.log(formData);
     dispatch(addproduct(formData));
-    setproductTitle("");
-    setproductDescription("");
-    setcatagery("");
-    setsubcatagery("");
-    setproductimage([]);
-    setprice("");
-    setinstock("");
-    setstore("");
-    setbrand("");
-    setdiscount("");
-    dispatch({ type: CLEAR_PRODUCT_IMAGE });
-
-   
+    // setproductTitle("");
+    // setproductDescription("");
+    // setcatagery("");
+    // setsubcatagery("");
+    // setproductimage([]);
+    // setprice("");
+    // setinstock("");
+    // setstore("");
+    // setbrand("");
+    // setdiscount("");
+    // dispatch({ type: CLEAR_PRODUCT_IMAGE });
   };
   return (
     <Dialog
@@ -164,7 +162,7 @@ export default function Addproduct(props) {
               setproductDescription(newContent);
             }}
           />
-          
+
           <InputLabel sx={{ color: "#333", mt: 2 }}>Catagery</InputLabel>
 
           <TextField
@@ -273,16 +271,16 @@ export default function Addproduct(props) {
             Select Images
           </Typography>
           <Typography align="center">
-          <Input
-        type="file"
-        inputProps={{ multiple: true }}
-        sx={{ display: 'none' }}
-        inputRef={fileRef}
-        onChange={(e) => setproductimage([...e.target.files])}
-      />
-      <Fab color="primary" aria-label="add" onClick={handleClick}>
-        <AddIcon fontSize="large" />
-      </Fab>
+            <Input
+              type="file"
+              inputProps={{ multiple: true }}
+              sx={{ display: "none" }}
+              inputRef={fileRef}
+              onChange={(e) => setproductimage([...e.target.files])}
+            />
+            <Fab color="primary" aria-label="add" onClick={handleClick}>
+              <AddIcon fontSize="large" />
+            </Fab>
             {/* <label htmlFor="icon-button-file">
               <Input
                 accept="image/*"
@@ -294,7 +292,7 @@ export default function Addproduct(props) {
               <Fab color="primary" aria-label="upload picture">
               <AddIcon />
             </Fab> */}
-              {/* <Avatar
+            {/* <Avatar
                 sx={{ width: "100%", height: "300px", cursor: "pointer" }}
                 variant="rounded"
               >
@@ -310,14 +308,12 @@ export default function Addproduct(props) {
             {/* </label> */}
           </Typography>
           <ProgressList
-              files={productimage}
-              images={images}
-              setproductimages={setImages}
-            />
-            <Imagelist />
-          
+            files={productimage}
+            images={images}
+            setproductimages={setImages}
+          />
+          <Imagelist />
 
-          
           <DialogActions>
             <Button
               variant="contained"

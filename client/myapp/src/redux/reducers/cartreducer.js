@@ -10,7 +10,7 @@ import {
 
 const initialState = {
   cartItems: [],
-  carts: [],
+  carts: null,
   cartTotal: 0,
   loading: false,
   error: null,
@@ -36,10 +36,11 @@ export default (state = initialState, action) => {
       // console.log(action.payload.cart[0]);
       const data_ = state.carts;
 
-      const cartToChangeIndex_ = data_.findIndex(
-        ({ store }) => store === action.payload.shopid
+      var cartToChangeIndex_ = data_?.findIndex(
+        (store_) => store_?.store._id == action.payload.shopid
       );
       console.log(cartToChangeIndex_);
+
       if (cartToChangeIndex_ >= 0) {
         const carttoupdate_ = data_[cartToChangeIndex_];
         const incart = carttoupdate_.cartItems.find((item) =>
@@ -109,6 +110,7 @@ export default (state = initialState, action) => {
 
       const updatedcart = {
         ...carttoupdate,
+        carttotal: action.payload.data.data.carttotal,
         cartItems: carttoupdate.cartItems.filter(
           (item) => item.product._id !== action.payload.id
         ),
@@ -135,6 +137,7 @@ export default (state = initialState, action) => {
           cart._id === action.payload.cartid
             ? {
                 ...cart,
+                carttotal: action.payload.data.carttotal,
                 cartItems: cart.cartItems.map((item) =>
                   item.product._id === action.payload.id
                     ? { ...item, quantity: action.payload.data.data }
@@ -157,6 +160,7 @@ export default (state = initialState, action) => {
           cart._id === action.payload.cartid
             ? {
                 ...cart,
+                carttotal: action.payload.data.carttotal,
                 cartItems: cart.cartItems.map((item) =>
                   item.product._id === action.payload.id
                     ? { ...item, quantity: action.payload.data.data }

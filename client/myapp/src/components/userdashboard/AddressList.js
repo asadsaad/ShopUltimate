@@ -174,6 +174,7 @@ const AddressList = () => {
         open={open}
         setOpen={setOpen}
         currentaddress={currentaddress}
+        setcurrentaddress={setcurrentaddress}
       />
     </>
   );

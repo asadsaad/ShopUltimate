@@ -27,7 +27,6 @@ export const addtocart = (id, shopid) => async (dispatch) => {
     const res = await axios.post(
       `http://localhost:5000/cart/additemtocart/${id}`
     );
-    console.log(res.data);
 
     dispatch({
       type: ADD_TO_CART,

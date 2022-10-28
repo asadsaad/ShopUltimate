@@ -6,11 +6,14 @@ import {
   ADDRESS_ACTION_ATTEMPT,
   ADDRESS_ACTION_SUCCESS,
   ADDRESS_ACTION_FAILED,
+  SET_CURRENT_ADDRESS,
+  CLEAR_CURRENT_ADDRESS,
 } from "../types";
 
 const initialState = {
   loading: false,
   addressess: [],
+  currentaddress: null,
 };
 
 export default (state = initialState, action) => {
@@ -58,6 +61,18 @@ export default (state = initialState, action) => {
     case ADDRESS_ACTION_FAILED:
       return {
         ...state,
+        loading: false,
+      };
+    case SET_CURRENT_ADDRESS:
+      return {
+        ...state,
+        currentaddress: action.payload,
+        loading: false,
+      };
+    case CLEAR_CURRENT_ADDRESS:
+      return {
+        ...state,
+        currentaddress: null,
         loading: false,
       };
     default:

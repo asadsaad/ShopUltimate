@@ -5,35 +5,46 @@ import {
   TextField,
   Button,
   Typography,
+  Paper,
   Alert,
   Box,
   IconButton,
   Container,
+  Tooltip,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { styled } from "@mui/material/styles";
+import {
+  getaddress,
+  setcurrentaddress,
+} from "../../redux/actions/addressactions";
+import { Edit } from "@mui/icons-material";
+import Updateaddress from "../userdashboard/updateaddress";
 // import { addshipping, getshipping } from "../../redux/actions/shippingactions";
 
 const Input = styled("input")({
   display: "none",
 });
-export default function Shipping(props) {
-  const [email, setemail] = useState();
-  const [phone, setphone] = useState();
-  const [country, setcountry] = useState();
-  const [city, setcity] = useState();
-  const [postalcode, setpostalcode] = useState();
-  const [streetaddress, setstreetaddress] = useState();
+export default function CheckoutandReview(props) {
   const dispatch = useDispatch();
-  const shipping = useSelector((state) => state.shipping.shipping);
-  const loading = useSelector((state) => state.shipping.loading);
+  const address = useSelector((state) => state.address.addressess);
+  const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = React.useState(null);
+
+  // const [currentaddress, setcurrentaddress] = useState(null);
+
+  // const loading = useSelector((state) => state.shipping.loading);
 
   //   const error = useSelector((state) => state.errors);
-  // useEffect(() => {
-  //   dispatch(getshipping());
-  // }, []);
-
+  useEffect(() => {
+    dispatch(getaddress());
+  }, []);
+  const handleupdate = async (address) => {
+    dispatch(setcurrentaddress(address));
+    // setcurrentaddress(address);
+    setOpen(true);
+  };
   // const submitform = (event) => {
   //   event.preventDefault();
   //   const formData = { email, phone, country, city, postalcode, streetaddress };
@@ -47,103 +58,59 @@ export default function Shipping(props) {
   // }
   return (
     <div>
-      {/* <Container> */}
-      {/* <Typography variant="h4" sx={{ mt: 5 }}>
-          Shipping Detailss
-        </Typography>
-        <Box
-          component="form"
-          sx={{}}
-          style={{ marginTop: "2em" }}
-          method="post"
-          onSubmit={submitform}
-        >
-          <TextField
-            variant="outlined"
-            label="Email"
-            fullWidth
-            size="small"
-            style={{ marginBottom: "1em" }}
-            type="text"
-            placeholder="Email"
-            value={email}
-            defaultValue={shipping && shipping.email}
-            onChange={(e) => setemail(e.target.value)}
-            name="email"
-          />
-          <TextField
-            variant="outlined"
-            label="Phone"
-            fullWidth
-            size="small"
-            style={{ marginBottom: "1em" }}
-            type="number"
-            placeholder="Phone"
-            value={phone && phone}
-            defaultValue={shipping && shipping.phone}
-            onChange={(e) => setphone(e.target.value)}
-            name="phone"
-          />
-          <TextField
-            variant="outlined"
-            label="Country"
-            fullWidth
-            size="small"
-            style={{ marginBottom: "1em" }}
-            type="text"
-            placeholder="Country"
-            value={country && country}
-            defaultValue={shipping && shipping.country}
-            onChange={(e) => setcountry(e.target.value)}
-            name="country"
-          />
-          <TextField
-            variant="outlined"
-            label="City"
-            fullWidth
-            size="small"
-            margin="dense"
-            style={{ marginBottom: "1em" }}
-            type="text"
-            placeholder="City"
-            value={city && city}
-            defaultValue={shipping && shipping.city}
-            onChange={(e) => setcity(e.target.value)}
-            name="city"
-          />
-          <TextField
-            variant="outlined"
-            label="Postal Code"
-            fullWidth
-            size="small"
-            margin="dense"
-            style={{ marginBottom: "1em" }}
-            type="number"
-            placeholder="Postal Code"
-            value={postalcode && postalcode}
-            defaultValue={shipping && shipping.postalcode}
-            onChange={(e) => setpostalcode.target.value}
-            name="postalcode"
-          />
-          <TextField
-            variant="outlined"
-            label="Steet Address"
-            fullWidth
-            size="small"
-            margin="dense"
-            style={{ marginBottom: "1em" }}
-            type="text"
-            placeholder="Street Address"
-            value={streetaddress && streetaddress}
-            defaultValue={shipping && shipping.streetaddress}
-            onChange={(e) => setstreetaddress(e.target.value)}
-            name="streetaddress"
-          />
-          <Button autoFocus type="submit" variant="contained">
-            Save changes
-          </Button>
+      <Paper sx={{ p: 2, mt: 3 }}>
+        <Button>Add New Address</Button>
+        <Box sx={{ display: "flex", flexWrap: "wrap" }}>
+          {address && address.length > 0
+            ? address.map((item) => (
+                <Box
+                  key={item._id}
+                  onClick={() => setSelected(item)}
+                  sx={{
+                    p: 2,
+                    border:
+                      selected?._id == item?._id
+                        ? "1px solid orange"
+                        : "1px solid #d0d0d0",
+                    m: 1,
+                    cursor: "pointer",
+                    position: "relative",
+                  }}
+                >
+                  <Tooltip title="Edit Address">
+                    <IconButton
+                      sx={{ position: "absolute", top: "5px", right: 0 }}
+                      onClick={() => handleupdate(item)}
+                    >
+                      <Edit />
+                    </IconButton>
+                  </Tooltip>
+                  <Typography>
+                    Delivered to <b>{item?.user?.username}</b>
+                  </Typography>
+                  <Typography>
+                    Email <b>{item?.email}</b>
+                  </Typography>
+                  <Typography>
+                    Phone <b>{item?.phone}</b>
+                  </Typography>
+                  <Typography>
+                    Location{" "}
+                    <b>
+                      {item?.streetaddress} {item?.city} {item?.country}
+                    </b>
+                  </Typography>
+                </Box>
+              ))
+            : null}
         </Box>
-      </Container> */}
+        <Updateaddress
+          open={open}
+          setOpen={setOpen}
+          // currentaddress={currentaddress}
+          // setcurrentaddress={setcurrentaddress}
+        />
+      </Paper>
     </div>
   );
 }

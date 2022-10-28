@@ -48,6 +48,10 @@ const order = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  deliverydetails: {
+    type: mongoose.Types.ObjectId,
+    ref: "DeliveryAddress",
+  },
 });
 
 const Order = mongoose.model("Order", order);
