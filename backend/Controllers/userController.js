@@ -3,6 +3,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcrypt");
 const Cart = require("../models/cartModel");
 var nodemailer = require("nodemailer");
+const Profile = require("../models/profileModel");
 
 const accountSid = "AC92215b8200a05164eb11679e579a6674";
 const authToken = "9e6bcf317888cd37175093e11b8e09d6";
@@ -53,6 +54,8 @@ exports.signup = async (req, res) => {
     const user = new User({ username, email, password: p });
     const cart = new Cart({ user: user });
     await cart.save();
+    const profile = new Profile({ user: user });
+    await profile.save();
     const userdata = await user.save();
     return res.status(200).json({
       success: true,
@@ -177,6 +180,16 @@ exports.passwordchange = async (req, res) => {
   try {
     const user = req.user;
     const { oldpassword, newpassword } = req.body;
+    if (!oldpassword) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please Enter Old Password" });
+    }
+    if (!newpassword) {
+      return res
+        .status(400)
+        .json({ success: false, message: "Please Enter New Password" });
+    }
     const check = await bcrypt.compare(oldpassword, user.password);
     if (check) {
       const p = await bcrypt.hash(newpassword, 12);
@@ -191,7 +204,7 @@ exports.passwordchange = async (req, res) => {
     } else {
       return res
         .status(400)
-        .json({ success: false, message: "password not match" });
+        .json({ success: false, message: "Passwords not match" });
     }
   } catch (error) {
     return res.status(400).json({ success: false, message: error.message });

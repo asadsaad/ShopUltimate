@@ -4,6 +4,7 @@ import {
   REMOVE_ITEM_FROM_CART,
   CART_QUANTITY_INCREAMENT,
   CART_QUANTITY_DECREAMENT,
+  CART_GRAND_TOTAL,
 } from "../types";
 import axios from "axios";
 import store from "../store";
@@ -16,6 +17,9 @@ export const getcart = () => async (dispatch) => {
     dispatch({
       type: GET_USER_CART,
       payload: res.data,
+    });
+    dispatch({
+      type: CART_GRAND_TOTAL,
     });
   } catch (error) {
     console.log(error);
@@ -38,6 +42,9 @@ export const addtocart = (id, shopid) => async (dispatch) => {
         cart: res.data.data,
       },
     });
+    dispatch({
+      type: CART_GRAND_TOTAL,
+    });
     dispatch(setAlert(res.data.message, "success"));
   } catch (error) {
     console.log(error);
@@ -50,14 +57,15 @@ export const removefromcart = (id, cartid, storeid) => async (dispatch) => {
       `http://localhost:5000/cart/removeitemfromcart/${id}`,
       { storeid }
     );
-    dispatch(setAlert(res.data.message, "success"));
-
-    console.log(res.data);
 
     dispatch({
       type: REMOVE_ITEM_FROM_CART,
       payload: { id, cartid, data: res.data },
     });
+    dispatch({
+      type: CART_GRAND_TOTAL,
+    });
+    dispatch(setAlert(res.data.message, "success"));
   } catch (error) {
     console.log(error);
   }
@@ -76,6 +84,9 @@ export const cartitemincreament = (id, cartid, storeid) => async (dispatch) => {
       type: CART_QUANTITY_INCREAMENT,
       payload: { id: id, data: res.data, cartid: cartid },
     });
+    dispatch({
+      type: CART_GRAND_TOTAL,
+    });
   } catch (error) {
     console.log(error);
   }
@@ -92,6 +103,9 @@ export const cartitemdecreament = (id, cartid, storeid) => async (dispatch) => {
     dispatch({
       type: CART_QUANTITY_DECREAMENT,
       payload: { id: id, cartid: cartid, data: res.data },
+    });
+    dispatch({
+      type: CART_GRAND_TOTAL,
     });
   } catch (error) {
     console.log(error);

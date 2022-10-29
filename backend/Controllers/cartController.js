@@ -139,13 +139,14 @@ exports.getusercart = async (req, res) => {
           const elementt = element.cartItems[indexx];
           total = total + elementt.product.price * elementt.quantity;
           // element.carttotal = total;
-          console.log(total);
+          // console.log(total);
         }
         await Cart.findByIdAndUpdate(
           { _id: element._id },
           { carttotal: total }
         );
       }
+
       return res.status(200).json({ data: ucart, message: "cart" });
     }
 
@@ -166,7 +167,7 @@ exports.getusercart = async (req, res) => {
 };
 
 exports.cartitemincreament = async (req, res) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     let quantitytosend = 0;
     const ucart = await Cart.findOne({
@@ -176,7 +177,7 @@ exports.cartitemincreament = async (req, res) => {
       path: "cartItems.product",
       // Get friends of friends - populate the 'friends' array for every friend
     });
-    console.log(ucart.cartItems);
+    // console.log(ucart.cartItems);
     for (let index = 0; index < ucart.cartItems.length; index++) {
       const element = ucart.cartItems[index];
       if (element.product._id == req.params.id) {

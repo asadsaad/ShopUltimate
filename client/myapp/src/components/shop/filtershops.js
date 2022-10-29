@@ -49,7 +49,7 @@ export default function ShopFilter({
   }, []);
   return (
     <>
-      <Paper sx={{ p: 2 }}>
+      <Paper sx={{ p: 2, boxShadow: "0", border: "1px solid #d0d0d0" }}>
         <Box>
           <Grid container spacing={1}>
             <Grid item md={4} xs={12}>
@@ -121,7 +121,6 @@ export default function ShopFilter({
 
           <Button
             variant="contained"
-            fullWidth
             endIcon={<FilterAlt />}
             sx={{ mt: 1 }}
             color="success"

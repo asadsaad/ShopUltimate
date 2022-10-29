@@ -37,7 +37,10 @@ import SupportTicket from "./components/userdashboard/supportTicket";
 import Whitelist from "./components/userdashboard/whitelist";
 import LandingPage from "./components/user/landingPage";
 import AddressList from "./components/userdashboard/AddressList";
-
+import CartItemslisting from "./components/cart/cartItemlisting";
+import CheckoutandReview from "./components/user/shipping";
+import EditProfile from "./components/userdashboard/editProfile";
+import { getprofile } from "./redux/actions/profileactions";
 if (localStorage.token) {
   setauthtoken(localStorage.token);
 }
@@ -57,6 +60,8 @@ class App extends Component {
           <Alert open={true} />
           <Routes>
             <Route path="test" element={<AddAddress />} />
+            <Route path="edit-profile" element={<EditProfile />} />
+
             <Route path="test1" element={<AddressList />} />
 
             <Route path="register" element={<Register />} />
@@ -69,9 +74,9 @@ class App extends Component {
               path="/dashboard/*"
               element={<PrivateRoute component={Dashboard} />}
             >
-              <Route path="products" element={<Products />} />
-              <Route path="shops" element={<Shops />} />
-              <Route path="create-shop" element={<Addshop />} />
+              {/* <Route path="products" element={<Products />} /> */}
+              {/* <Route path="shops" element={<Shops />} /> */}
+              {/* <Route path="create-shop" element={<Addshop />} /> */}
             </Route>
 
             <Route path="products" element={<Products />} />
@@ -89,7 +94,15 @@ class App extends Component {
               path="/addproduct"
               element={<PrivateRoute component={Addproduct} />}
             />
-            <Route path="cart" element={<PrivateRoute component={Cart} />} />
+            <Route
+              path="cart"
+              element={<PrivateRoute component={CartItemlisting} />}
+            />
+            <Route
+              path="checkout"
+              element={<PrivateRoute component={CheckoutandReview} />}
+            />
+
             {/* <Route path="/Dashboard" element={<Dashboard />} /> */}
           </Routes>
         </div>

@@ -7,9 +7,9 @@ import shop from "./shopreducer";
 import catageries from "./catageryreducer";
 import address from "./addressreducer";
 import brands from "./brandreducers";
-
 import order from "./orderreducer";
 import productimagesreducer from "./productimagesreducer";
+import profile from "./profilereducer";
 
 export default combineReducers({
   auth: auth,
@@ -22,4 +22,5 @@ export default combineReducers({
   order: order,
   productimages: productimagesreducer,
   brands: brands,
+  profile: profile,
 });

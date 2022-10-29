@@ -17,8 +17,16 @@ import Badge from "@mui/material/Badge";
 import { styled } from "@mui/material/styles";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import logo from "../../images/logo.png";
-import { Avatar, Tooltip, Menu, MenuItem } from "@mui/material";
-import { ArrowDownward } from "@mui/icons-material";
+import {
+  ListItemText,
+  Avatar,
+  Tooltip,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  MenuList,
+} from "@mui/material";
+import { ArrowDownward, AssuredWorkload, Person } from "@mui/icons-material";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
@@ -71,10 +79,27 @@ const Nav = () => {
 
   const authnav = (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar
+        position="static"
+        sx={{
+          background: "white",
+        }}
+      >
         <Toolbar>
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            ShopUltimate
+          <AssuredWorkload sx={{ color: "#333", mr: 1 }} />
+          <Typography
+            variant="h6"
+            component="div"
+            sx={{
+              flexGrow: 1,
+              color: "#333",
+              textTransform: "uppercase",
+              fontWeight: "bold",
+              letterSpacing: "1px",
+            }}
+          >
+            Shop
+            <span style={{ color: "#64a832" }}>Ultimate</span>
           </Typography>
           {/* <Avatar sx={{ mr: 1 }}></Avatar>
           <Link
@@ -116,9 +141,17 @@ const Nav = () => {
               </Typography>
             </Link>
           ) : (
-            <Typography sx={{ mr: 0.5, fontWeight: "bold" }}>
+            <Button
+              variant="contained"
+              sx={{
+                background: "#009f7f",
+                "&:hover": {
+                  backgroundColor: "#009f7f",
+                },
+              }}
+            >
               Become a Seller
-            </Typography>
+            </Button>
           )}
 
           <Link to="/cart">
@@ -127,7 +160,7 @@ const Nav = () => {
                 badgeContent={cart ? cart?.cartItems?.length : 1}
                 color="secondary"
               >
-                <ShoppingCartIcon sx={{ color: "white" }} />
+                <ShoppingCartIcon sx={{ color: "#009f7f", ml: 1, mr: 1 }} />
               </StyledBadge>
             </IconButton>
           </Link>
@@ -146,12 +179,13 @@ const Nav = () => {
                     mr: 0.5,
                     fontWeight: "bold",
                     textTransform: "capitalize",
+                    color: "#009f7f",
                   }}
                 >
                   {auth.user ? auth.user.username : ""}
                 </Typography>
                 <IconButton sx={{ p: 0 }}>
-                  <ArrowDropDownIcon sx={{ color: "white" }} />
+                  <ArrowDropDownIcon sx={{ color: "#009f7f" }} />
                 </IconButton>
               </Box>
             </Tooltip>
@@ -173,34 +207,36 @@ const Nav = () => {
             >
               <MenuItem>
                 <Link
-                  to=""
-                  style={{ textDecoration: "none" }}
-                  onClick={handlelogout}
-                >
-                  Logout
-                </Link>
-              </MenuItem>
-              <MenuItem>
-                <Link
-                  to=""
-                  style={{ textDecoration: "none" }}
-                  onClick={handlelogout}
+                  to="profile"
+                  style={{ textDecoration: "none", color: "#333" }}
                 >
                   Profile
                 </Link>
               </MenuItem>
               <MenuItem>
                 <Link
-                  to=""
-                  style={{ textDecoration: "none" }}
-                  onClick={handlelogout}
+                  to="myorders"
+                  style={{ textDecoration: "none", color: "#333" }}
                 >
-                  Fake
+                  Orders
                 </Link>
               </MenuItem>
               <MenuItem>
-                <Link to="/" style={{ textDecoration: "none" }}>
-                  Settings
+                <Link
+                  to="whishlist"
+                  style={{ textDecoration: "none", color: "#333" }}
+                >
+                  Whish List
+                </Link>
+              </MenuItem>
+
+              <MenuItem>
+                <Link
+                  to=""
+                  style={{ textDecoration: "none", color: "#333" }}
+                  onClick={handlelogout}
+                >
+                  Logout
                 </Link>
               </MenuItem>
             </Menu>

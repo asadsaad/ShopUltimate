@@ -1,16 +1,19 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
-const profile = mongoose.Schema({
+const profile = new mongoose.Schema({
   bio: {
     type: String,
   },
-  bio: {
+  phone: {
     type: Number,
   },
   user: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
     require: true,
+  },
+  image: {
+    type: String,
   },
 });
 

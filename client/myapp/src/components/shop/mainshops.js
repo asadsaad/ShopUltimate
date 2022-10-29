@@ -137,7 +137,7 @@ export default function ShopHome() {
             // mb: 8,
             // height: "100%",
             gridTemplateColumns:
-              "repeat(auto-fill, minmax(280px, 1fr))!important",
+              "repeat(auto-fill, minmax(320px, 1fr))!important",
           }}
         >
           {shops ? (
@@ -162,7 +162,7 @@ export default function ShopHome() {
           )}
         </ImageList>
 
-        {!loading && (
+        {!loading && shops?.length > 15 && (
           <Stack alignItems="center">
             <Button
               color="primary"

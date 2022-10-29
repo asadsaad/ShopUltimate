@@ -5,7 +5,7 @@ const brand = new mongoose.Schema({
     type: String,
   },
   user: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Users",
     require: true,
   },

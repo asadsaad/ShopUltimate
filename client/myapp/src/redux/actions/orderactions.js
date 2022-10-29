@@ -9,35 +9,37 @@ import {
 import axios from "axios";
 import { setAlert } from "./alertactions";
 
-export const Createorder = (cartid, navigate) => async (dispatch) => {
-  try {
-    // const page = 1;
-    dispatch({ type: OrderActionAttempt });
-
-    const res = await axios.post("http://localhost:5000/order/create-order", {
-      cartid,
-    });
-    dispatch({
-      type: CreateOrder,
-      payload: res.data,
-    });
-    dispatch(
-      setAlert(
-        "Order Created Sussfully. Visit Order Page To View The Order Status",
-        "info"
-      )
-    );
-    navigate("/");
-  } catch (error) {
-    console.log(error);
-  }
-};
+export const Createorder =
+  (cartids, selected, navigate) => async (dispatch) => {
+    try {
+      // const page = 1;
+      dispatch({ type: OrderActionAttempt });
+      console.log(cartids);
+      const res = await axios.post("http://localhost:5000/order/create-order", {
+        cartids,
+        deliverydetails: selected,
+      });
+      dispatch({
+        type: CreateOrder,
+        payload: res.data,
+      });
+      dispatch(
+        setAlert(
+          "Order Created Sussfully. Visit Order Page To View The Order Status",
+          "info"
+        )
+      );
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 export const getorders_s = () => async (dispatch) => {
   try {
     // const page = 1;
     dispatch({ type: OrderActionAttempt });
 
-    const res = await axios.get("http://localhost:5000/order/ordersc");
+    const res = await axios.get("http://localhost:5000/order/orderss");
     console.log(res.data);
     dispatch({
       type: GET_DASHBOARD_ORDERS,

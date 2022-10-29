@@ -6,6 +6,7 @@ import {
   CART_QUANTITY_INCREAMENT,
   GET_USER_CART,
   REMOVE_ITEM_FROM_CART,
+  CART_GRAND_TOTAL,
 } from "../types";
 
 const initialState = {
@@ -18,11 +19,15 @@ const initialState = {
 export default (state = initialState, action) => {
   switch (action.type) {
     case GET_USER_CART:
+      let cartTotal = 0;
+
       return {
         ...state,
         cartItems: action.payload.data.cartItems,
         carts: action.payload.data,
-        cartTotal: action.payload.data.carttotal,
+        // cartTotal: action.payload.data.reduce((accumulator, object) => {
+        //   return accumulator + object.carttotal;
+        // }, 0),
       };
     case ADD_TO_CART:
       const item = action.payload.product;
@@ -48,6 +53,7 @@ export default (state = initialState, action) => {
         );
         var upatedcart_ = {
           ...carttoupdate_,
+          carttotal: carttoupdate_.carttotal + item.price,
           cartItems: incart
             ? carttoupdate_.cartItems.map((item) =>
                 item.product._id == id
@@ -69,6 +75,7 @@ export default (state = initialState, action) => {
                 upatedcart_,
                 ...data_.slice(cartToChangeIndex_ + 1), // the comments after the updated comment
               ],
+
         // carts: iscart
         //   ? {
         //       ...iscart,
@@ -176,7 +183,19 @@ export default (state = initialState, action) => {
         // ),
         cartTotal: action.payload.data.carttotal,
       };
+    case CART_GRAND_TOTAL:
+      return {
+        ...state,
 
+        // cartItems: state.cartItems.map((item) =>
+        //   item.product._id == action.payload.id
+        //     ? { ...item, quantity: action.payload.data.data }
+        //     : item
+        // ),
+        cartTotal: state.carts.reduce((accumulator, object) => {
+          return accumulator + object.carttotal;
+        }, 0),
+      };
     default:
       return state;
   }

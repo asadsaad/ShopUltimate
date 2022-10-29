@@ -40,12 +40,13 @@ import TableRow from "@mui/material/TableRow";
 
 import { Link } from "react-router-dom";
 
-export default function BasicTable(props) {
+export default function CartItemslisting(props) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   console.log(props);
   return (
     <>
+      <Nav />
       <Container>
         <Typography variant="h4" sx={{ mt: 5, mb: 3, fontWeight: "bold" }}>
           Shopping Cart (2)
@@ -274,7 +275,7 @@ export default function BasicTable(props) {
                   Total
                 </Typography>
                 <Typography sx={{ fontWeight: "bold", fontSize: "18px" }}>
-                  $39
+                  {cart.cartTotal}
                 </Typography>
               </Box>
               <Button

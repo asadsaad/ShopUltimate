@@ -12,6 +12,7 @@ import {
   IN_PROGRESS,
   REMOVE_ALERT,
   VERIFY_EMAIL,
+  PASSWORD_CHANGE,
 } from "../types";
 import { setAlert } from "./alertactions";
 
@@ -106,6 +107,27 @@ export const login = (formData) => async (dispatch) => {
       type: IN_PROGRESS,
       payload: false,
     });
+    dispatch(setAlert(err.response.data.message, "error"));
+  }
+};
+export const passwordchange = (formData, navigate) => async (dispatch) => {
+  // const body = { email, password };
+
+  try {
+    const res = await axios.post(
+      "http://localhost:5000/user/passwordchange",
+      formData
+    );
+
+    dispatch({
+      type: PASSWORD_CHANGE,
+      // payload: res.data,
+    });
+
+    dispatch(setAlert(res.data.message, "success"));
+    dispatch(logout());
+    navigate("/login");
+  } catch (err) {
     dispatch(setAlert(err.response.data.message, "error"));
   }
 };

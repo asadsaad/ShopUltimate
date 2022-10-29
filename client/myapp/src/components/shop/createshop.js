@@ -104,7 +104,7 @@ export default function Addshop(props) {
     setShoplogoupload(true);
     setstoreimage([e.target.files[0]]);
     const file = e.target.files[0];
-    console.log(file);
+
     const storageRef = ref(storage, "storelogo" + "/" + file.name);
     const upload = uploadBytesResumable(storageRef, file);
     upload.on(

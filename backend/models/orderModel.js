@@ -49,8 +49,9 @@ const order = new mongoose.Schema({
     default: Date.now,
   },
   deliverydetails: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "DeliveryAddress",
+    required: true,
   },
 });
 

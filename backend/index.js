@@ -11,6 +11,7 @@ const AddressRoutes = require("./Routes/DeliveryAddressRoutes");
 const catageryRoutes = require("./Routes/catageryRoutes");
 const orderRoutes = require("./Routes/orderRoutes");
 const brandRoutes = require("./Routes/brandsRoutes");
+const profileRoutes = require("./Routes/profileRoutes");
 
 const app = express();
 
@@ -26,6 +27,8 @@ app.use("/catagery", catageryRoutes);
 app.use("/address", AddressRoutes);
 app.use("/order", orderRoutes);
 app.use("/brand", brandRoutes);
+app.use("/profile", profileRoutes);
+
 // app.use("/order", orderRoutes);
 
 mongoose
