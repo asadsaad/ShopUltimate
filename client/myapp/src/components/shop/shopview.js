@@ -103,12 +103,12 @@ export default function ShopView() {
     );
   }
   return (
-    <div>
+    <div style={{ background: "#f2faf9", paddingBottom: "30px" }}>
       <Nav />
       <Container sx={{ mt: 3 }} maxWidth="xl">
         <Grid container spacing={2}>
           <Grid item md={3} xs={12}>
-            <Paper sx={{ p: 2, height: "80vh" }}>
+            <Paper sx={{ p: 2, height: "80vh", boxShadow: "0" }}>
               <Box
                 sx={{
                   pb: 2,
@@ -126,14 +126,17 @@ export default function ShopView() {
                       sx={{
                         width: 150,
                         height: 150,
-                        border: "1px solid #d0d0d0",
                       }}
                     ></Avatar>
                   </Box>
                   <Box>
                     <Typography
                       variant="h6"
-                      sx={{ fontWeight: "bold", textAlign: "center" }}
+                      sx={{
+                        fontWeight: "bold",
+                        textAlign: "center",
+                        textTransform: "capitalize",
+                      }}
                     >
                       {shopdata[0]?.shopname}
                     </Typography>
@@ -159,24 +162,14 @@ export default function ShopView() {
                 >
                   <Box>
                     <Button
-                      variant="outlined"
+                      variant="contained"
                       endIcon={<MessageOutlined />}
-                      color="success"
-                      size="small"
+                      sx={{ background: "#009f7f" }}
                     >
                       Message
                     </Button>
                   </Box>
-                  <Box>
-                    <Button
-                      variant="contained"
-                      endIcon={<Description />}
-                      color="success"
-                      size="small"
-                    >
-                      View Description
-                    </Button>
-                  </Box>
+                  <Box></Box>
                 </Stack>
               </Box>
               <Box sx={{ p: 2 }}>
@@ -195,6 +188,12 @@ export default function ShopView() {
                   <Typography sx={{ fontWeight: "bold" }}>Phone</Typography>
                   <Typography>{shopdata[0]?.shopphone}</Typography>
                 </Box>
+                <Box>
+                  <Typography sx={{ fontWeight: "bold", mt: 1 }}>
+                    Description
+                  </Typography>
+                  <Typography>{shopdata[0]?.aboutShop}</Typography>
+                </Box>
               </Box>
             </Paper>
           </Grid>
@@ -210,6 +209,11 @@ export default function ShopView() {
                 borderRadius: "12px",
               }}
             ></Box>
+            {/* <img
+              // variant="rounded"
+              src={shopdata[0]?.shopbanner[0]}
+              style={{ width: "100%", height: "300px" }}
+            ></img> */}
             <Box>
               {shopdata[0] ? (
                 <Box

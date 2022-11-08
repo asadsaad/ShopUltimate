@@ -101,36 +101,7 @@ const Nav = () => {
             Shop
             <span style={{ color: "#64a832" }}>Ultimate</span>
           </Typography>
-          {/* <Avatar sx={{ mr: 1 }}></Avatar>
-          <Link
-            to="/"
-            style={{
-              color: "white",
-              textDecoration: "none",
-              marginRight: "10px",
-            }}
-          >
-            {auth.user ? auth.user.username : ""}
-          </Link>
 
-          <Link to="/cart">
-            <IconButton aria-label="cart">
-              <StyledBadge
-                badgeContent={cart ? cart?.cartItems?.length : 1}
-                color="secondary"
-              >
-                <ShoppingCartIcon sx={{ color: "white" }} />
-              </StyledBadge>
-            </IconButton>
-          </Link>
-          <Button
-            size="small"
-            variant="contained"
-            color="info"
-            onClick={handlelogout}
-          >
-            Logout
-          </Button> */}
           {auth.user?.role === "seller" ? (
             <Link
               to="/dashboard"
@@ -251,22 +222,56 @@ const Nav = () => {
     return (
       <>
         <Box sx={{ flexGrow: 1 }}>
-          <AppBar position="static">
+          <AppBar position="static" sx={{ background: "white" }}>
             <Toolbar>
-              <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                ShopUltimate
+              <AssuredWorkload sx={{ color: "#333", mr: 1 }} />
+              <Typography
+                variant="h6"
+                component="div"
+                sx={{
+                  flexGrow: 1,
+                  color: "#333",
+                  textTransform: "uppercase",
+                  fontWeight: "bold",
+                  letterSpacing: "1px",
+                }}
+              >
+                Shop
+                <span style={{ color: "#64a832" }}>Ultimate</span>
               </Typography>
+              <Link
+                to="/shops-list"
+                style={{
+                  textDecoration: "none",
+                  color: "#009f7f",
+                  marginRight: "20px",
+                  marginTop: "-3px",
+                }}
+              >
+                Shops
+              </Link>
+              <Link
+                to="/product-list"
+                style={{
+                  textDecoration: "none",
+                  color: "#009f7f",
+                  marginRight: "20px",
+                  marginTop: "-3px",
+                }}
+              >
+                Products
+              </Link>
               <Button
                 variant="text"
                 startIcon={<LoginIcon />}
-                sx={{ color: "#fff" }}
+                sx={{ color: "#009f7f" }}
                 onClick={handleClickOpen}
               >
                 <Link
                   to="/login"
                   style={{
                     textDecoration: "none",
-                    color: "white",
+                    color: "#009f7f",
                     fontWeight: "bold",
                   }}
                 >
@@ -276,14 +281,14 @@ const Nav = () => {
               <Button
                 variant="text"
                 startIcon={<PersonIcon />}
-                sx={{ color: "#fff" }}
+                sx={{ color: "#009f7f" }}
                 onClick={handleClickOpenSignup}
               >
                 <Link
                   to="/register"
                   style={{
                     textDecoration: "none",
-                    color: "white",
+                    color: "#009f7f",
                     fontWeight: "bold",
                   }}
                 >

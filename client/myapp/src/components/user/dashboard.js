@@ -35,7 +35,7 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 export default function Dashboard() {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const [dark, setDark] = useState(false);
 
   const darkTheme = useMemo(
@@ -54,10 +54,21 @@ export default function Dashboard() {
 
   const navigate = useNavigate();
   return (
-    <ThemeProvider theme={darkTheme}>
-      <Box sx={{ display: "flex" }}>
+    <ThemeProvider theme={darkTheme} sx={{}}>
+      <Box
+        sx={{
+          display: "flex",
+          background: "#f2faf9",
+          paddingBottom: "30px",
+          "& .css-k008qs": { width: "100%" },
+        }}
+      >
         <CssBaseline />
-        <AppBar position="fixed" open={open}>
+        <AppBar
+          position="fixed"
+          open={open}
+          sx={{ background: !dark && "white",boxShadow:"0",borderBottom:"1px solid #e3e9ef" }}
+        >
           <Toolbar>
             <IconButton
               color="inherit"
@@ -69,7 +80,7 @@ export default function Dashboard() {
                 ...(open && { display: "none" }),
               }}
             >
-              <Menu />
+              <Menu sx={{color:"#333"}}/>
             </IconButton>
             <Tooltip title="Go back to home page">
               <IconButton sx={{ mr: 1 }} onClick={() => navigate("/")}>
@@ -80,7 +91,7 @@ export default function Dashboard() {
               variant="h6"
               noWrap
               component="div"
-              sx={{ flexGrow: 1 }}
+              sx={{ flexGrow: 1,color:"#333" }}
             >
               Dashboard
             </Typography>

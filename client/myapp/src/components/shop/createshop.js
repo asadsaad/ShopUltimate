@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import Nav from "../layouts/nav";
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
@@ -8,6 +8,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import Stack from "@mui/material/Stack";
 import JoditEditor from "jodit-react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
 import {
   Avatar,
   Grid,
@@ -46,6 +48,7 @@ import { useNavigate } from "react-router-dom";
 import Slide from "@mui/material/Slide";
 import ProgressList from "../upload/progressList/progressList";
 import Loading from "../layouts/loading";
+import axios from "axios";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -76,6 +79,12 @@ export default function Addshop(props) {
 
   const [progress, setProgress] = useState(0);
   const [bannerprogress, setbannerProgress] = useState(0);
+  const [countries, setCountries] = useState(null);
+  const [cl, setcl] = useState(false);
+  const [city, setCity] = useState(null);
+  const [cityy, setCityy] = useState(null);
+
+  const [ctl, setctl] = useState(false);
 
   const [content, setContent] = useState("");
 
@@ -99,7 +108,41 @@ export default function Addshop(props) {
     }),
     [placeholder]
   );
-
+  const getcountrydata = async () => {
+    setcl(true);
+    try {
+      const res = await axios.get(
+        "https://countriesnow.space/api/v0.1/countries/positions"
+      );
+      setCountries(res?.data?.data);
+      setcl(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getcountrydata();
+  }, []);
+  const getcitydata = async () => {
+    setctl(true);
+    try {
+      const res = await axios.post(
+        "https://countriesnow.space/api/v0.1/countries/cities",
+        { country: shopcountry && shopcountry }
+      );
+      setCity(res.data.data);
+      // setCity(res?.data?.data);
+      setctl(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    setctl(true);
+    setCityy(null);
+    setCity(null);
+    getcitydata();
+  }, [shopcountry]);
   const handlestorelogoupload = (e) => {
     setShoplogoupload(true);
     setstoreimage([e.target.files[0]]);
@@ -173,21 +216,22 @@ export default function Addshop(props) {
       Brands: brand,
       shopbanner: storebanner,
     };
-    dispatch(addshop(formData, props.setshopaddOpen));
-    setshopname("");
-    setcatagery("");
-    setsubcatagery("");
-    setContent("");
-    setstorelogo([]);
-    setstorebanner([]);
-    setshopcity("");
-    setshopcountry("");
-    setshopstreetaddress("");
-    setbrand("");
-    setshoptype("");
-    setstorebannerimage([]);
-    setstoreimage([]);
-    setshopphone("");
+    console.log(formData);
+    dispatch(addshop(formData, navigate));
+    // setshopname("");
+    // setcatagery("");
+    // setsubcatagery("");
+    // setContent("");
+    // setstorelogo([]);
+    // setstorebanner([]);
+    // setshopcity("");
+    // setshopcountry("");
+    // setshopstreetaddress("");
+    // setbrand("");
+    // setshoptype("");
+    // setstorebannerimage([]);
+    // setstoreimage([]);
+    // setshopphone("");
     // if (storeimage.length > 0) {
     //   const promises = [];
     //   // for (let index = 0; index < storeimage.length; index++) {
@@ -232,8 +276,8 @@ export default function Addshop(props) {
     // }
   };
   return (
-    <>
-      <Paper sx={{ p: 3 }}>
+    <Box sx={{ width: "100%" }}>
+      <Paper sx={{ p: 3, boxShadow: "0" }}>
         {/* <Dialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
@@ -370,7 +414,7 @@ export default function Addshop(props) {
                 type="file"
                 onChange={handlestorebannerupload}
               />
-              <IconButton
+              {/* <IconButton
                 sx={{ width: "100%" }}
                 color="primary"
                 aria-label="upload banner"
@@ -378,37 +422,37 @@ export default function Addshop(props) {
                 align="center"
                 variant="contained"
                 size="large"
+              > */}
+              <Avatar
+                sx={{
+                  width: "100%",
+                  height: "300px",
+                  bgcolor: shopbannerupload && "green",
+                }}
+                variant="rounded"
+                src={
+                  !shopbannerupload && storebannerimage[0]
+                    ? URL.createObjectURL(storebannerimage[0])
+                    : ""
+                }
               >
-                <Avatar
-                  sx={{
-                    width: "100%",
-                    height: "300px",
-                    bgcolor: shopbannerupload && "green",
-                  }}
-                  variant="rounded"
-                  src={
-                    !shopbannerupload && storebannerimage[0]
-                      ? URL.createObjectURL(storebannerimage[0])
-                      : ""
-                  }
-                >
-                  {shopbannerupload ? (
-                    <Box>
-                      <CircularProgress sx={{ color: "white" }} />
-                      <Typography>Uploading {bannerprogress}%</Typography>
-                    </Box>
-                  ) : (
-                    <PhotoCamera />
-                  )}
-                </Avatar>
-              </IconButton>
+                {shopbannerupload ? (
+                  <Box>
+                    <CircularProgress sx={{ color: "white" }} />
+                    <Typography>Uploading {bannerprogress}%</Typography>
+                  </Box>
+                ) : (
+                  <PhotoCamera />
+                )}
+              </Avatar>
+              {/* </IconButton> */}
             </label>
           </Typography>
 
           <InputLabel sx={{ color: "black", mb: 1, mt: 1 }}>
             Store Location (Country)
           </InputLabel>
-          <TextField
+          {/* <TextField
             variant="outlined"
             fullWidth
             size="small"
@@ -418,11 +462,21 @@ export default function Addshop(props) {
             value={shopcountry}
             onChange={(e) => setshopcountry(e.target.value)}
             name="shopcountry"
+          /> */}
+          <Autocomplete
+            id="free-solo-demo"
+            options={countries && countries}
+            getOptionLabel={(option) => option.name}
+            onChange={(event, value) => setshopcountry(value.name)}
+            loading={cl}
+            renderInput={(params) => (
+              <TextField {...params} size="small" placeholder="Country" />
+            )}
           />
           <InputLabel sx={{ color: "black", mb: 1 }}>
             Store Location (City)
           </InputLabel>
-          <TextField
+          {/* <TextField
             variant="outlined"
             fullWidth
             size="small"
@@ -432,6 +486,17 @@ export default function Addshop(props) {
             value={shopcity}
             onChange={(e) => setshopcity(e.target.value)}
             name="shopcity"
+          /> */}
+          <Autocomplete
+            id="free-solo-demo"
+            options={city ? city : []}
+            // value={cityy}
+            getOptionLabel={(option) => option}
+            onChange={(event, value) => setshopcity(value)}
+            loading={ctl}
+            renderInput={(params) => (
+              <TextField {...params} size="small" placeholder="City" />
+            )}
           />
           <InputLabel sx={{ color: "black", mb: 1 }}>
             Store Location (Street Address)
@@ -449,7 +514,7 @@ export default function Addshop(props) {
             name="streetaddress"
           />
           <InputLabel sx={{ color: "black", mb: 1 }}>Store Phone</InputLabel>
-          <TextField
+          {/* <TextField
             variant="outlined"
             fullWidth
             size="small"
@@ -459,6 +524,17 @@ export default function Addshop(props) {
             value={shopphone}
             onChange={(e) => setshopphone(e.target.value)}
             name="shopphone"
+          /> */}
+          <PhoneInput
+            containerStyle={{}}
+            inputStyle={{
+              width: "100%",
+            }}
+            defaultCountry="no"
+            value={shopphone}
+            onChange={(value, country, e, formattedValue) =>
+              setshopphone(formattedValue)
+            }
           />
           <Button variant="contained" color="primary" type="submit" fullWidth>
             Create Shop
@@ -467,6 +543,6 @@ export default function Addshop(props) {
         {/* </Dialog> */}
         <Loading isloading={isLoading} />
       </Paper>
-    </>
+    </Box>
   );
 }

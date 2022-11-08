@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+// import { makeStyles } from "@material-ui/core";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import PersonIcon from "@mui/icons-material/Person";
@@ -31,13 +31,9 @@ import { useNavigate } from "react-router-dom";
 const EditProfile = () => {
   const navigate = useNavigate();
   const profile = useSelector((state) => state.profile.profile);
-  const useStyles = makeStyles({
-    field: {
-      error: {},
-    },
-  });
+  
 
-  const classes = useStyles();
+  // const classes = useStyles();
   const [name, setName] = useState();
   const [bio, setBio] = useState();
   const [image, setImage] = useState();

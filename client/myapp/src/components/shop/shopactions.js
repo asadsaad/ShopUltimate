@@ -1,6 +1,6 @@
 import { React, useState } from "react";
 import { Box, IconButton, Tooltip } from "@mui/material";
-import { Delete, Edit, Preview } from "@mui/icons-material";
+import { Delete, Edit, Preview, Visibility } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteshop } from "../../redux/actions/shopactions";
 import EditShop from "./shopeditmodel";
@@ -15,7 +15,7 @@ export default function ShopActions({ params, props }) {
     <Box>
       <Tooltip title="View Shop Details">
         <IconButton>
-          <Preview />
+          <Visibility />
         </IconButton>
       </Tooltip>
       <Tooltip title="Edit this Shop">

@@ -55,7 +55,7 @@ export const getsingleshop = (id) => async (dispatch) => {
   }
 };
 
-export const addshop = (formdata, setshopaddopen) => async (dispatch) => {
+export const addshop = (formdata, navigate) => async (dispatch) => {
   try {
     const res = await axios.post(
       "http://localhost:5000/shop/add-shop",
@@ -70,7 +70,7 @@ export const addshop = (formdata, setshopaddopen) => async (dispatch) => {
       type: SHOP_ACTION_SUCCESS,
     });
     dispatch(setAlert(res.data.message, "success"));
-    setshopaddopen(false);
+    navigate("/dashboard/myshops");
   } catch (err) {
     dispatch({
       type: SHOP_ACTION_FAILED,

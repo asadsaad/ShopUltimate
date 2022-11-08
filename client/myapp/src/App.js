@@ -41,9 +41,21 @@ import CartItemslisting from "./components/cart/cartItemlisting";
 import CheckoutandReview from "./components/user/shipping";
 import EditProfile from "./components/userdashboard/editProfile";
 import { getprofile } from "./redux/actions/profileactions";
+import UserPayment from "./components/stripe/userpayment";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadstripe } from "./redux/actions/authactions";
+import SellerDashboard from "./components/SellerDashboard.js/maindashboard";
+
 if (localStorage.token) {
   setauthtoken(localStorage.token);
 }
+
+const stripePromise = loadStripe(
+  "pk_test_51IIqvWEeXLQyBq0Sx642zY9vJvi2JiLHGxQWpZ4ZcUKLyxaScjfltndaM4UD13xuWErm9HHKwfw2iaJg4zc27wzv00rzLMHWND"
+);
+
+
 
 class App extends Component {
   componentDidMount() {
@@ -56,10 +68,20 @@ class App extends Component {
   render() {
     return (
       <BrowserRouter>
+      <Elements stripe={stripePromise}>
+
         <div>
           <Alert open={true} />
           <Routes>
+            <Route path="Seller-Dashboard" element={<SellerDashboard />} />
+            {/* <Route path="payment" element={<UserPayment />} /> */}
+
+
             <Route path="test" element={<AddAddress />} />
+            <Route path="landingpage" element={<LandingPage />} />
+
+            {/* <Route path="pay" element={<UserPayment />} /> */}
+
             <Route path="edit-profile" element={<EditProfile />} />
 
             <Route path="test1" element={<AddressList />} />
@@ -74,9 +96,9 @@ class App extends Component {
               path="/dashboard/*"
               element={<PrivateRoute component={Dashboard} />}
             >
-              {/* <Route path="products" element={<Products />} /> */}
-              {/* <Route path="shops" element={<Shops />} /> */}
-              {/* <Route path="create-shop" element={<Addshop />} /> */}
+              {/* <Route path="products" element={<Products />} />
+              <Route path="shops" element={<Shops />} />
+              <Route path="create-shop" element={<Addshop />} /> */}
             </Route>
 
             <Route path="products" element={<Products />} />
@@ -106,6 +128,8 @@ class App extends Component {
             {/* <Route path="/Dashboard" element={<Dashboard />} /> */}
           </Routes>
         </div>
+      </Elements>
+
       </BrowserRouter>
     );
   }

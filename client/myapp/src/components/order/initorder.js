@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Link } from "react-router-dom";
 import { Createorder } from "../../redux/actions/orderactions";
+import Userpayment from "../stripe/userpayment";
 
 export default function Initorder(props) {
   const dispatch = useDispatch();
@@ -124,6 +125,7 @@ export default function Initorder(props) {
                   </Typography>
                   <Typography variant="p">$0</Typography>
                 </Box>
+
                 <Box
                   sx={{
                     display: "flex",

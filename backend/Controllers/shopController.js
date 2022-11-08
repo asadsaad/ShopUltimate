@@ -5,7 +5,6 @@ exports.getallshops = async (req, res) => {
   try {
     let shops;
 
-    console.log(req.body);
     // const page = req.query.page;
     // const limit = 9;
     // const startindex = (page - 1) * limit;
@@ -53,7 +52,6 @@ exports.addshop = async (req, res) => {
       shopname,
       aboutShop,
       catagery,
-      subcatagery,
       shopavatar,
       shopphone,
       country,
@@ -79,11 +77,7 @@ exports.addshop = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Catagery is required" });
     }
-    if (!subcatagery) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Sub-Catagery is required" });
-    }
+
     if (shopavatar.length < 0) {
       return res
         .status(400)
@@ -125,7 +119,6 @@ exports.addshop = async (req, res) => {
       aboutShop,
       catagery,
       shopavatar,
-      subcatagery,
       shopphone,
       country,
       city,

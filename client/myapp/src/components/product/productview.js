@@ -91,7 +91,7 @@ export default function ProductView() {
     slidesToScroll: 1,
   };
   return (
-    <div>
+    <div style={{ background: "#f2faf9" }}>
       <Nav />
       {/* <SwipeableTextMobileStepper images={product && product.images} /> */}
       <Container sx={{ marginTop: 5 }}>

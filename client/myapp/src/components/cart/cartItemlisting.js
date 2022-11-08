@@ -31,12 +31,7 @@ import {
 import Nav from "../layouts/nav";
 
 import * as React from "react";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+
 
 import { Link } from "react-router-dom";
 
@@ -45,20 +40,20 @@ export default function CartItemslisting(props) {
   const cart = useSelector((state) => state.cart);
   console.log(props);
   return (
-    <>
+    <div style={{background:"#f2faf9"}}>
       <Nav />
       <Container>
-        <Typography variant="h4" sx={{ mt: 5, mb: 3, fontWeight: "bold" }}>
+        <Typography variant="h5" sx={{ mt: 5, mb: 3, fontWeight: "bold" }}>
           Shopping Cart (2)
         </Typography>
         <Grid container spacing={2}>
           <Grid xs={12} md={8}>
             {cart?.carts?.map((cartt) => {
               return (
-                <Paper sx={{ borderRadius: "0", mt: 2, mb: 2, p: 2 }}>
+                <Paper sx={{ mt: 2, mb: 2, p: 2,boxShadow:"0" }}>
                   <Box
                     sx={{
-                      borderBottom: "1px solid #d0d0d0",
+                      borderBottom: "1px solid #e5e7eb",
                       pb: 1,
                       display: "flex",
                       justifyContent: "space-between",
@@ -66,7 +61,7 @@ export default function CartItemslisting(props) {
                   >
                     <Box sx={{ display: "flex" }}>
                       <StorefrontOutlinedIcon sx={{ mr: 1 }} />
-                      <Typography>{cartt?.store?.shopname}</Typography>
+                      <Typography sx={{textTransform:"capitalize"}}>{cartt?.store?.shopname}</Typography>
                     </Box>
                     <Box>
                       <Typography>
@@ -76,12 +71,12 @@ export default function CartItemslisting(props) {
                   </Box>
 
                   {cartt?.cartItems &&
-                    cartt?.cartItems?.map((row) => (
+                    cartt?.cartItems?.map((row,index) => (
                       <Box
                         sx={{
                           pt: 1,
                           pb: 1,
-                          borderBottom: "1px solid #d0d0d0",
+                          borderBottom: cartt?.cartItems[index + 1] && "1px solid #e5e7eb",
                         }}
                       >
                         <Box sx={{ display: "flex" }}>
@@ -89,22 +84,22 @@ export default function CartItemslisting(props) {
                             <Avatar
                               variant="square"
                               src={row.product.images[0]}
-                              sx={{ width: 130, height: 130 }}
+                              sx={{ width: 100, height: 100 }}
                             ></Avatar>
                           </Box>
                           <Box sx={{ width: "100%" }}>
                             <Grid container>
                               <Grid item xs={8}>
                                 <Typography
-                                  variant="p"
-                                  sx={{ fontWeight: "bold", ml: 2 }}
+                                  variant="h6"
+                                  sx={{ ml: 2,fontWeight:"bold",fontSize:"17px" }}
                                 >
                                   {row.product.productTitle}
                                 </Typography>
                               </Grid>
                               <Grid item xs={4} sx={{ textAlign: "right" }}>
                                 <IconButton
-                                  color="secondary"
+                                  sx={{color:"#009f7f"}}
                                   onClick={() =>
                                     dispatch(
                                       removefromcart(
@@ -119,25 +114,32 @@ export default function CartItemslisting(props) {
                                 </IconButton>
                               </Grid>
                             </Grid>
-                            <Box sx={{ ml: 2 }}>
+                            <Box sx={{ ml: 2,mt:-1 }}>
                               <Typography
-                                variant="h5"
+                                variant="h6"
                                 sx={{
-                                  fontWeight: "bold",
-                                  fontSize: "18px",
+                                  fontSize: "15px",
                                 }}
                               >
                                 ${row.product.price} x {row.quantity}
                               </Typography>
                             </Box>
-                            <Box sx={{ ml: 2 }}>
-                              <ButtonGroup
-                                variant="outlined"
-                                aria-label="outlined button group"
-                                size="small"
-                                sx={{ mt: 1 }}
+                            <Box sx={{ ml: 2,mt:1 }}>
+                              <Box
+                              sx={{display:"flex",alignItems:"center"}}
                               >
-                                <Button
+                                <IconButton sx={{mr:1,borderRadius:"3px !important",background:"#f5f5f5"}} size="small">
+                                  <Add sx={{fontSize:"medium"}}/>
+
+                                </IconButton>
+                                <Typography sx={{mr:1,}}>
+                                  {row.quantity}
+                                </Typography>
+                                <IconButton sx={{background:"#f5f5f5",borderRadius:"3px !important"}} size="small">
+                                  <Remove sx={{fontSize:"medium"}}/>
+
+                                </IconButton>
+                                {/* <Button
                                   variant="contained"
                                   size="small"
                                   sx={{ boxShadow: "0" }}
@@ -172,85 +174,13 @@ export default function CartItemslisting(props) {
                                   }
                                 >
                                   <Remove />
-                                </Button>
-                              </ButtonGroup>
+                                </Button> */}
+                              </Box>
                             </Box>
                           </Box>
                         </Box>
                       </Box>
-                      // <TableRow
-                      //   key={row._id}
-                      //   sx={{
-                      //     "&:last-child td, &:last-child th": { border: 0 },
-                      //   }}
-                      // >
-                      //   <TableCell>{row._id}</TableCell>
-                      //   <TableCell align="center">
-                      //     {row.product.productTitle}
-                      //   </TableCell>
-                      //   <TableCell align="center">
-                      //     {row.product.shop.shopname}
-                      //   </TableCell>
-
-                      //   <TableCell align="center">
-                      //     <ButtonGroup
-                      //       variant="outlined"
-                      //       aria-label="outlined button group"
-                      //       size="small"
-                      //       sx={{ mt: 1 }}
-                      //     >
-                      //       <Button
-                      //         onClick={() =>
-                      //           dispatch(
-                      //             cartitemincreament(
-                      //               row.product._id,
-                      //               cartt._id,
-                      //               cartt.store
-                      //             )
-                      //           )
-                      //         }
-                      //       >
-                      //         <Add />
-                      //       </Button>
-                      //       <Button>{row.quantity}</Button>
-                      //       <Button
-                      //         onClick={() =>
-                      //           dispatch(
-                      //             cartitemdecreament(
-                      //               row.product._id,
-                      //               cartt._id,
-                      //               cartt.store
-                      //             )
-                      //           )
-                      //         }
-                      //       >
-                      //         <Remove />
-                      //       </Button>
-                      //     </ButtonGroup>
-                      //   </TableCell>
-                      //   <TableCell align="center">{row.product.price}</TableCell>
-                      //   <TableCell align="center">
-                      //     {row.product.price * row.quantity}
-                      //   </TableCell>
-                      //   <TableCell align="center">
-                      //     <Button
-                      //       onClick={() =>
-                      //         dispatch(
-                      //           removefromcart(
-                      //             row.product._id,
-                      //             cartt._id,
-                      //             cartt.store
-                      //           )
-                      //         )
-                      //       }
-                      //       variant="outlined"
-                      //       size="small"
-                      //       endIcon={<Delete />}
-                      //     >
-                      //       Remove
-                      //     </Button>
-                      //   </TableCell>
-                      // </TableRow>
+         
                     ))}
                 </Paper>
               );
@@ -260,6 +190,7 @@ export default function CartItemslisting(props) {
             <Paper
               sx={{
                 p: 2,
+                boxShadow:"0"
               }}
             >
               <Typography variant="h5">Summary</Typography>
@@ -275,21 +206,22 @@ export default function CartItemslisting(props) {
                   Total
                 </Typography>
                 <Typography sx={{ fontWeight: "bold", fontSize: "18px" }}>
-                  {cart.cartTotal}
+                  ${cart.cartTotal}
                 </Typography>
               </Box>
-              <Button
+              <Link to="/checkout" style={{textDecoration:"none"}}><Button
+              
                 variant="contained"
-                onClick={props.next}
                 fullWidth
-                sx={{ borderRadius: "20px" }}
+                sx={{ background:"#009f7f","&:hover":{background:"#009f7f"} }}
               >
-                Proceed To Shipping
+                Proceed To Checkout
               </Button>
+              </Link>
             </Paper>
           </Grid>
         </Grid>
       </Container>
-    </>
+    </div>
   );
 }

@@ -20,7 +20,7 @@ const shopModel = new mongoose.Schema({
     default: Date.now,
   },
   shopphone: {
-    type: Number,
+    type: String,
   },
   country: {
     type: String,

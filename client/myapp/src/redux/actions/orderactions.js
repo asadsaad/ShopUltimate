@@ -10,14 +10,16 @@ import axios from "axios";
 import { setAlert } from "./alertactions";
 
 export const Createorder =
-  (cartids, selected, navigate) => async (dispatch) => {
+  (cartids, selected, navigate,paymentid) => async (dispatch) => {
     try {
+      console.log(paymentid)
       // const page = 1;
       dispatch({ type: OrderActionAttempt });
       console.log(cartids);
       const res = await axios.post("http://localhost:5000/order/create-order", {
         cartids,
         deliverydetails: selected,
+        paymentid:paymentid
       });
       dispatch({
         type: CreateOrder,

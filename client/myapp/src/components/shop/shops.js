@@ -28,11 +28,15 @@ import {
   Avatar,
   Stack,
   CircularProgress,
+  useTheme,
+  Chip,
 } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import ShopActions from "./shopactions";
 
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import ShopActions from "./shopactions";
 export default function Shops() {
+  const theme = useTheme();
+  const colors = theme.palette.mode;
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [open, setOpen] = useState(false);
   const [shopaddopen, setshopaddOpen] = useState(false);
@@ -52,13 +56,21 @@ export default function Shops() {
     () => [
       {
         field: "shopavatar",
-        headerName: "Title",
+        headerName: "Shop",
         width: 180,
         renderCell: (params) => {
           return (
             <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
-              <Avatar src={params?.row?.shopavatar} variant="rounded"></Avatar>
-              <Typography>{params?.row?.shopname}</Typography>
+              <Avatar
+                src={params?.row?.shopavatar}
+                variant="rounded"
+                sx={{ width: 30, height: 30 }}
+              ></Avatar>
+              <Typography
+                sx={{ fontSize: "15px", textTransform: "capitalize" }}
+              >
+                {params?.row?.shopname}
+              </Typography>
             </Stack>
           );
         },
@@ -66,36 +78,36 @@ export default function Shops() {
       {
         field: "catagery",
         headerName: "Catagery",
-        width: 150,
+        width: 200,
         renderCell: (params) => {
-          return <Typography>{params.value}</Typography>;
+          return <Chip label={params.value} />;
         },
       },
       {
         field: "Shoptype",
         headerName: "Shop Type",
-        width: 150,
+        width: 200,
         renderCell: (params) => {
           return <Typography>{params.value}</Typography>;
         },
       },
 
-      {
-        field: "createdat",
-        headerName: "Create At",
-        width: 180,
-        renderCell: (params) => {
-          return (
-            <Typography>
-              {moment(params.row.createdat).format("MMMM Do YYYY")}
-            </Typography>
-          );
-        },
-      },
+      // {
+      //   field: "createdat",
+      //   headerName: "Create At",
+      //   width: 180,
+      //   renderCell: (params) => {
+      //     return (
+      //       <Typography>
+      //         {moment(params.row.createdat).format("MMMM Do YYYY")}
+      //       </Typography>
+      //     );
+      //   },
+      // },
       {
         field: "shopcity",
         headerName: "Location",
-        width: "180",
+        width: 230,
         renderCell: (params) => {
           return (
             <Typography>
@@ -108,7 +120,7 @@ export default function Shops() {
         field: "actions",
         headerName: "Actions",
         type: "actions",
-        width: 150,
+        width: 200,
         renderCell: (params) => <ShopActions {...{ params }} />,
       },
     ],
@@ -138,36 +150,91 @@ export default function Shops() {
   const nproducts = shops.length;
 
   return (
-    <Container sx={{ mt: 4 }}>
-      <Typography variant="h3" sx={{ mb: 1 }} align="center">
-        Manage Shops
+    <Container sx={{}}>
+      <Typography variant="h6" sx={{ mb: 2 }}>
+        Shops List
       </Typography>
 
-      <Box sx={{ height: 400, width: "100%" }}>
+      <Paper
+        sx={{
+          height: "75vh",
+          position: "relative",
+          top: "-10px",
+          left: "-7px",
+          boxShadow:"0",
+          border:"1px solid #e3e9ef",
+          "& .MuiDataGrid-root": {
+            border: "none",
+            // background:"white"
+          },
+          "& .MuiDataGrid-cell": {
+            borderBottom: "none !important",
+            
+          },
+          "& .name-column--cell": {
+            color: "#333",
+            // color:"white"
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: "#e3e9ef",
+            // color:"white",
+            // borderBottom: "none",
+          },
+          "& .css-1jbbcbn-MuiDataGrid-columnHeaderTitle":{
+            fontWeight:"700 !important"
+
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            // backgroundColor: colors.primary[400],
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            // backgroundColor: "#333",
+          },
+          "& .MuiCheckbox-root": {
+            // color: `${colors.greenAccent[200]} !important`,
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `#009f7f !important`,
+          },
+          "& .MuiDataGrid-row": {
+            background: "white",
+            // padding:"10px 0",
+            minHeight:"58px !important",
+            maxHeight:"58px !important",
+            borderBottom: "1px solid #E3E9EF",
+            alignItems:"center"
+            
+          },
+          "& .MuiDataGrid-columnSeparator": {
+            opacity:"0 !important"
+          },
+          "& .MuiDataGrid-menuIcon": {
+            display: "none !important",
+          },
+          "& .css-1pe4mpk-MuiButtonBase-root-MuiIconButton-root":{
+            display:"none !important"
+          }
+        }}
+      >
         <DataGrid
           getRowId={(row) => row._id}
           rows={shops}
           columns={columns}
-          pageSize={5}
+          pageSize={10}
           rowsPerPageOptions={[5]}
           checkboxSelection
           disableSelectionOnClick
+          // disableSelectionOnClick
           experimentalFeatures={{ newEditingApi: true }}
           loading={isloading}
+          // density="comfortable"
+          // components={{ Toolbar: GridToolbar }}
         />
         {/* <Link to="/dashboard/create-shop" style={{ textDecoration: "none" }}> */}
-        <Button
-          variant="outlined"
-          startIcon={<Add />}
-          sx={{ mt: 2 }}
-          onClick={() => handleClickaddOpen()}
-        >
-          Create New Shop
-        </Button>
-        <Addshop shopaddopen={shopaddopen} setshopaddOpen={setshopaddOpen} />
 
         {/* </Link> */}
-      </Box>
+      </Paper>
     </Container>
   );
 }

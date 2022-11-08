@@ -23,9 +23,10 @@ import {
   Checkbox,
   Rating,
   ImageList,
+  IconButton,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { FilterAlt } from "@mui/icons-material";
+import { FilterAlt, Search } from "@mui/icons-material";
 import { getbrands } from "../../redux/actions/brandsactions";
 export default function ShopFilter({
   setstorename,
@@ -49,7 +50,7 @@ export default function ShopFilter({
   }, []);
   return (
     <>
-      <Paper sx={{ p: 2, boxShadow: "0", border: "1px solid #d0d0d0" }}>
+      <Paper sx={{ boxShadow: "0" }}>
         <Box>
           <Grid container spacing={1}>
             <Grid item md={4} xs={12}>
@@ -117,17 +118,17 @@ export default function ShopFilter({
                 )}
               />
             </Grid>
-          </Grid>
 
-          <Button
-            variant="contained"
-            endIcon={<FilterAlt />}
-            sx={{ mt: 1 }}
-            color="success"
-            onClick={handlefilter}
-          >
-            Apply Filters
-          </Button>
+            {/* <Button
+                variant="contained"
+                endIcon={<FilterAlt />}
+                // sx={{ mt: 1 }}
+                color="success"
+                onClick={handlefilter}
+              >
+                Apply Filters
+              </Button> */}
+          </Grid>
         </Box>
       </Paper>
     </>

@@ -42,6 +42,7 @@ import {
   FilterAlt,
   FilterList,
   FilterListOff,
+  Search,
   TextFieldsRounded,
 } from "@mui/icons-material";
 import ShopFilter from "./filtershops";
@@ -90,14 +91,28 @@ export default function ShopHome() {
     <div>
       <Nav />
 
-      <Container sx={{ mt: 3 }} maxWidth="xl">
+      <Container sx={{ mt: 8 }}>
         {loading && (
           <Stack alignItems="center" sx={{ marginTop: 2, marginBottom: 2 }}>
             <CircularProgress disableShrink />
           </Stack>
         )}
-        <Box sx={{ textAlign: "right" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+          <Typography sx={{ fontWeight: "bold", fontSize: "25px" }}>
+            All Shops
+          </Typography>
           <Button
+            variant="contained"
+            endIcon={<Search />}
+            sx={{ background: "#009f7f" }}
+            onClick={handleclear}
+            // sx={{ mr: 1, mb: 1 }}
+          >
+            Search
+          </Button>
+        </Box>
+        <Box sx={{ textAlign: "right" }}>
+          {/* <Button
             variant="contained"
             color="primary"
             endIcon={<FilterListOff />}
@@ -114,42 +129,32 @@ export default function ShopHome() {
             onClick={() => setOpen(!open)}
           >
             Filter Shops
-          </Button>
+          </Button> */}
 
-          {open ? (
-            <ShopFilter
-              brand={brand}
-              setbrand={setbrand}
-              storename={storename}
-              setstorename={setstorename}
-              catagery={catagery}
-              setcatgery={setcatgery}
-              country={country}
-              setcountry={setcountry}
-              handlefilter={handlefilter}
-            />
-          ) : null}
+          <ShopFilter
+            brand={brand}
+            setbrand={setbrand}
+            storename={storename}
+            setstorename={setstorename}
+            catagery={catagery}
+            setcatgery={setcatgery}
+            country={country}
+            setcountry={setcountry}
+            handlefilter={handlefilter}
+          />
         </Box>
-        <ImageList
-          gap={12}
-          sx={{
-            // width: 500,
-            // mb: 8,
-            // height: "100%",
-            gridTemplateColumns:
-              "repeat(auto-fill, minmax(320px, 1fr))!important",
-          }}
-        >
+
+        <Grid container spacing={2} sx={{ mt: 2 }}>
           {shops ? (
             // <Grid container spacing={2}>
             shops.map((item) => (
               <Shopcard
                 key={item._id}
                 name={item.shopname}
+                streetaddress={item.streetaddress}
                 image={
                   item.shopavatar.length > 0 ? item.shopavatar[0] : nopreview
                 }
-                banner={item.shopbanner[0]}
                 country={item.country && item.country}
                 city={item.city && item.city}
                 // owner={item.owner.username}
@@ -158,9 +163,11 @@ export default function ShopHome() {
             ))
           ) : (
             // </Grid>
-            <h3>No Records</h3>
+            <Typography sx={{ p: 2, textAlign: "center" }}>
+              No Shops Available
+            </Typography>
           )}
-        </ImageList>
+        </Grid>
 
         {!loading && shops?.length > 15 && (
           <Stack alignItems="center">

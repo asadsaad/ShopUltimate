@@ -23,6 +23,7 @@ function createCategories(categories, parentId = null) {
 }
 
 exports.addcatagery = async (req, res) => {
+  console.log(req.body)
   try {
     if (!req.body.catagery_name) {
       return res

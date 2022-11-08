@@ -26,6 +26,7 @@ import Updateaddress from "../userdashboard/updateaddress";
 import { Createorder } from "../../redux/actions/orderactions";
 import { Link, useNavigate } from "react-router-dom";
 import { selectedGridRowsCountSelector } from "@mui/x-data-grid";
+import Userpayment from "../stripe/userpayment";
 // import { addshipping, getshipping } from "../../redux/actions/shippingactions";
 const Input = styled("input")({
   display: "none",
@@ -35,6 +36,8 @@ export default function CheckoutandReview(props) {
   const navigate = useNavigate();
   const address = useSelector((state) => state.address.addressess);
   const [open, setOpen] = React.useState(false);
+  const [paymentid, setpaymentid] = React.useState(null);
+
   const [selected, setSelected] = React.useState(null);
   const cart = useSelector((state) => state.cart);
   const loading = useSelector((state) => state.order.loading);
@@ -65,7 +68,8 @@ export default function CheckoutandReview(props) {
   const createorder = () => {
     const orderids = cart?.carts.map((cart) => cart._id);
     // console.log(orderids);
-    dispatch(Createorder(orderids, selected, navigate));
+    console.log(paymentid)
+    dispatch(Createorder(orderids, selected, navigate,paymentid));
   };
   return (
     <>
@@ -136,7 +140,7 @@ export default function CheckoutandReview(props) {
                         fontWeight: "light",
                       }}
                     >
-                      {cart?.store?.shopname + "  " + cart?.store._id}
+                      {cart?.store?.shopname + "  " + cart?.store?._id}
                     </Typography>
                   </Link>
 
@@ -241,27 +245,13 @@ export default function CheckoutandReview(props) {
                   ${cart?.cartTotal}
                 </Typography>
               </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  borderTop: "1px solid #d0d0d0",
-                  pt: 1,
-                }}
-              >
-                <Typography sx={{ fontWeight: "bold" }}>Paid</Typography>
-                <Typography sx={{ fontWeight: "bold" }}>Not Paid</Typography>
-              </Box>
-              <Box>
-                <Button
-                  onClick={createorder}
-                  variant="contained"
-                  fullWidth
-                  sx={{ mt: 1, borderRadius: "20px" }}
-                >
-                  Place Order
-                </Button>
-              </Box>
+             
+            </Paper>
+            <Paper sx={{mt:2,p:2}}>
+               
+       <Box> <Userpayment createorder={createorder} setpaymentid={setpaymentid}/></Box>
+
+             
             </Paper>
           </Grid>
         </Grid>

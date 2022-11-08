@@ -1,143 +1,3 @@
-// import React, { Component } from "react";
-// import { connect } from "react-redux";
-// import { login, inprogress, clearalert } from "../../redux/actions/authactions";
-// import Nav from "../layouts/nav";
-// import Box from "@mui/material/Box";
-// import {
-//   Grid,
-//   TextField,
-//   Button,
-//   Typography,
-//   Alert,
-//   IconButton,
-// } from "@mui/material";
-// import { Navigate } from "react-router-dom";
-// import Dialog from "@mui/material/Dialog";
-// import DialogTitle from "@mui/material/DialogTitle";
-// import DialogContent from "@mui/material/DialogContent";
-// import DialogActions from "@mui/material/DialogActions";
-// import CloseIcon from "@mui/icons-material/Close";
-// import Loading from "../layouts/loading";
-// class Login extends Component {
-//   state = {
-//     name: "",
-//     email: "",
-//     password: "",
-//     open: false,
-//   };
-//   handlechange = (event) => {
-//     this.setState({ [event.target.name]: event.target.value });
-//   };
-//   handleClose = () => {
-//     this.setState({ open: false });
-//   };
-//   submitform = (event) => {
-//     event.preventDefault();
-//     let datatosubmit = {
-//       email: this.state.email,
-//       password: this.state.password,
-//     };
-//     this.props.dispatch(inprogress(true));
-
-//     this.props.dispatch(login(datatosubmit));
-//   };
-//   render() {
-//     if (this.props.auth.isAuthenticated) {
-//       return <Navigate to="/dashboard" />;
-//     }
-//     return (
-//       <Dialog
-//         onClose={() => this.handleClose()}
-//         aria-labelledby="customized-dialog-title"
-//         open={this.props.open}
-//       >
-//         <DialogTitle
-//           id="customized-dialog-title"
-//           onClose={() => this.handleClose()}
-//         >
-//           Welcome Back
-//         </DialogTitle>
-//         <IconButton
-//           aria-label="close"
-//           onClick={() => this.props.setOpen(false)}
-//           sx={{
-//             position: "absolute",
-//             right: 8,
-//             top: 8,
-//             color: (theme) => theme.palette.grey[500],
-//           }}
-//         >
-//           <CloseIcon />
-//         </IconButton>
-//         <DialogContent dividers>
-//           <Box
-//             component="form"
-//             style={{ marginTop: "2em" }}
-//             method="post"
-//             onSubmit={(event) => this.submitform(event)}
-//           >
-//             <TextField
-//               variant="outlined"
-//               label="Email"
-//               fullWidth
-//               size="small"
-//               style={{ marginBottom: "1em" }}
-//               type="email"
-//               placeholder="email"
-//               value={this.state.email}
-//               onChange={(e) => this.handlechange(e)}
-//               name="email"
-//             />
-//             <TextField
-//               variant="outlined"
-//               label="Password"
-//               fullWidth
-//               size="small"
-//               style={{ marginBottom: "1em" }}
-//               type="password"
-//               placeholder="password"
-//               value={this.state.password}
-//               onChange={(e) => this.handlechange(e)}
-//               name="password"
-//             />
-//             <DialogActions>
-//               {this.props.auth.inprogress ? (
-//                 <Button
-//                   size="medium"
-//                   variant="contained"
-//                   color="primary"
-//                   type="submit"
-//                   disabled
-//                 >
-//                   Sending....
-//                 </Button>
-//               ) : (
-//                 <Button
-//                   size="medium"
-//                   variant="contained"
-//                   color="primary"
-//                   type="submit"
-//                 >
-//                   Login
-//                 </Button>
-//               )}
-//             </DialogActions>
-//           </Box>
-//         </DialogContent>
-//         <Loading isloading={this.props.auth.inprogress} />
-//       </Dialog>
-//     );
-//   }
-// }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     auth: state.auth,
-//     alerts: state.alerts,
-//   };
-// };
-// export default connect(mapStateToProps)(Login);
-
 import {
   Typography,
   Box,
@@ -145,6 +5,8 @@ import {
   Button,
   Container,
   InputLabel,
+  Stack,
+  InputAdornment,
 } from "@mui/material";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -155,6 +17,7 @@ import { login, inprogress } from "../../redux/actions/authactions";
 import GoogleIcon from "@mui/icons-material/Google";
 import SendIcon from "@mui/icons-material/Send";
 import { Link, useNavigate } from "react-router-dom";
+import { AssuredWorkload, Email } from "@mui/icons-material";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -182,39 +45,54 @@ export default function Login() {
       <Nav />
       <Container maxWidth="md">
         <Box sx={{ mt: 3, p: 2 }}>
+          <Box sx={{ textAlign: "center" }}>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{
+                flexGrow: 1,
+                color: "#333",
+                textTransform: "uppercase",
+                fontWeight: "bold",
+                letterSpacing: "1px",
+              }}
+            >
+              <AssuredWorkload
+                sx={{ color: "#333", mr: 1, position: "relative", top: "4px" }}
+              />
+              Shop
+              <span style={{ color: "#64a832" }}>Ultimate</span>
+            </Typography>
+          </Box>
           <Typography
-            variant="h4"
-            sx={{ mb: 2, fontWeight: "bold", color: "#333" }}
+            sx={{
+              textAlign: "center",
+              fontWeight: "bold",
+              mt: 1,
+            }}
           >
-            Welcome Back!
+            Login with your Email & Password
           </Typography>
           <Box component="form" method="post" onSubmit={submitform}>
-            <InputLabel sx={{ color: "#333", fontWeight: "bold" }}>
-              Email
-            </InputLabel>
-
             <TextField
               variant="outlined"
+              label="Email"
               fullWidth
               size="small"
-              sx={{ mt: 1, mb: 1 }}
+              sx={{ mt: 1 }}
               type="email"
-              placeholder="myemail@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               name="email"
             />
-            <InputLabel sx={{ color: "#333", fontWeight: "bold" }}>
-              Password
-            </InputLabel>
 
             <TextField
               variant="outlined"
               fullWidth
+              label="Password"
               size="small"
               sx={{ mt: 1, mb: 1 }}
               type="password"
-              placeholder="*******"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               name="password"
@@ -223,16 +101,21 @@ export default function Login() {
             <Button
               size="medium"
               variant="contained"
-              color="primary"
               type="submit"
               fullWidth
               endIcon={<SendIcon />}
+              sx={{
+                background: "#009f7f",
+                "&:hover": {
+                  background: "#009f7f",
+                },
+              }}
             >
               Login
             </Button>
+            <Typography sx={{ mt: 1, textAlign: "center" }}>Or</Typography>
             <Button
-              sx={{ mt: 2 }}
-              color="success"
+              sx={{ mt: 1 }}
               variant="contained"
               startIcon={<GoogleIcon />}
               fullWidth

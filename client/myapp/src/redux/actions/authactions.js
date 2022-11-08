@@ -1,3 +1,4 @@
+import { loadStripe } from "@stripe/stripe-js";
 import axios from "axios";
 import setauthtoken from "../setauthtoken";
 import {
@@ -13,7 +14,9 @@ import {
   REMOVE_ALERT,
   VERIFY_EMAIL,
   PASSWORD_CHANGE,
+  LOAD_STRIPE,
 } from "../types";
+
 import { setAlert } from "./alertactions";
 
 export const loadUser = () => async (dispatch) => {
@@ -152,3 +155,15 @@ export const logout = () => async (dispatch) => {
     payload: false,
   });
 };
+// export const loadstripe = () => async (dispatch) => {
+//   try {
+//     // const page = 1;
+//     const stripe = await loadStripe(
+//       "pk_test_51IIqvWEeXLQyBq0Sx642zY9vJvi2JiLHGxQWpZ4ZcUKLyxaScjfltndaM4UD13xuWErm9HHKwfw2iaJg4zc27wzv00rzLMHWND"
+//     );
+//     console.log(stripe);
+//     dispatch({ type: LOAD_STRIPE, payload: stripe });
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };

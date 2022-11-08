@@ -1,5 +1,5 @@
 // import * as React from "react"
-import { makeStyles } from '@material-ui/core'
+// import { makeStyles } from '@material-ui/core'
 import ListSubheader from '@mui/material/ListSubheader'
 // import List from '@mui/material/List'
 // import ListItemButton from '@mui/material/ListItemButton'
@@ -56,16 +56,16 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
 
-const useStyles = makeStyles({
-    a:{
-        textDecoration:"none",
-        color:"black",
-    }
-  })
+// const useStyles = makeStyles({
+//     a:{
+//         textDecoration:"none",
+//         color:"black",
+//     }
+//   })
 
 
  const UserSideBar = () => {
-    const classes = useStyles()
+    // const classes = useStyles()
     return ( 
         <Box sx={{width:"300px",height:{xs:"100vh", md:"inherit"}, left:{xs:"-60%", md:"0%"},top:"0%", position:{xs:"absolute", md:"relative"},transition : "left 0.5s",zIndex:"2" }}  id="sidebar" >
         <Paper >
@@ -80,7 +80,7 @@ const useStyles = makeStyles({
                 
             }
         >
-            <NavLink to="/orders" className={classes.a}>
+            <NavLink to="/orders" >
                 <ListItemButton>
                 <ListItemIcon>
                     <ShoppingBagOutlinedIcon />
@@ -89,7 +89,7 @@ const useStyles = makeStyles({
                 <Typography>12</Typography>
             </ListItemButton>
             </NavLink >
-            <NavLink to="/whitelist" className={classes.a}>
+            <NavLink to="/whitelist">
             <ListItemButton>
                 <ListItemIcon>
                     <FavoriteBorderOutlinedIcon />
@@ -98,7 +98,7 @@ const useStyles = makeStyles({
                 <Typography>12</Typography>
             </ListItemButton>
             </NavLink>
-            <NavLink to="support" className={classes.a}>
+            <NavLink to="support">
             <ListItemButton>
                 <ListItemIcon>
                     <SupportAgentOutlinedIcon />
@@ -119,7 +119,7 @@ const useStyles = makeStyles({
                 
             }
         >
-            <NavLink to="profile" className={classes.a}>
+            <NavLink to="profile" >
             <ListItemButton>
                 <ListItemIcon>
                     <PersonOutlinedIcon />
@@ -128,7 +128,7 @@ const useStyles = makeStyles({
                 <Typography>12</Typography>
             </ListItemButton>
             </NavLink>
-            <NavLink to="address" className={classes.a}>
+            <NavLink to="address">
             <ListItemButton>
                 <ListItemIcon>
                     <LocationOnOutlinedIcon />
@@ -137,7 +137,7 @@ const useStyles = makeStyles({
                 <Typography>12</Typography>
             </ListItemButton>
             </NavLink>
-            <NavLink to="payment" className={classes.a}>
+            <NavLink to="payment">
             <ListItemButton>
                 <ListItemIcon>
                     <CreditCardOutlinedIcon />

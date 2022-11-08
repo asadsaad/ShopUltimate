@@ -10,7 +10,6 @@ const Alertt = React.forwardRef(function Alert(props, ref) {
 
 export default function Alert(props) {
   const [open, setOpen] = React.useState(false);
-  console.log(props);
   const handleClick = () => {
     setOpen(true);
   };
@@ -32,7 +31,7 @@ export default function Alert(props) {
               open={props.open}
               autoHideDuration={6000}
               onClose={handleClose}
-              anchorOrigin={{ vertical: "top", horizontal: "right" }}
+              anchorOrigin={{ vertical: "top", horizontal: "center" }}
             >
               <Alertt
                 onClose={handleClose}
