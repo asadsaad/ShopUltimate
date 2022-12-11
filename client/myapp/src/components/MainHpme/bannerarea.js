@@ -1,7 +1,7 @@
 import { Search } from "@mui/icons-material";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React from "react";
-import bg from "../../images/grocery.webp";
+import bg from "../../images/bg/electronics.jpg";
 import Header from "./header";
 export default function BannerArea() {
   return (
@@ -16,6 +16,7 @@ export default function BannerArea() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "cover",
           backgroundPosition: "center",
+        
         }}
       >
         <Header />
@@ -25,6 +26,9 @@ export default function BannerArea() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%,-50%)",
+            display:'flex',
+            flexDirection:'column',
+            textAlign:'center'
           }}
         >
           <Typography
@@ -41,7 +45,7 @@ export default function BannerArea() {
             <TextField
               placeholder="Search Your Products From Here"
               fullWidth
-              sx={{ background: "white" }}
+              sx={{ background: "white",width:'100%' }}
             />
             <Button
               startIcon={<Search />}

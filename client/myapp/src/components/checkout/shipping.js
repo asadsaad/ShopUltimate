@@ -22,7 +22,7 @@ import {
   setcurrentaddress,
 } from "../../redux/actions/addressactions";
 import { Edit } from "@mui/icons-material";
-import Updateaddress from "../userdashboard/address/updateaddress";
+import Updateaddress from "../userdashboard/updateaddress";
 import { Createorder } from "../../redux/actions/orderactions";
 import { Link, useNavigate } from "react-router-dom";
 import { selectedGridRowsCountSelector } from "@mui/x-data-grid";

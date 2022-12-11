@@ -1,4 +1,5 @@
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import * as React from 'react';
 import { Link } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
@@ -15,45 +16,46 @@ import {
   Grid,
   TextField,
   IconButton,
+  Drawer,
 } from "@mui/material";
-import Nav from "../../layouts/nav";
+import Nav from "../layouts/nav";
 import { useDispatch, useSelector } from "react-redux";
 
-import UserSideBar from "../userSideBar";
+import UserSideBar from "./userSideBar";
 import { useEffect, useState } from "react";
-import { deleteaddress, getaddress } from "../../../redux/actions/addressactions";
-import Updateaddress from "../updateaddress";
+import { deleteaddress, getaddress, setcurrentaddress } from "../../redux/actions/addressactions";
+import Updateaddress from "./updateaddress";
 
 const AddressList = () => {
   const [open, setOpen] = useState(false);
-  const [currentaddress, setcurrentaddress] = useState(null);
-
+  const [currentaddress, Setcurrentaddress] = useState(null);
   const dispatch = useDispatch();
-  const bar = document.getElementById("sidebar");
-  const handleSlide = () => {
-    if (bar.style.left === "-60%") {
-      bar.style.left = "0%";
-    } else {
-      bar.style.left = "-60%";
-    }
-  };
   useEffect(() => {
     dispatch(getaddress());
   }, []);
 
   const address_ = useSelector((state) => state.address.addressess);
   const handleupdate = async (address) => {
-    setcurrentaddress(address);
+    dispatch(setcurrentaddress(address));
+    Setcurrentaddress(address);
     setOpen(true);
+  };
+
+
+
+  // 
+  const anchor = "left";
+  const [state, setState] = useState({ left: false });
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
   };
   return (
     <>
-      <Nav />
-      <Box sx={{ display: "flex", position: "relative" }}>
-        <Box sx={{ margin: { md: "25px 20px 25px 40px" } }}>
-          <UserSideBar />
-        </Box>
-        <Box sx={{ width: "100%", margin: "25px 40px 25px 20px" }}>
+      
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
             <Stack direction="row" spacing={1} alignItems="center">
               <LocationOnIcon fontSize="large" sx={{ color: "red " }} />
@@ -63,6 +65,7 @@ const AddressList = () => {
               </Typography>
             </Stack>
             <Box sx={{ display: "flex" }}>
+              <Link to="/user/add-address" style={{textDecoration:"none"}}>
               <Button
                 component="h2"
                 sx={{
@@ -74,11 +77,12 @@ const AddressList = () => {
               >
                 Add addresses
               </Button>
+              </Link>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
                 edge="start"
-                onClick={handleSlide}
+                onClick={toggleDrawer(anchor, true)}
                 sx={{ mr: 2, display: { md: "none" }, marginLeft: "16px" }}
               >
                 <MenuIcon />
@@ -88,53 +92,53 @@ const AddressList = () => {
           <Box mt="20px">
             {address_?.length > 0
               ? address_.map((address) => (
-                  <Paper
-                    sx={{ mt: "20px", p: "8px 16px", borderRadius: "5px" }}
+                <Paper
+                  sx={{ mt: "20px", p: "8px 16px", borderRadius: "5px" }}
+                >
+                  <Grid
+                    container
+                    sx={{
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                    spacing={2}
                   >
-                    <Grid
-                      container
-                      sx={{
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                      spacing={2}
-                    >
-                      <Grid item xs={2}>
-                        <Typography>{address?.user?.username}</Typography>
-                      </Grid>
-                      <Grid item xs={5}>
-                        <Typography noWrap>
-                          {address?.streetaddress} {", "}
-                          {address?.city} {", "}
-                          {address?.country}
-                        </Typography>
-                      </Grid>
-
-                      <Grid item xs={2}>
-                        <Typography>{address?.phone}</Typography>
-                      </Grid>
-
-                      <Grid item xs={2}>
-                        <Typography>
-                          <IconButton
-                            onClick={() => {
-                              handleupdate(address);
-                            }}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                          <IconButton
-                            onClick={() =>
-                              dispatch(deleteaddress(address?._id))
-                            }
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Typography>
-                      </Grid>
+                    <Grid item xs={2}>
+                      <Typography>{address?.user?.username}</Typography>
                     </Grid>
-                  </Paper>
-                ))
+                    <Grid item xs={5}>
+                      <Typography noWrap>
+                        {address?.streetaddress} {", "}
+                        {address?.city} {", "}
+                        {address?.country}
+                      </Typography>
+                    </Grid>
+
+                    <Grid item xs={2}>
+                      <Typography>{address?.phone}</Typography>
+                    </Grid>
+
+                    <Grid item xs={3} sx={{display:"flex", justifyContent:"center"}}>
+                      <Typography>
+                        <IconButton
+                          onClick={() => {
+                            handleupdate(address);
+                          }}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() =>
+                            dispatch(deleteaddress(address?._id))
+                          }
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Paper>
+              ))
               : "No address found"}
             {/* <Paper sx={{ mt: "20px", p: "8px 16px", borderRadius: "5px" }}>
               <Grid
@@ -168,14 +172,21 @@ const AddressList = () => {
               </Grid>
             </Paper> */}
           </Box>
-        </Box>
-      </Box>
       <Updateaddress
         open={open}
         setOpen={setOpen}
         currentaddress={currentaddress}
         setcurrentaddress={setcurrentaddress}
       />
+      <React.Fragment key={anchor}>
+        <Drawer
+          anchor={anchor}
+          open={state[anchor]}
+          onClose={toggleDrawer(anchor, false)}
+        >
+          <UserSideBar />
+        </Drawer>
+      </React.Fragment>
     </>
   );
 };
