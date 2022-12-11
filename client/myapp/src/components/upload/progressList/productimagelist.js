@@ -1,21 +1,23 @@
-import { Cancel } from '@mui/icons-material';
+import { Cancel } from "@mui/icons-material";
 import {
   IconButton,
   ImageList,
   ImageListItem,
   ImageListItemBar,
-} from '@mui/material';
-import React from 'react';
-import { useSelector } from 'react-redux';
+} from "@mui/material";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { removeproductimage } from "../../../redux/actions/productimagesactions";
 
 // import { useValue } from '../../../context/ContextProvider';
 // import deleteFile from '../../../firebase/deleteFile';
 
 const Imageslist = () => {
-  const images = useSelector((state)=>state.productimages.imagestosend)
+  const dispatch = useDispatch();
+  const images = useSelector((state) => state.productimages.imagestosend);
 
   const handleDelete = async (image) => {
-    console.log(image)
+    dispatch(removeproductimage(image));
     // dispatch({ type: 'DELETE_IMAGE', payload: image });
     // const imageName = image?.split(`${currentUser?.id}%2F`)[1]?.split('?')[0];
     // try {
@@ -28,9 +30,9 @@ const Imageslist = () => {
     <ImageList
       rowHeight={250}
       sx={{
-        '&.MuiImageList-root': {
+        "&.MuiImageList-root": {
           gridTemplateColumns:
-            'repeat(auto-fill, minmax(250px, 1fr))!important',
+            "repeat(auto-fill, minmax(250px, 1fr))!important",
         },
       }}
     >
@@ -40,17 +42,17 @@ const Imageslist = () => {
             src={image}
             alt="product"
             loading="lazy"
-            style={{ height: '100%' }}
+            style={{ height: "100%" }}
           />
           <ImageListItemBar
             position="top"
             sx={{
               background:
-                'linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)',
+                "linear-gradient(to bottom, rgba(0,0,0,0.7)0%, rgba(0,0,0,0.3)70%, rgba(0,0,0,0)100%)",
             }}
             actionIcon={
               <IconButton
-                sx={{ color: 'white' }}
+                sx={{ color: "white" }}
                 onClick={() => handleDelete(image)}
               >
                 <Cancel />

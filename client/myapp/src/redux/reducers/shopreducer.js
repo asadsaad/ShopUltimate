@@ -13,6 +13,7 @@ import {
 
 const initialState = {
   shops: [],
+  shop:null,
   usershops: [],
   notification: null,
   isLoading: false,
@@ -38,10 +39,8 @@ export default (state = initialState, action) => {
     case GET_ALL_SHOPS:
       return {
         ...state,
-        shops:
-          state.shops.length > 8
-            ? [...state.shops, ...action.payload.data]
-            : action.payload.data,
+        shops:action.payload.data,
+          
         isLoading: false,
       };
     case GET_USER_SHOPS:
@@ -53,7 +52,7 @@ export default (state = initialState, action) => {
     case GET_SINGLE_SHOP:
       return {
         ...state,
-        shops: [action.payload.data],
+        shop: action.payload.data,
         isLoading: false,
       };
     case CREATE_SHOP:

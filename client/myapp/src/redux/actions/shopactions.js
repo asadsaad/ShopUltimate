@@ -17,6 +17,7 @@ import { setAlert } from "./alertactions";
 
 export const getallshops = (data) => async (dispatch) => {
   try {
+    console.log("hj")
     const res = await axios.post("http://localhost:5000/shop", {
       data: data && data,
     });
@@ -45,13 +46,13 @@ export const getusershops = () => async (dispatch) => {
 export const getsingleshop = (id) => async (dispatch) => {
   try {
     const res = await axios.get(`http://localhost:5000/shop/${id}`);
-    // console.log(res.data.data)
+    console.log(res.data.data)
     dispatch({
       type: GET_SINGLE_SHOP,
       payload: res.data,
     });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
   }
 };
 
@@ -79,7 +80,7 @@ export const addshop = (formdata, navigate) => async (dispatch) => {
   }
 };
 
-export const updateshop = (shop, setopen) => async (dispatch) => {
+export const updateshop = (shop, navigate) => async (dispatch) => {
   try {
     const res = await axios.put(
       `http://localhost:5000/shop/update-shop/${shop._id}`,
@@ -97,7 +98,7 @@ export const updateshop = (shop, setopen) => async (dispatch) => {
     });
 
     dispatch(setAlert("Shop Updated Successfully", "success"));
-    setopen(false);
+    navigate("/dashboard");
   } catch (error) {
     console.log(error.message);
   }

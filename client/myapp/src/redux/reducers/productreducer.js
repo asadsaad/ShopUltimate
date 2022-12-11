@@ -46,20 +46,17 @@ export default (state = initialState, action) => {
         isLoadingp: false,
       };
     case GET_PRODUCTS:
-      var setHasMore;
-      if (action.payload.data !== undefined) {
-        setHasMore = action.payload.data.length !== 0 ? true : false;
-      } else {
-        setHasMore = false;
-      }
+      // var setHasMore;
+      // if (action.payload.data !== undefined) {
+      //   setHasMore = action.payload.data.length !== 0 ? true : false;
+      // } else {
+      //   setHasMore = false;
+      // }
       return {
         ...state,
         isLoadingp: false,
-        hasMore: setHasMore,
-        products:
-          state.products.length > 0
-            ? [...state.products, ...action.payload.data]
-            : action.payload.data,
+       
+        products:action.payload.data,
       };
     case GET_USER_PRODUCTS:
       return {
@@ -87,7 +84,6 @@ export default (state = initialState, action) => {
         products: state.products.filter(
           (product) => product._id !== action.payload
         ),
-        ...state,
         userproducts: state.userproducts.filter(
           (product) => product._id !== action.payload
         ),

@@ -6,6 +6,7 @@ import {
   GET_DASHBOARD_ORDERS,
   GET_USER_ORDERS,
   GET_SINGLE_ORDER,
+  UPDATE_ORDER,
 } from "../types";
 
 const initialState = {
@@ -54,6 +55,14 @@ export default (state = initialState, action) => {
         ...state,
         loading: false,
         c_orders: action.payload,
+      };
+    case UPDATE_ORDER:
+      return {
+        ...state,
+        loading: false,
+        s_orders: state.s_orders.map((order) =>
+          order._id === action.payload.order._id ? action.payload.order : order
+        ),
       };
     default:
       return state;

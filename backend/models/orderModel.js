@@ -51,7 +51,7 @@ const order = new mongoose.Schema({
   deliverydetails: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "DeliveryAddress",
-    required: true,
+    // required: true,
   },
 });
 

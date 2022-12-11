@@ -9,9 +9,11 @@ import {
   PRODUCT_ACTION_FAILED,
   PRODUCT_ACTION_ATTEMPT,
   GET_USER_PRODUCTS,
+  CLEAR_PRODUCT_IMAGE,
 } from "../types";
 import axios from "axios";
 import { setAlert } from "./alertactions";
+import { Navigate } from "react-router-dom";
 
 export const getproducts = () => async (dispatch) => {
   try {
@@ -50,7 +52,7 @@ export const getproduct = (id) => async (dispatch) => {
     console.log(error);
   }
 };
-export const addproduct = (formData) => async (dispatch) => {
+export const addproduct = (formData, navigate) => async (dispatch) => {
   try {
     const res = await axios.post(
       "http://localhost:5000/product/add-product",
@@ -62,6 +64,8 @@ export const addproduct = (formData) => async (dispatch) => {
       payload: res.data,
     });
     dispatch(setAlert(res.data.message, "success"));
+    dispatch({ type: CLEAR_PRODUCT_IMAGE });
+    navigate("/dashboard/my-products");
   } catch (error) {
     console.log(error);
     dispatch({
@@ -79,11 +83,12 @@ export const updateproduct = (product) => async (dispatch) => {
       `http://localhost:5000/product/update-product/${product.id}`,
       product
     );
-    console.log(res.data);
     dispatch({
       type: UPDATE_PRODUCT,
       payload: res.data,
     });
+    dispatch({ type: CLEAR_PRODUCT_IMAGE });
+
     dispatch(setAlert("Product Updated Successfully", "success"));
   } catch (error) {
     console.log(error);

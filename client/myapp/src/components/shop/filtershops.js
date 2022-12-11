@@ -1,13 +1,4 @@
 import * as React from "react";
-import Drawer from "@mui/material/Drawer";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
 import {
   Grid,
   Container,
@@ -28,6 +19,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { FilterAlt, Search } from "@mui/icons-material";
 import { getbrands } from "../../redux/actions/brandsactions";
+import Data from "../SellerDashboard/shops/citiesandcountrydata";
 export default function ShopFilter({
   setstorename,
   setcatgery,
@@ -70,7 +62,7 @@ export default function ShopFilter({
                 options={catageries && catageries}
                 freeSolo={true}
                 getOptionLabel={(option) => option.catagery_name}
-                onChange={(event, value) => setcatgery(value?.catagery_name)}
+                onInputChange={(event, value) => setcatgery(value)}
                 renderInput={(params) => (
                   <TextField
                     {...params}
@@ -83,37 +75,18 @@ export default function ShopFilter({
 
             <Grid item md={4} xs={12}>
               <Autocomplete
-                id="country-select-demo"
-                fullWidth
-                size="small"
-                options={countries}
-                getOptionLabel={(option) => option.label}
-                onChange={(event, value) => setcountry(value.label)}
-                renderOption={(props, option) => (
-                  <Box
-                    component="li"
-                    sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
-                    {...props}
-                  >
-                    <img
-                      loading="lazy"
-                      width="20"
-                      src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
-                      srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
-                      alt=""
-                    />
-                    {option.label} ({option.code}) +{option.phone}
-                  </Box>
-                )}
+                // id="free-solo-demo"
+                options={Data && Data}
+                freeSolo={true}
+                getOptionLabel={(option) => option.country}
+                onInputChange={(event, value) => {
+                  setcountry(value);
+                }}
                 renderInput={(params) => (
                   <TextField
-                    size="small"
-                    placeholder="e.g United State"
                     {...params}
-                    inputProps={{
-                      ...params.inputProps,
-                      autoComplete: "new-password", // disable autocomplete and autofill
-                    }}
+                    size="small"
+                    placeholder="Search By Location....."
                   />
                 )}
               />

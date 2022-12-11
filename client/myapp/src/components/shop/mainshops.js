@@ -23,6 +23,7 @@ import {
   useEffect,
   useState,
   Fragment,
+  useMemo,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -50,10 +51,10 @@ import ShopFilter from "./filtershops";
 export default function ShopHome() {
   const [PageNumber, setPageNumber] = useState(1);
   const [open, setOpen] = useState(true);
-  const [storename, setstorename] = useState(null);
+  const [storename, setstorename] = useState("");
   const [brand, setbrand] = useState();
-  const [catagery, setcatgery] = useState(null);
-  const [country, setcountry] = useState(null);
+  const [catagery, setcatgery] = useState("");
+  const [country, setcountry] = useState("");
 
   const shops = useSelector((state) => state.shop.shops);
   const loading = useSelector((state) => state.shop.isLoading);
@@ -67,7 +68,15 @@ export default function ShopHome() {
     dispatch({ type: SHOP_ACTION_ATTEMPT });
     dispatch(getallshops(null));
   }, [PageNumber, dispatch]);
-
+  const filteredItems = useMemo(() => {
+    return shops?.filter((item) => {
+      return (
+        item.shopname?.toLowerCase().includes(storename?.toLowerCase()) &&
+        item.catagery?.toLowerCase().includes(catagery?.toLowerCase()) &&
+        item.country?.toLowerCase().includes(country?.toLowerCase())
+      );
+    });
+  }, [shops, storename, catagery, country]);
   const loadmore = () => {
     console.log(PageNumber);
     setPageNumber((prevState) => prevState + 1);
@@ -147,7 +156,7 @@ export default function ShopHome() {
         <Grid container spacing={2} sx={{ mt: 2 }}>
           {shops ? (
             // <Grid container spacing={2}>
-            shops.map((item) => (
+            filteredItems.map((item) => (
               <Shopcard
                 key={item._id}
                 name={item.shopname}

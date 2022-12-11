@@ -116,7 +116,7 @@ exports.getusercart = async (req, res) => {
           const cartt = await Cart.findOneAndDelete({ _id: ucart[index]._id });
         }
       }
-      ucart = await Cart.find({ user: req.user._id }).populate([
+      ucart = await Cart.find({ user: req.user }).populate([
         {
           path: "store",
           model: "Shops",
@@ -126,6 +126,7 @@ exports.getusercart = async (req, res) => {
           populate: { path: "shop" },
         },
       ]);
+
       // .populate({
       //   path: "cartItems.product",
       //   // Get friends of friends - populate the 'friends' array for every friend

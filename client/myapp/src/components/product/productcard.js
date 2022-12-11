@@ -70,7 +70,10 @@ export default function Productcard(props) {
           }}
         >
           {/* <Tooltip title="Add To Cart"> */}
-          <IconButton onClick={(e) => e.preventDefault()}>
+
+          <IconButton
+            onClick={() => dispatch(addtocart(props.id, props.shopid))}
+          >
             <ShoppingCart />
           </IconButton>
           {/* </Tooltip> */}

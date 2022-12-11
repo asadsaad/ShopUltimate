@@ -5,21 +5,22 @@ import {
   GET_DASHBOARD_ORDERS,
   GET_USER_ORDERS,
   GET_SINGLE_ORDER,
+  UPDATE_ORDER,
 } from "../types";
 import axios from "axios";
 import { setAlert } from "./alertactions";
 
 export const Createorder =
-  (cartids, selected, navigate,paymentid) => async (dispatch) => {
+  (cartids, selected, navigate, paymentid) => async (dispatch) => {
     try {
-      console.log(paymentid)
+      console.log(paymentid);
       // const page = 1;
       dispatch({ type: OrderActionAttempt });
       console.log(cartids);
       const res = await axios.post("http://localhost:5000/order/create-order", {
         cartids,
         deliverydetails: selected,
-        paymentid:paymentid
+        paymentid: paymentid,
       });
       dispatch({
         type: CreateOrder,
@@ -76,6 +77,24 @@ export const getsingleorder = (id) => async (dispatch) => {
       type: GET_SINGLE_ORDER,
       payload: res.data?.order,
     });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateorder = (formData, id, navigate) => async (dispatch) => {
+  try {
+    // const page = 1;
+    console.log(id);
+    dispatch({ type: OrderActionAttempt });
+    const res = await axios.put(`http://localhost:5000/order/${id}`, formData);
+    console.log(res.data);
+    dispatch({
+      type: UPDATE_ORDER,
+      payload: res.data,
+    });
+    dispatch(setAlert("Order Created Successfully", "info"));
+    navigate("/dashboard/my-orders");
   } catch (error) {
     console.log(error);
   }

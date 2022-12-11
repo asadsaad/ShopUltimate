@@ -5,8 +5,10 @@ function createCategories(categories, parentId = null) {
   let category;
   if (parentId == null) {
     category = categories.filter((cat) => cat.parentId == undefined);
+    console.log(category);
   } else {
     category = categories.filter((cat) => cat.parentId == parentId);
+    console.log(category);
   }
 
   for (let cate of category) {
@@ -23,7 +25,7 @@ function createCategories(categories, parentId = null) {
 }
 
 exports.addcatagery = async (req, res) => {
-  console.log(req.body)
+  console.log(req.body);
   try {
     if (!req.body.catagery_name) {
       return res
@@ -70,7 +72,21 @@ exports.getallcatageries = async (req, res) => {
     const catageries = await Catagery.find();
     if (catageries) {
       const categoryList = createCategories(catageries);
-      res.status(200).json({ categoryList, success: true });
+      return res.status(200).json({ categoryList, success: true });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+exports.getcatagerybyid = async (req, res) => {
+  try {
+    const catageries = await Catagery.find({
+      _id: req.params.id,
+    });
+    const list = await Catagery.find();
+    if (catageries) {
+      const categoryList = createCategories(list, req.params.id);
+      return res.status(200).json({ categoryList, success: true });
     }
   } catch (error) {
     console.log(error.message);
@@ -81,7 +97,37 @@ exports.getallcatagerieslist = async (req, res) => {
   try {
     const catageries = await Catagery.find();
     if (catageries) {
-      res.status(200).json({ categoryList: catageries, success: true });
+      return res.status(200).json({ categoryList: catageries, success: true });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+exports.getsinglecatagery = async (req, res) => {
+  try {
+    const catagery = await Catagery.find({ catagery_name: req.params.name });
+    console.log(catagery);
+    if (catagery) {
+      const categoryList = createCategories(catagery);
+      return res.status(200).json({ categoryList, success: true });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+exports.editcatagery = async (req, res) => {
+  try {
+    const { catagery_name, parentId } = req.body;
+    const catagery = await Catagery.findOneAndUpdate(
+      { _id: req.params.id },
+      { catagery_name, parentId },
+      { new: true }
+    );
+    console.log(catagery);
+    if (catagery) {
+      // const categoryList = createCategories(catagery);
+      return res.status(200).json({ catagery, success: true });
     }
   } catch (error) {
     console.log(error.message);

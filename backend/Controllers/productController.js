@@ -7,7 +7,7 @@ exports.getallproducts = async (req, res) => {
     // const limit = 9;
     // const startindex = (page - 1) * limit;
     // const lastindex = page * limit;
-    const products = await Product.find().populate("shop");
+    const products = await Product.find().populate(["shop","user"]);
 
     // .limit(limit)
     // .skip(startindex)
@@ -67,11 +67,11 @@ exports.addproduct = async (req, res) => {
         .status(400)
         .json({ success: false, message: "Catagery is Required" });
     }
-    if (!subcatagery) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Sub Catagery is Required" });
-    }
+    // if (!subcatagery) {
+    //   return res
+    //     .status(400)
+    //     .json({ success: false, message: "Sub Catagery is Required" });
+    // }
     if (!price) {
       return res
         .status(400)
@@ -99,7 +99,7 @@ exports.addproduct = async (req, res) => {
       images,
       price,
       catagery,
-      subcatagery,
+      // subcatagery,
       instock,
       shop,
       brand,

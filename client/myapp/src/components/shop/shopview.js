@@ -85,7 +85,7 @@ export default function ShopView() {
 
   const loading = useSelector((state) => state.shop.isLoading);
 
-  const shopdata = useSelector((state) => state.shop.shops);
+  const shopdata = useSelector((state) => state.shop.shop);
 
   useEffect(() => {
     dispatch({ type: SHOP_ACTION_ATTEMPT });
@@ -121,7 +121,7 @@ export default function ShopView() {
                 <Stack spacing={2} sx={{}}>
                   <Box sx={{ display: "flex", justifyContent: "center" }}>
                     <Avatar
-                      src={shopdata[0]?.shopavatar[0]}
+                      src={shopdata?.shopavatar[0]}
                       variant="rounded"
                       sx={{
                         width: 150,
@@ -138,7 +138,7 @@ export default function ShopView() {
                         textTransform: "capitalize",
                       }}
                     >
-                      {shopdata[0]?.shopname}
+                      {shopdata?.shopname}
                     </Typography>
                     <Stack
                       direction="row"
@@ -177,22 +177,22 @@ export default function ShopView() {
                   <Typography sx={{ fontWeight: "bold" }}>Address</Typography>
                   <Typography>
                     {" "}
-                    {shopdata[0]?.streetaddress +
+                    {shopdata?.streetaddress +
                       ", " +
-                      shopdata[0]?.city +
+                      shopdata?.city +
                       ", " +
-                      shopdata[0]?.country}
+                      shopdata?.country}
                   </Typography>
                 </Box>
                 <Box>
                   <Typography sx={{ fontWeight: "bold" }}>Phone</Typography>
-                  <Typography>{shopdata[0]?.shopphone}</Typography>
+                  <Typography>{shopdata?.shopphone}</Typography>
                 </Box>
                 <Box>
                   <Typography sx={{ fontWeight: "bold", mt: 1 }}>
                     Description
                   </Typography>
-                  <Typography>{shopdata[0]?.aboutShop}</Typography>
+                  <Typography>{shopdata?.aboutShop}</Typography>
                 </Box>
               </Box>
             </Paper>
@@ -202,7 +202,7 @@ export default function ShopView() {
               sx={{
                 wdith: "100%",
                 height: "300px",
-                backgroundImage: `url(${shopdata[0]?.shopbanner[0]})`,
+                backgroundImage: `url(${shopdata?.shopbanner[0]})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -215,7 +215,7 @@ export default function ShopView() {
               style={{ width: "100%", height: "300px" }}
             ></img> */}
             <Box>
-              {shopdata[0] ? (
+              {shopdata ? (
                 <Box
                   sx={{
                     mt: 2,
@@ -225,15 +225,15 @@ export default function ShopView() {
                     gap: "10px",
                   }}
                 >
-                  {shopdata[0].products.length > 0
-                    ? shopdata[0].products.map((item) => (
+                  {shopdata.products.length > 0
+                    ? shopdata.products.map((item) => (
                         <Productcard
                           key={item._id}
                           name={item.productTitle}
                           image={item.images && item.images}
                           price={item.price}
                           id={item._id}
-                          shopid={shopdata[0]._id}
+                          shopid={shopdata._id}
                         />
                       ))
                     : "This Shop Has No Active Products"}
