@@ -42,15 +42,14 @@ export default function Orders() {
   const [currentshop, setcurrentshop] = useState();
   const [aopen, setaOpen] = useState(false);
 
-
   const [page, setPage] = useState(0);
   const dispatch = useDispatch();
   const catageries = useSelector((state) => state.catageries?.catagerieslist);
 
   const auth = useSelector((state) => state.auth);
-//   useEffect(() => {
-//     dispatch(getcatagerieslist());
-//   }, []);
+  //   useEffect(() => {
+  //     dispatch(getcatagerieslist());
+  //   }, []);
   const columns = useMemo(
     () => [
       {
@@ -68,14 +67,24 @@ export default function Orders() {
           </Typography>
         ),
       },
-      
+      {
+        field: "categoryImage",
+        headerName: "catagery Icon",
+        width: 130,
+        renderCell: (params) => (
+          <img
+            src={params?.row?.categoryImage && params?.row?.categoryImage}
+            style={{ width: 30, height: 30 }}
+          />
+        ),
+      },
+
       {
         field: "createdat",
         headerName: "Purchase Date",
         width: 130,
         renderCell: (params) => moment(params.row.createdat).fromNow(), // 4 years ago
       },
-      
 
       {
         field: "actions",
@@ -109,18 +118,24 @@ export default function Orders() {
 
   return (
     <Container sx={{}} maxWidth="xl">
-        <Box sx={{display:"flex",justifyContent:"space-between"}}>
-      <Typography variant="h6" sx={{ mb: 1 }}>
-        Manage Orders
-      </Typography>
-      <Button endIcon={<Add />} variant="contained" onClick={()=>setaOpen(true)}>Create New Catagery</Button>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography variant="h6" sx={{ mb: 1 }}>
+          Manage Orders
+        </Typography>
+        <Button
+          endIcon={<Add />}
+          variant="contained"
+          onClick={() => setaOpen(true)}
+        >
+          Create New Catagery
+        </Button>
       </Box>
-       
+
       <Paper
         sx={{
           height: "75vh",
           position: "relative",
-         
+
           left: "-7px",
           boxShadow: "0",
           // border:"1px solid #e3e9ef",
