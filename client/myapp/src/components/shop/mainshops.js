@@ -16,6 +16,7 @@ import {
   IconButton,
   Tooltip,
 } from "@mui/material";
+import notfound from "../../images/notfound.svg";
 import {
   React,
   useRef,
@@ -47,6 +48,7 @@ import {
   TextFieldsRounded,
 } from "@mui/icons-material";
 import ShopFilter from "./filtershops";
+import Header from "../MainHpme/header";
 
 export default function ShopHome() {
   const [PageNumber, setPageNumber] = useState(1);
@@ -106,40 +108,14 @@ export default function ShopHome() {
             <CircularProgress disableShrink />
           </Stack>
         )}
-        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
-          <Typography sx={{ fontWeight: "bold", fontSize: "25px" }}>
-            All Shops
-          </Typography>
-          <Button
-            variant="contained"
-            endIcon={<Search />}
-            sx={{ background: "#009f7f" }}
-            onClick={handleclear}
-            // sx={{ mr: 1, mb: 1 }}
+        <Box sx={{ mb: 2 }}>
+          <Typography
+            sx={{ fontSize: "19px", textAlign: "center", color: "#333" }}
           >
-            Search
-          </Button>
+            Great stores. Great choices. Find Your Perfact Store Here
+          </Typography>
         </Box>
         <Box sx={{ textAlign: "right" }}>
-          {/* <Button
-            variant="contained"
-            color="primary"
-            endIcon={<FilterListOff />}
-            onClick={handleclear}
-            sx={{ mr: 1, mb: 1 }}
-          >
-            Clear Filters
-          </Button>
-          <Button
-            variant="contained"
-            color="success"
-            endIcon={<FilterList />}
-            sx={{ mb: 1 }}
-            onClick={() => setOpen(!open)}
-          >
-            Filter Shops
-          </Button> */}
-
           <ShopFilter
             brand={brand}
             setbrand={setbrand}
@@ -177,6 +153,24 @@ export default function ShopHome() {
             </Typography>
           )}
         </Grid>
+        {filteredItems?.length == 0 && (
+          <>
+            <img
+              src={notfound}
+              style={{ width: 300, display: "block", margin: "0 auto" }}
+            />
+            <Typography
+              sx={{
+                textAlign: "center",
+                fontWeight: "bold",
+                color: "#333",
+                mt: 1,
+              }}
+            >
+              No Result Found :)
+            </Typography>
+          </>
+        )}
 
         {!loading && shops?.length > 15 && (
           <Stack alignItems="center">
