@@ -31,7 +31,6 @@ const Myorders = () => {
   const orders = useSelector((state) => state.order.c_orders);
   return (
     <>
-      <Nav />
       <Container>
         <Stack direction="row" spacing={1} sx={{ mt: 3 }}>
           <ShoppingBagIcon fontSize="large" sx={{ color: "red " }} />

@@ -6,10 +6,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { updateaddress } from "../../../redux/actions/addressactions";
+import { updateaddress } from "../../redux/actions/addressactions";
 import { useDispatch, useSelector } from "react-redux";
 import { Grid } from "@mui/material";
-import { CLEAR_CURRENT_ADDRESS } from "../../../redux/types";
+import { CLEAR_CURRENT_ADDRESS } from "../../redux/types";
 export default function Updateaddress(props) {
   const dispatch = useDispatch();
   const currentaddress = useSelector((state) => state.address.currentaddress);
@@ -57,8 +57,8 @@ export default function Updateaddress(props) {
     <Dialog open={props.open} onClose={handleClose}>
       <DialogTitle>Update Address</DialogTitle>
       <DialogContent>
-        <Grid container rowSpacing={5} columnSpacing={5}>
-          <Grid item md={6} xs={12}>
+        <Grid container rowSpacing={5} columnSpacing={5} >
+          <Grid item xs={12} marginTop="10px">
             <TextField
               id="outlined-basic"
               label="Email"
@@ -72,7 +72,7 @@ export default function Updateaddress(props) {
               onChange={(e) => setemail(e.target.value)}
             />
           </Grid>
-          <Grid item md={6} xs={12}>
+          <Grid item xs={12}>
             <TextField
               id="outlined-basic"
               label="Phone"
@@ -85,6 +85,8 @@ export default function Updateaddress(props) {
               //   error={numberErr}
               onChange={(e) => setphone(e.target.value)}
             />
+            </Grid>
+          <Grid item xs={12}>
             <TextField
               id="outlined-basic"
               label="Postal Code"
@@ -97,6 +99,8 @@ export default function Updateaddress(props) {
               //   error={numberErr}
               onChange={(e) => setpostalcode(e.target.value)}
             />
+            </Grid>
+          <Grid item xs={12}>
             <TextField
               id="outlined-basic"
               label="City"
@@ -109,9 +113,11 @@ export default function Updateaddress(props) {
               //   error={numberErr}
               onChange={(e) => setcity(e.target.value)}
             />
+            </Grid>
+          <Grid item xs={12}>
             <TextField
               id="outlined-basic"
-              label="Countrye"
+              label="Country"
               value={country}
               variant="outlined"
               color="error"
@@ -121,6 +127,8 @@ export default function Updateaddress(props) {
               //   error={numberErr}
               onChange={(e) => setcountry(e.target.value)}
             />
+            </Grid>
+          <Grid item xs={12}>
             <TextField
               id="outlined-basic"
               label="Strret Address"

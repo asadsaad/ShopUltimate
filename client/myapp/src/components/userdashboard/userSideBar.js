@@ -1,5 +1,4 @@
 // import * as React from "react"
-// import { makeStyles } from '@material-ui/core'
 import ListSubheader from '@mui/material/ListSubheader'
 // import List from '@mui/material/List'
 // import ListItemButton from '@mui/material/ListItemButton'
@@ -23,8 +22,7 @@ import SupportAgentOutlinedIcon from '@mui/icons-material/SupportAgentOutlined'
 //     Grid,
 //     TextField,
 // } from "@mui/material"
-import { NavLink } from "react-router-dom"
-
+import { NavLink, Link, useLocation } from "react-router-dom"
 
 //   export default function UserSidebar() {
 
@@ -34,7 +32,7 @@ import { NavLink } from "react-router-dom"
 
 //      );
 // }
- 
+
 
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
@@ -55,101 +53,78 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-
-// const useStyles = makeStyles({
-//     a:{
-//         textDecoration:"none",
-//         color:"black",
-//     }
-//   })
+import { useParams } from 'react-router-dom';
+import { useState } from 'react'
 
 
- const UserSideBar = () => {
-    // const classes = useStyles()
-    return ( 
-        <Box sx={{width:"300px",height:{xs:"100vh", md:"inherit"}, left:{xs:"-60%", md:"0%"},top:"0%", position:{xs:"absolute", md:"relative"},transition : "left 0.5s",zIndex:"2" }}  id="sidebar" >
-        <Paper >
-        <List
-            sx={{ maxWidth: 360, bgcolor: 'background.paper' }}
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-            subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                    Dashboard
-                </ListSubheader>
-                
-            }
-        >
-            <NavLink to="/orders" >
-                <ListItemButton>
-                <ListItemIcon>
-                    <ShoppingBagOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Orders" />
-                <Typography>12</Typography>
-            </ListItemButton>
-            </NavLink >
-            <NavLink to="/whitelist">
-            <ListItemButton>
-                <ListItemIcon>
-                    <FavoriteBorderOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="WhiteList" />
-                <Typography>12</Typography>
-            </ListItemButton>
-            </NavLink>
-            <NavLink to="support">
-            <ListItemButton>
-                <ListItemIcon>
-                    <SupportAgentOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Support Tickets" />
-                <Typography>12</Typography>
-            </ListItemButton>
-            </NavLink>
-        </List>
-        <List
-            sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-            component="nav"
-            aria-labelledby="nested-list-subheader"
-            subheader={
-                <ListSubheader component="div" id="nested-list-subheader">
-                    Account Settings 
-                </ListSubheader>
-                
-            }
-        >
-            <NavLink to="profile" >
-            <ListItemButton>
-                <ListItemIcon>
-                    <PersonOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Profile Info" />
-                <Typography>12</Typography>
-            </ListItemButton>
-            </NavLink>
-            <NavLink to="address">
-            <ListItemButton>
-                <ListItemIcon>
-                    <LocationOnOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Addresses" />
-                <Typography>12</Typography>
-            </ListItemButton>
-            </NavLink>
-            <NavLink to="payment">
-            <ListItemButton>
-                <ListItemIcon>
-                    <CreditCardOutlinedIcon />
-                </ListItemIcon>
-                <ListItemText primary="Payment Methods" />
-                <Typography>12</Typography>
-            </ListItemButton>
-            </NavLink>
-        </List>
+
+
+const UserSideBar = (params) => {
+    const location = useLocation();
+    const style = {
+        color:"#c00",
+        borderLeft : "5px solid #c00"
+    }
+    const [styles,setStyles] = useState() 
+    const [styles1,setStyles1] = useState() 
+    const [styles2,setStyles2] = useState() 
+    React.useEffect(()=>{
+        setStyles()
+        setStyles1()
+        setStyles2()
+        if(location.pathname === '/user/' || location.pathname === '/user/edit-profile'){
+            setStyles(style)
+        }
+        else if(location.pathname === '/user/orders' || location.pathname === '/user/order-details'){
+            setStyles1(style)
+        }
+        else if(location.pathname === '/user/address-list' || location.pathname === '/user/add-address'){
+            setStyles2(style)
+        }
+
+    },[location.pathname])
+    return (
+        <Paper sx={{ width: "300px", height: { xs: "100vh", md: "inherit" }, zIndex: "2" }} id="sidebar" >
+            <List
+                sx={{ maxWidth: 360, bgcolor: 'background.paper', }}
+                component="nav"
+                aria-labelledby="nested-list-subheader"
+                subheader={
+                    <ListSubheader component="div" id="nested-list-subheader">
+                        Dashboard
+                    </ListSubheader>
+                }
+            >
+                <NavLink to="/user/" style={{textDecoration:"none", color:"black"}}>
+                    <ListItemButton  style={styles}>
+                        <ListItemIcon >
+                        <PersonOutlinedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Profile Info" />
+                        <Typography>12</Typography>
+                    </ListItemButton>
+                </NavLink>
+                <NavLink to="/user/orders" style={{textDecoration:"none", color:"black"}}>
+                    <ListItemButton  style={styles1}>
+                        <ListItemIcon>
+                            <ShoppingBagOutlinedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Orders" />
+                        <Typography>12</Typography>
+                    </ListItemButton>
+                </NavLink >
+                <NavLink to="address-list"  style={{textDecoration:"none", color:"black"}}    >
+                    <ListItemButton  style={styles2}>
+                        <ListItemIcon>
+                            <LocationOnOutlinedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Addresses" />
+                        <Typography>12</Typography>
+                    </ListItemButton>
+                </NavLink>
+            </List>
         </Paper>
-        </Box>
-     );
- }
-  
- export default UserSideBar;
+    );
+}
+
+export default UserSideBar;

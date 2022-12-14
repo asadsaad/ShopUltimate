@@ -28,7 +28,7 @@ import OrderDetails from "./components/order/OrderDetails";
 import Register from "./components/auth/signup";
 import Login from "./components/auth/login";
 import Productlisting from "./components/product/allproductslist";
-// import AddAddress from "./components/userdashboard/AddAddress";
+import EditProfile from "./components/userdashboard/editProfile";
 
 // import LandingPage from "./components/user/landingPage";
 // import AddressList from "./components/userdashboard/AddressList";
@@ -42,6 +42,10 @@ import { loadstripe } from "./redux/actions/authactions";
 import AdminDashboard from "./components/AdminDashboard/dashboard";
 import Treeview from "./components/treeview";
 import Main from "./components/MainHpme";
+import UserDashboard from "./components/userdashboard/dashboard";
+import UserProfile from "./components/userdashboard/userProfile";
+import AddressList from "./components/userdashboard/AddressList";
+import AddAddress from "./components/userdashboard/AddAddress";
 // import SellerDashboard from "./components/SellerDashboard.js/maindashboard";
 
 if (localStorage.token) {
@@ -76,7 +80,15 @@ class App extends Component {
 
               {/* <Route path="pay" element={<UserPayment />} /> */}
 
-              {/* <Route path="edit-profile" element={<EditProfile />} /> */}
+              <Route path="user" element={<UserDashboard />} >
+                <Route path="" element={<UserProfile />} />
+                <Route path="edit-profile" element={<EditProfile />} />
+                <Route path="address-list" element={<AddressList />} />
+                <Route path="add-address" element={<AddAddress />} />
+                <Route path="orders" element={<Myorders />} />
+                <Route path="order-details:/id" element={<OrderDetails />} />
+
+              </Route>
 
               {/* <Route path="test1" element={<AddressList />} /> */}
 

@@ -15,13 +15,14 @@ import {
   paperClasses,
   Grid,
   TextField,
+  Drawer
 } from "@mui/material";
-import Nav from "../../layouts/nav";
-import { setAlert } from "../../../redux/actions/alertactions";
+import Nav from "../layouts/nav";
+import { setAlert } from "../../redux/actions/alertactions";
 import { useDispatch, useSelector } from "react-redux";
-import UserSideBar from "../userSideBar";
-import { addaddress } from "../../../redux/actions/addressactions";
-import { useNavigate } from "react-router-dom";
+import UserSideBar from "./userSideBar";
+import { addaddress } from "../../redux/actions/addressactions";
+import { Link, useNavigate } from "react-router-dom";
 
 const AddAddress = () => {
   const dispatch = useDispatch();
@@ -35,38 +36,38 @@ const AddAddress = () => {
   const [streetaddress, setstreetaddress] = useState();
 
   const loading = useSelector((state) => state.address.loading);
-
-  const bar = document.getElementById("sidebar");
-  const handleSlide = () => {
-    if (bar.style.left === "-60%") {
-      bar.style.left = "0%";
-    } else {
-      bar.style.left = "-60%";
-    }
-  };
   const submitform = async (event) => {
     event.preventDefault();
+        
     const formData = { email, phone, country, city, postalcode, streetaddress };
     dispatch(addaddress(formData, navigate));
+
+  };
+
+
+
+  // 
+  const anchor = "left";
+  const [state, setState] = useState({ left: false });
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
   };
 
   return (
     <>
-      <Nav />
-      <Box sx={{ display: "flex", position: "relative" }}>
-        <Box sx={{ margin: { md: "25px 20px 25px 40px" } }}>
-          <UserSideBar />
-        </Box>
-        <Box sx={{ width: "100%", margin: "25px 40px 25px 20px" }}>
           <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
             <Stack direction="row" spacing={1} alignItems="center">
               <LocationOnIcon fontSize="large" sx={{ color: "red " }} />
-
               <Typography variant="h5" sx={{ fontWeight: "bold" }}>
                 Add Address
               </Typography>
             </Stack>
             <Box sx={{ display: "flex" }}>
+              <Link to="/user/address-list" style={{textDecoration:"none"}}>
               <Button
                 component="h2"
                 sx={{
@@ -78,11 +79,12 @@ const AddAddress = () => {
               >
                 Back to addresses
               </Button>
+              </Link>
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
                 edge="start"
-                onClick={handleSlide}
+                onClick={toggleDrawer(anchor, true)}
                 sx={{ mr: 2, display: { md: "none" }, marginLeft: "16px" }}
               >
                 <MenuIcon />
@@ -123,6 +125,8 @@ const AddAddress = () => {
                     //   error={numberErr}
                     onChange={(e) => setphone(e.target.value)}
                   />
+                  </Grid>
+                <Grid item md={6} xs={12}>
                   <TextField
                     id="outlined-basic"
                     label="Postal Code"
@@ -135,6 +139,8 @@ const AddAddress = () => {
                     //   error={numberErr}
                     onChange={(e) => setpostalcode(e.target.value)}
                   />
+                  </Grid>
+                <Grid item md={6} xs={12}>
                   <TextField
                     id="outlined-basic"
                     label="City"
@@ -147,9 +153,11 @@ const AddAddress = () => {
                     //   error={numberErr}
                     onChange={(e) => setcity(e.target.value)}
                   />
+                  </Grid>
+                <Grid item md={6} xs={12}>
                   <TextField
                     id="outlined-basic"
-                    label="Countrye"
+                    label="Country"
                     value={country}
                     variant="outlined"
                     color="error"
@@ -159,6 +167,8 @@ const AddAddress = () => {
                     //   error={numberErr}
                     onChange={(e) => setcountry(e.target.value)}
                   />
+                  </Grid>
+                <Grid item md={6} xs={12}>
                   <TextField
                     id="outlined-basic"
                     label="Strret Address"
@@ -173,19 +183,28 @@ const AddAddress = () => {
                   />
                 </Grid>
               </Grid>
-              <Button
-                type="submit"
-                omponenet="h2"
-                variant="contained"
-                color="error"
-                sx={{ marginTop: "20px" }}
-              >
-                Save Changes
-              </Button>
+              <Box sx={{ textAlign: "right" }}>
+            <Button
+              type="submit"
+              omponenet="h2"
+              variant="contained"
+              color="error"
+              sx={{ marginTop: "30px" }}
+            >
+              Save
+            </Button>
+          </Box>
             </Box>
           </Paper>
-        </Box>
-      </Box>
+      <React.Fragment key={anchor}>
+        <Drawer
+          anchor={anchor}
+          open={state[anchor]}
+          onClose={toggleDrawer(anchor, false)}
+        >
+          <UserSideBar />
+        </Drawer>
+      </React.Fragment>
     </>
   );
 };

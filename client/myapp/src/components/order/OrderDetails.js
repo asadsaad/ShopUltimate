@@ -23,7 +23,6 @@ import Nav from "../layouts/nav";
 const OrderDetails = () => {
   return (
     <>
-      <Nav />
       <Container>
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
           <Stack direction="row" spacing={1}>

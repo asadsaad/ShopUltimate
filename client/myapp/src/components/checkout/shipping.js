@@ -22,13 +22,12 @@ import {
   setcurrentaddress,
 } from "../../redux/actions/addressactions";
 import { Edit } from "@mui/icons-material";
-import Updateaddress from "../userdashboard/address/updateaddress";
+import Updateaddress from "../userdashboard/updateaddress";
 import { Createorder } from "../../redux/actions/orderactions";
 import { Link, useNavigate } from "react-router-dom";
 import { selectedGridRowsCountSelector } from "@mui/x-data-grid";
 import Userpayment from "../stripe/userpayment";
 import HeaderV2 from "../layouts/headerV2";
-import AddAddress from "../userdashboard/address/AddAddress";
 import AddAddressDialog from "./addressdialog";
 // import { addshipping, getshipping } from "../../redux/actions/shippingactions";
 const Input = styled("input")({
