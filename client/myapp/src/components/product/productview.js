@@ -19,9 +19,11 @@ import {
   Rating,
   Avatar,
   TextField,
+  Chip,
 } from "@mui/material";
 
 import CircularProgress from "@mui/material/CircularProgress";
+import HeaderV2 from "../layouts/headerV2";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -91,18 +93,29 @@ export default function ProductView() {
     slidesToScroll: 1,
   };
   return (
-    <div style={{ background: "#f2faf9" }}>
-      <Nav />
+    <div>
+      <HeaderV2 />
       {/* <SwipeableTextMobileStepper images={product && product.images} /> */}
       <Container sx={{ marginTop: 5 }}>
         <Box sx={{}}>
           <Grid container spacing={2}>
             <Grid item xs={6}>
-              <Box sx={{ maxHeight: "700px" }}>
+              <Box
+                sx={{
+                  minHeight: 450,
+                  maxHeight: 450,
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 <img
-                  src={currimage ? currimage : product && product.images[0]}
-                  width="100%"
-                  height="100%"
+                  src={product && product.images[0]}
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: 450,
+                    display: "block",
+                    margin: "0 auto",
+                  }}
                 ></img>
               </Box>
               <Stack direction="row" spacing={2}>
@@ -130,45 +143,124 @@ export default function ProductView() {
               </Stack>
             </Grid>
             <Grid item xs={6}>
-              <Typography variant="h5" sx={{ fontWeight: "bold" }}>
-                {product && product.productTitle}
-              </Typography>
-              <Typography sx={{ mt: 1, mb: 1 }}>
-                Brand: <span style={{ fontWeight: "bold" }}>Apple</span>
-              </Typography>
-              <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
+              <Box sx={{ borderBottom: "1px solid #d0d0d0", p: 2 }}>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: "600",
+                    fontSize: "1.7rem",
+                    color: "rgb(31,41,55)",
+                  }}
+                >
+                  {product && product.productTitle}
+                </Typography>
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: "light",
+                    color: "rgb(0,159,127)",
+                    fontSize: "16px",
+                    mt: 1,
+                    mb: 1,
+                  }}
+                >
+                  1 pc(s)
+                </Typography>
+
+                {/* <Stack direction="row" spacing={1} sx={{ alignItems: "center" }}>
                 <Typography>Rated:</Typography>
                 <Rating value={4}></Rating>
                 <Typography>(46)</Typography>
-              </Stack>
+              </Stack> */}
 
-              <Typography
-                variant="h4"
-                sx={{ fontWeight: "bold", color: "red", mt: 1, mb: 1 }}
-              >
-                ${product && product.price}
-              </Typography>
-
-              <Typography>
-                <Link
-                  to={`/shop/${product?.shop?._id}`}
-                  style={{ textDecoration: "none", color: "black" }}
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontWeight: "bold",
+                    color: "rgb(0,159,127)",
+                    mt: 1,
+                    mb: 1,
+                  }}
                 >
-                  Store:
-                  <span style={{ fontWeight: "bold" }}>
-                    {product && product.shop?.shopname}
-                  </span>
-                </Link>
-              </Typography>
+                  ${product && product.price}
+                </Typography>
 
-              <Button
-                sx={{ marginTop: 2 }}
-                variant="outlined"
-                startIcon={<ShoppingCart />}
-                onClick={() => dispatch(addtocart(product.id))}
-              >
-                Add To Cart
-              </Button>
+                <Button
+                  size="large"
+                  sx={{
+                    // marginTop: 2,
+                    background: "rgb(0,159,127)",
+                    boxShadow: "0",
+                    "&:hover": {
+                      background: "rgb(0,159,127)",
+                      boxShadow: "0",
+                    },
+                  }}
+                  variant="contained"
+                  startIcon={<ShoppingCart />}
+                  onClick={() => dispatch(addtocart(product.id))}
+                >
+                  Add To Cart
+                </Button>
+              </Box>
+              <Box sx={{ p: 2 }}>
+                <Box
+                  sx={{ display: "flex", mt: 2, alignItems: "center", mb: 2 }}
+                >
+                  <Typography
+                    sx={{
+                      mr: 2,
+                      fontWeight: "500",
+                      color: "rgb(31,41,55)",
+                      fontSize: "18px",
+                    }}
+                  >
+                    Catagery
+                  </Typography>
+                  <Chip
+                    label={product && product.catagery?.catagery_name}
+                    variant="outlined"
+                    sx={{
+                      borderColor: "#d0d0d0",
+                      borderRadius: "4px",
+                      color: "rgb(31,41,55)",
+                      fontSize: "16px",
+                    }}
+                  />
+                  <Chip
+                    label={product && product.brand}
+                    variant="outlined"
+                    sx={{
+                      ml: 1,
+                      borderColor: "#d0d0d0",
+                      borderRadius: "4px",
+                      color: "rgb(31,41,55)",
+                      fontSize: "16px",
+                    }}
+                  />
+                </Box>
+
+                <Typography>
+                  <Link
+                    to={`/shop/${product?.shop?._id}`}
+                    style={{
+                      textDecoration: "none",
+                      fontSize: "16px",
+                    }}
+                  >
+                    Store:
+                    <span
+                      style={{
+                        textDecoration: "underline",
+                        color: "rgb(0,159,127)",
+                        fontSize: "14px",
+                      }}
+                    >
+                      {product && product.shop?.shopname}
+                    </span>
+                  </Link>
+                </Typography>
+              </Box>
             </Grid>
           </Grid>
         </Box>
@@ -191,7 +283,7 @@ export default function ProductView() {
             </Tabs>
           </Box>
           <TabPanel value={value} index={0}>
-            Description
+            {product && product.productDescription}
           </TabPanel>
           <TabPanel value={value} index={1}>
             <Box>

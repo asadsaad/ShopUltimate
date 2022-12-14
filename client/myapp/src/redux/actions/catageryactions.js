@@ -3,7 +3,8 @@ import {
   ADD_CATAGERY,
   GET_CATAGERY_LIST,
   GET_SINGLE_CATAGERY,
-  UPDATE_CATAGERY
+  UPDATE_CATAGERY,
+  SINGLE_CATAGERY_TREE,
 } from "../types";
 import axios from "axios";
 import { setAlert } from "./alertactions";
@@ -68,7 +69,7 @@ export const addcatagery = (formData) => async (dispatch) => {
     dispatch(setAlert(error.response.data.message, "error"));
   }
 };
-export const editcatagery = (formData,id) => async (dispatch) => {
+export const editcatagery = (formData, id) => async (dispatch) => {
   try {
     const res = await axios.put(
       `http://localhost:5000/catagery/${id}`,
@@ -82,5 +83,20 @@ export const editcatagery = (formData,id) => async (dispatch) => {
   } catch (error) {
     console.log(error);
     dispatch(setAlert(error.response.data.message, "error"));
+  }
+};
+export const getsinglecatagerytree = (id) => async (dispatch) => {
+  try {
+    console.log(id);
+    const res = await axios.get(
+      `http://localhost:5000/catagery/catagery/${id}`
+    );
+    console.log(res);
+    dispatch({
+      type: SINGLE_CATAGERY_TREE,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
   }
 };

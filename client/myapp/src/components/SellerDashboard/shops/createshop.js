@@ -180,7 +180,7 @@ export default function Addshop(props) {
     const formData = {
       shopname: shopname,
       aboutShop: content,
-      catagery: "Clothes",
+      catagery: catagery,
       subcatagery: subcatagery,
       shopavatar: storelogo,
       country: shopcountry?.country,

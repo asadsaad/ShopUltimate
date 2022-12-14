@@ -3,7 +3,7 @@ import { Box, Button, TextField, Typography } from "@mui/material";
 import React from "react";
 import bg from "../../images/grocery.webp";
 import Header from "./header";
-export default function BannerArea() {
+export default function BannerArea({ group, setgroup, ct, setct }) {
   return (
     <>
       <Box
@@ -18,7 +18,7 @@ export default function BannerArea() {
           backgroundPosition: "center",
         }}
       >
-        <Header />
+        <Header group={group} setgroup={setgroup} ct={ct} setct={setct} />
         <Box
           sx={{
             position: "absolute",

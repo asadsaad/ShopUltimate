@@ -88,7 +88,13 @@ export default function ProductsAdmin() {
         headerName: "Catagery",
         width: 150,
         renderCell: (params) => {
-          return <Chip label={params.value} variant="filled" size="small" />;
+          return (
+            <Chip
+              label={params?.row?.catagery?.catagery_name}
+              variant="filled"
+              size="small"
+            />
+          );
         },
       },
       {
@@ -96,12 +102,16 @@ export default function ProductsAdmin() {
         headerName: "Seller",
         width: 150,
         renderCell: (params) => {
-          return <Stack><Typography sx={{ textTransform: "capitalize" }}>
-            {params?.row?.user?.username}
-          </Typography>
-          <Typography sx={{ textTransform: "capitalize" }}>
-            {params?.row?.shop?.shopname}
-          </Typography></Stack>
+          return (
+            <Stack>
+              <Typography sx={{ textTransform: "capitalize" }}>
+                {params?.row?.user?.username}
+              </Typography>
+              <Typography sx={{ textTransform: "capitalize" }}>
+                {params?.row?.shop?.shopname}
+              </Typography>
+            </Stack>
+          );
         },
       },
       {

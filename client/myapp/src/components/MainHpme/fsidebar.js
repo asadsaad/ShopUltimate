@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import TreeView from "@mui/lab/TreeView";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import TreeItem from "@mui/lab/TreeItem";
 import "./styles.css";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
+import { getsinglecatagerytree } from "../../redux/actions/catageryactions";
+import { getproductsbycatagery } from "../../redux/actions/productactions";
 
-export default function SideTreeview() {
+export default function SideTreeview({ cat, ct, setct }) {
+  const dispatch = useDispatch();
   const [fix, setfix] = useState(false);
   const isSticky = () => {
     /* Method that will fix header after a specific scrollable */
@@ -20,9 +23,24 @@ export default function SideTreeview() {
       window.removeEventListener("scroll", isSticky);
     };
   }, []);
+  useEffect(() => {
+    dispatch(getsinglecatagerytree(cat?._id));
+  }, [cat]);
   const catageries = useSelector((state) => state.catageries.catageries);
+  const catageriestree = useSelector((state) => state.catageries.currentree);
+  console.log(catageriestree);
+
   const renderTree = (nodes) => (
-    <TreeItem key={nodes?._id} nodeId={nodes?._id} label={nodes?.name}>
+    <TreeItem
+      key={nodes?._id}
+      nodeId={nodes?._id}
+      label={nodes?.name}
+      // label={
+      //   <Box sx={{ display: "flex", alignItems: "center" }}>
+      //     <ExpandMoreIcon /> <Typography>{nodes?.name}</Typography>
+      //   </Box>
+      // }
+    >
       {Array.isArray(nodes?.children)
         ? nodes.children?.map((node) => renderTree(node))
         : null}
@@ -30,7 +48,7 @@ export default function SideTreeview() {
   );
 
   const handleChange = async (event, node) => {
-    console.log("nodeId: ", node);
+    setct(node);
   };
   return (
     <Box
@@ -40,8 +58,8 @@ export default function SideTreeview() {
         top: "95px",
       }}
     >
-      {catageries &&
-        catageries.map((item) => (
+      {cat?.children.length ? (
+        cat?.children?.map((item) => (
           <TreeView
             onNodeSelect={handleChange}
             aria-label="rich object"
@@ -52,7 +70,12 @@ export default function SideTreeview() {
           >
             {renderTree(item)}
           </TreeView>
-        ))}
+        ))
+      ) : (
+        <Typography sx={{ color: "#333", p: 1 }}>
+          No More Catageries Found
+        </Typography>
+      )}
     </Box>
   );
 }

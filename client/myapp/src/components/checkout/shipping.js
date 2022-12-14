@@ -27,6 +27,9 @@ import { Createorder } from "../../redux/actions/orderactions";
 import { Link, useNavigate } from "react-router-dom";
 import { selectedGridRowsCountSelector } from "@mui/x-data-grid";
 import Userpayment from "../stripe/userpayment";
+import HeaderV2 from "../layouts/headerV2";
+import AddAddress from "../userdashboard/address/AddAddress";
+import AddAddressDialog from "./addressdialog";
 // import { addshipping, getshipping } from "../../redux/actions/shippingactions";
 const Input = styled("input")({
   display: "none",
@@ -36,6 +39,8 @@ export default function CheckoutandReview(props) {
   const navigate = useNavigate();
   const address = useSelector((state) => state.address.addressess);
   const [open, setOpen] = React.useState(false);
+  const [aopen, setaOpen] = React.useState(false);
+
   const [paymentid, setpaymentid] = React.useState(null);
 
   const [selected, setSelected] = React.useState(null);
@@ -68,17 +73,19 @@ export default function CheckoutandReview(props) {
   const createorder = () => {
     const orderids = cart?.carts.map((cart) => cart._id);
     // console.log(orderids);
-    console.log(paymentid)
-    dispatch(Createorder(orderids, selected, navigate,paymentid));
+    console.log(paymentid);
+    dispatch(
+      Createorder(orderids, selected, navigate, paymentid, cart?.cartTotal)
+    );
   };
   return (
-    <>
-      <Nav />
+    <Box sx={{ minHeight: "100vh", background: "rgba(243,244,246,0.7)" }}>
+      <HeaderV2 />
       <Container maxWidth="lg">
         <Grid container spacing={2}>
           <Grid item md={8} xs={12}>
             <Paper sx={{ p: 2, mt: 3 }}>
-              <Button>Add New Address</Button>
+              <Button onClick={() => setaOpen(true)}>Add New Address</Button>
               <Box sx={{ display: "flex", flexWrap: "wrap" }}>
                 {address && address.length > 0
                   ? address.map((item) => (
@@ -245,13 +252,15 @@ export default function CheckoutandReview(props) {
                   ${cart?.cartTotal}
                 </Typography>
               </Box>
-             
             </Paper>
-            <Paper sx={{mt:2,p:2}}>
-               
-       <Box> <Userpayment createorder={createorder} setpaymentid={setpaymentid}/></Box>
-
-             
+            <Paper sx={{ mt: 2, p: 2 }}>
+              <Box>
+                {" "}
+                <Userpayment
+                  createorder={createorder}
+                  setpaymentid={setpaymentid}
+                />
+              </Box>
             </Paper>
           </Grid>
         </Grid>
@@ -262,7 +271,8 @@ export default function CheckoutandReview(props) {
           // currentaddress={currentaddress}
           // setcurrentaddress={setcurrentaddress}
         />
+        <AddAddressDialog open={aopen} setOpen={setaOpen} />
       </Container>
-    </>
+    </Box>
   );
 }

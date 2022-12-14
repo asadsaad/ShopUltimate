@@ -13,9 +13,12 @@ export default function UserPayment({ createorder, setpaymentid }) {
   const handleorder = async (e) => {
     e.preventDefault();
     try {
-      // const paymentMethod = await stripe.createPaymentMethod({type:"card",card:elements.getElement(CardElement)})
-      // console.log(paymentMethod.paymentMethod.id)
-      // setpaymentid(paymentMethod.paymentMethod.id)
+      const paymentMethod = await stripe.createPaymentMethod({
+        type: "card",
+        card: elements.getElement(CardElement),
+      });
+      console.log(paymentMethod);
+      setpaymentid(paymentMethod.paymentMethod.id);
       createorder();
     } catch (error) {
       console.log(error);

@@ -49,6 +49,7 @@ import {
 } from "@mui/icons-material";
 import ShopFilter from "./filtershops";
 import Header from "../MainHpme/header";
+import HeaderV2 from "../layouts/headerV2";
 
 export default function ShopHome() {
   const [PageNumber, setPageNumber] = useState(1);
@@ -74,11 +75,10 @@ export default function ShopHome() {
     return shops?.filter((item) => {
       return (
         item.shopname?.toLowerCase().includes(storename?.toLowerCase()) &&
-        item.catagery?.toLowerCase().includes(catagery?.toLowerCase()) &&
-        item.country?.toLowerCase().includes(country?.toLowerCase())
+        item.catagery?.toLowerCase().includes(catagery?.toLowerCase())
       );
     });
-  }, [shops, storename, catagery, country]);
+  }, [shops, storename, catagery]);
   const loadmore = () => {
     console.log(PageNumber);
     setPageNumber((prevState) => prevState + 1);
@@ -100,7 +100,8 @@ export default function ShopHome() {
   };
   return (
     <div>
-      <Nav />
+      {/* <Nav /> */}
+      <HeaderV2 />
 
       <Container sx={{ mt: 8 }}>
         {loading && (
@@ -110,9 +111,9 @@ export default function ShopHome() {
         )}
         <Box sx={{ mb: 2 }}>
           <Typography
-            sx={{ fontSize: "19px", textAlign: "center", color: "#333" }}
+            sx={{ fontSize: "22px", textAlign: "center", color: "#333" }}
           >
-            Great stores. Great choices. Find Your Perfact Store Here
+            Great Stores,Great Choices, Find Your Perfact Store Here
           </Typography>
         </Box>
         <Box sx={{ textAlign: "right" }}>

@@ -9,6 +9,7 @@ import {
   Typography,
   Menu,
   InputAdornment,
+  CircularProgress,
 } from "@mui/material";
 import { Link } from "react-router-dom";
 import Paper from "@mui/material/Paper";
@@ -24,9 +25,10 @@ import {
   Search,
 } from "@mui/icons-material";
 import { useSelector } from "react-redux";
-export default function Header() {
+export default function Header({ group, setgroup, ct, setct }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [sticky, setSticky] = React.useState(null);
+  // const [group, setgroup] = React.useState();
 
   const open = Boolean(anchorEl);
   const catageries = useSelector((state) => state.catageries.catageries);
@@ -48,6 +50,12 @@ export default function Header() {
       window.removeEventListener("scroll", isSticky);
     };
   }, []);
+
+  // useEffect(() => {
+  //   if (!group) {
+  //     setgroup(catageries[Math.floor(Math.random() * catageries.length)]);
+  //   }
+  // }, [catageries]);
   return (
     <>
       <Box
@@ -108,7 +116,11 @@ export default function Header() {
                   },
                 }}
               >
-                Grocery
+                {catageries.length ? (
+                  group && group?.name
+                ) : (
+                  <CircularProgress size={22} />
+                )}
               </Button>
               <Menu
                 anchorEl={anchorEl}
@@ -152,6 +164,10 @@ export default function Header() {
                         fontSize: "11px",
                         color: "rgb(75,85,99)",
                         fontWeight: "600",
+                      }}
+                      onClick={() => {
+                        setgroup(cat);
+                        setct(cat._id);
                       }}
                     >
                       {cat.name}

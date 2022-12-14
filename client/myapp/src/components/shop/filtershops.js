@@ -34,7 +34,7 @@ export default function ShopFilter({
   const dispatch = useDispatch();
   const [value, setValue] = React.useState(null);
 
-  const catageries = useSelector((state) => state.catageries.catagerieslist);
+  const catageries = useSelector((state) => state.catageries.catageries);
   const brands = useSelector((state) => state.brands.brands);
   const colors = ["#ffcf83", "#e39763", "#b87a45", "#a65950", "#8f2929"];
   // const handleclose = () => {
@@ -45,7 +45,8 @@ export default function ShopFilter({
   }, []);
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    // console.log(newValue);
+    setcatgery(newValue);
   };
   return (
     <Container maxWidth="md">
@@ -68,7 +69,7 @@ export default function ShopFilter({
             }}
           >
             <Tabs
-              value={value}
+              value={catagery}
               onChange={handleChange}
               variant="scrollable"
               scrollButtons
@@ -82,9 +83,10 @@ export default function ShopFilter({
               {catageries &&
                 catageries.map((cat) => (
                   <Tab
+                    value={cat.name}
                     label={
                       <Chip
-                        label={`${cat.catagery_name}`}
+                        label={`${cat.name}`}
                         // size="small"
                         variant="outlined"
                         sx={{

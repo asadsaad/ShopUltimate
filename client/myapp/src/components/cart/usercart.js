@@ -12,43 +12,40 @@ import {
   cartitemdecreament,
   cartitemincreament,
 } from "../../redux/actions/cartactions";
-import {
-  Box,
-  Button,
-  
-  Avatar,
-  IconButton,
-  Fab,
-} from "@mui/material";
-import {
-  Delete,
-  Add,
- 
-  Remove,
-} from "@mui/icons-material";
+import { Box, Button, Avatar, IconButton, Fab } from "@mui/material";
+import { Delete, Add, Remove } from "@mui/icons-material";
 import Nav from "../layouts/nav";
 
 import * as React from "react";
 
-
 import { Link } from "react-router-dom";
+import HeaderV2 from "../layouts/headerV2";
 
 export default function UserCart(props) {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
   console.log(props);
+
+  const getcount = () => {
+    let items = 0;
+    for (let index = 0; index < cart?.carts?.length; index++) {
+      const element = cart?.carts[index]?.cartItems;
+      items += element.length;
+    }
+    return items;
+  };
   return (
-    <div style={{background:"#f2faf9"}}>
-      <Nav />
+    <div style={{ minHeight: "100vh", background: "rgba(243,244,246,0.7)" }}>
+      <HeaderV2 />
       <Container>
         <Typography variant="h5" sx={{ mt: 5, mb: 3, fontWeight: "bold" }}>
-          Shopping Cart (2)
+          Shopping Cart ({getcount()})
         </Typography>
         <Grid container spacing={2}>
           <Grid xs={12} md={8}>
             {cart?.carts?.map((cartt) => {
               return (
-                <Paper sx={{ mt: 2, mb: 2, p: 2,boxShadow:"0" }}>
+                <Paper sx={{ mt: 2, mb: 2, p: 2 }}>
                   <Box
                     sx={{
                       borderBottom: "1px solid #e5e7eb",
@@ -59,7 +56,9 @@ export default function UserCart(props) {
                   >
                     <Box sx={{ display: "flex" }}>
                       <StorefrontOutlinedIcon sx={{ mr: 1 }} />
-                      <Typography sx={{textTransform:"capitalize"}}>{cartt?.store?.shopname}</Typography>
+                      <Typography sx={{ textTransform: "capitalize" }}>
+                        {cartt?.store?.shopname}
+                      </Typography>
                     </Box>
                     <Box>
                       <Typography>
@@ -69,12 +68,13 @@ export default function UserCart(props) {
                   </Box>
 
                   {cartt?.cartItems &&
-                    cartt?.cartItems?.map((row,index) => (
+                    cartt?.cartItems?.map((row, index) => (
                       <Box
                         sx={{
                           pt: 1,
                           pb: 1,
-                          borderBottom: cartt?.cartItems[index + 1] && "1px solid #e5e7eb",
+                          borderBottom:
+                            cartt?.cartItems[index + 1] && "1px solid #e5e7eb",
                         }}
                       >
                         <Box sx={{ display: "flex" }}>
@@ -90,14 +90,18 @@ export default function UserCart(props) {
                               <Grid item xs={8}>
                                 <Typography
                                   variant="h6"
-                                  sx={{ ml: 2,fontWeight:"bold",fontSize:"17px" }}
+                                  sx={{
+                                    ml: 2,
+                                    fontWeight: "bold",
+                                    fontSize: "17px",
+                                  }}
                                 >
                                   {row.product.productTitle}
                                 </Typography>
                               </Grid>
                               <Grid item xs={4} sx={{ textAlign: "right" }}>
                                 <IconButton
-                                  sx={{color:"#009f7f"}}
+                                  sx={{ color: "#009f7f" }}
                                   onClick={() =>
                                     dispatch(
                                       removefromcart(
@@ -112,7 +116,7 @@ export default function UserCart(props) {
                                 </IconButton>
                               </Grid>
                             </Grid>
-                            <Box sx={{ ml: 2,mt:-1 }}>
+                            <Box sx={{ ml: 2, mt: -1 }}>
                               <Typography
                                 variant="h6"
                                 sx={{
@@ -122,20 +126,49 @@ export default function UserCart(props) {
                                 ${row.product.price} x {row.quantity}
                               </Typography>
                             </Box>
-                            <Box sx={{ ml: 2,mt:1 }}>
+                            <Box sx={{ ml: 2, mt: 1 }}>
                               <Box
-                              sx={{display:"flex",alignItems:"center"}}
+                                sx={{ display: "flex", alignItems: "center" }}
                               >
-                                <IconButton sx={{mr:1,borderRadius:"3px !important",background:"#f5f5f5"}} size="small">
-                                  <Add sx={{fontSize:"medium"}}/>
-
+                                <IconButton
+                                  sx={{
+                                    mr: 1,
+                                    borderRadius: "3px !important",
+                                    background: "#f5f5f5",
+                                  }}
+                                  size="small"
+                                  onClick={() =>
+                                    dispatch(
+                                      cartitemincreament(
+                                        row.product._id,
+                                        cartt._id,
+                                        cartt.store
+                                      )
+                                    )
+                                  }
+                                >
+                                  <Add sx={{ fontSize: "medium" }} />
                                 </IconButton>
-                                <Typography sx={{mr:1,}}>
+                                <Typography sx={{ mr: 1 }}>
                                   {row.quantity}
                                 </Typography>
-                                <IconButton sx={{background:"#f5f5f5",borderRadius:"3px !important"}} size="small">
-                                  <Remove sx={{fontSize:"medium"}}/>
-
+                                <IconButton
+                                  sx={{
+                                    background: "#f5f5f5",
+                                    borderRadius: "3px !important",
+                                  }}
+                                  onClick={() =>
+                                    dispatch(
+                                      cartitemdecreament(
+                                        row.product._id,
+                                        cartt._id,
+                                        cartt.store
+                                      )
+                                    )
+                                  }
+                                  size="small"
+                                >
+                                  <Remove sx={{ fontSize: "medium" }} />
                                 </IconButton>
                                 {/* <Button
                                   variant="contained"
@@ -178,7 +211,6 @@ export default function UserCart(props) {
                           </Box>
                         </Box>
                       </Box>
-         
                     ))}
                 </Paper>
               );
@@ -188,7 +220,6 @@ export default function UserCart(props) {
             <Paper
               sx={{
                 p: 2,
-                boxShadow:"0"
               }}
             >
               <Typography variant="h5">Summary</Typography>
@@ -207,14 +238,17 @@ export default function UserCart(props) {
                   ${cart.cartTotal}
                 </Typography>
               </Box>
-              <Link to="/checkout" style={{textDecoration:"none"}}><Button
-              
-                variant="contained"
-                fullWidth
-                sx={{ background:"#009f7f","&:hover":{background:"#009f7f"} }}
-              >
-                Proceed To Checkout
-              </Button>
+              <Link to="/checkout" style={{ textDecoration: "none" }}>
+                <Button
+                  variant="contained"
+                  fullWidth
+                  sx={{
+                    background: "#009f7f",
+                    "&:hover": { background: "#009f7f" },
+                  }}
+                >
+                  Proceed To Checkout
+                </Button>
               </Link>
             </Paper>
           </Grid>

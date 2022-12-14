@@ -298,14 +298,9 @@ const Nav = () => {
             </Toolbar>
           </AppBar>
         </Box>
-        {/* <Login open={open} setOpen={setOpen} /> */}
-        {/* <Signup opensignup={opensignup} setOpensignup={setOpensignup} /> */}
       </>
     );
   }
-  // return (
-
-  // );
 };
 
 export default Nav;

@@ -14,10 +14,12 @@ import {
   PRODUCT_ACTION_FAILED,
   PRODUCT_ACTION_SUCCESS,
   GET_USER_PRODUCTS,
+  PRODUCTS_BY_CATAGERY,
 } from "../types";
 
 const initialState = {
   products: [],
+  c_products: [],
   current: null,
   isLoadingp: false,
   error: null,
@@ -46,17 +48,17 @@ export default (state = initialState, action) => {
         isLoadingp: false,
       };
     case GET_PRODUCTS:
-      // var setHasMore;
-      // if (action.payload.data !== undefined) {
-      //   setHasMore = action.payload.data.length !== 0 ? true : false;
-      // } else {
-      //   setHasMore = false;
-      // }
       return {
         ...state,
         isLoadingp: false,
-       
-        products:action.payload.data,
+
+        products: action.payload.data,
+      };
+    case PRODUCTS_BY_CATAGERY:
+      return {
+        ...state,
+        isLoadingp: false,
+        c_products: action.payload.data,
       };
     case GET_USER_PRODUCTS:
       return {

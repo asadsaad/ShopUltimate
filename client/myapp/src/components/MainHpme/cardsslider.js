@@ -7,7 +7,7 @@ import img3 from "../../images/offer-3.webp";
 export default function CardSlider() {
   return (
     <>
-      <Box sx={{ p: 3, borderBottom: "1px solid #d0d0d0" }}>
+      <Box sx={{ p: 3, borderBottom: "1px solid #d0d0d0", mb: 2 }}>
         <Grid container spacing={2}>
           <Grid item md={4} xs={12}>
             <img src={img1} width="100%" />

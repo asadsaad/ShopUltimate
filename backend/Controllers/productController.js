@@ -7,7 +7,11 @@ exports.getallproducts = async (req, res) => {
     // const limit = 9;
     // const startindex = (page - 1) * limit;
     // const lastindex = page * limit;
-    const products = await Product.find().populate(["shop","user"]);
+    const products = await Product.find().populate([
+      "shop",
+      "user",
+      "catagery",
+    ]);
 
     // .limit(limit)
     // .skip(startindex)
@@ -28,11 +32,24 @@ exports.getuserproducts = async (req, res) => {
     console.log(error);
   }
 };
+exports.getproductsbycatagery = async (req, res) => {
+  try {
+    const products = await Product.find({ catagery: req.params.id }).populate([
+      "shop",
+      "user",
+      "catagery",
+    ]);
+    return res.status(200).json({ success: true, data: products });
+  } catch (error) {
+    console.log(error);
+  }
+};
 exports.getsingleproduct = async (req, res) => {
   try {
-    const product = await Product.findOne({ _id: req.params.id }).populate(
-      "shop"
-    );
+    const product = await Product.findOne({ _id: req.params.id }).populate([
+      "shop",
+      "catagery",
+    ]);
     return res.status(200).json({ success: true, data: product });
   } catch (error) {
     console.log(error);

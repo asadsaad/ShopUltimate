@@ -7,6 +7,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import JoditEditor from "jodit-react";
 import Imagelist from "../../upload/progressList/productimagelist";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import {
   Grid,
   TextField,
@@ -52,6 +54,8 @@ import Loading from "../../layouts/loading";
 import { getbrands } from "../../../redux/actions/brandsactions";
 import { getsinglecatagery } from "../../../redux/actions/catageryactions";
 import { useNavigate } from "react-router-dom";
+import TreeView from "@mui/lab/TreeView";
+import TreeItem from "@mui/lab/TreeItem";
 
 export default function Addproduct(props) {
   const [productTitle, setproductTitle] = useState();
@@ -74,18 +78,36 @@ export default function Addproduct(props) {
     dispatch(getusershops());
     dispatch(getbrands());
   }, []);
-  useEffect(() => {
-    if (store) {
-      dispatch(getsinglecatagery(store?.catagery));
-    }
-    // setcatagery(null);
-  }, [store]);
+
   const shop = useSelector((state) => state.shop.usershops);
-  const catageries = useSelector((state) => state.catageries.catagery);
+  const catageries = useSelector((state) => state.catageries.catageries);
+  const catagerieslist = useSelector(
+    (state) => state.catageries.catagerieslist
+  );
+
   // console.log(catageries);
   const brands = useSelector((state) => state.brands.brands);
   // const catageries = useSelector((state) => state.shop.usershops);
+  useEffect(() => {
+    if (store) {
+      setcatagery(catageries?.find((cat) => cat.name == store?.catagery));
+      console.log(catagery);
+      // dispatch(getsinglecatagery(store?.catagery));
+    }
 
+    // setcatagery(null);
+  }, [store]);
+  const renderTree = (nodes) => (
+    <TreeItem key={nodes?._id} nodeId={nodes?._id} label={nodes?.name}>
+      {Array.isArray(nodes?.children)
+        ? nodes.children?.map((node) => renderTree(node))
+        : null}
+    </TreeItem>
+  );
+  const handleChange = async (event, node) => {
+    console.log(node);
+    // setcatagery(node);
+  };
   const productimages = useSelector(
     (state) => state.productimages.imagestosend
   );
@@ -116,7 +138,7 @@ export default function Addproduct(props) {
     const formData = {
       productTitle: productTitle,
       productDescription: productDescription,
-      catagery: catagery ? catagery : store?.catagery,
+      catagery: catagery,
       subcatagery: subcatagery,
       images: productimages,
       price: price,
@@ -182,11 +204,11 @@ export default function Addproduct(props) {
           //   console.log(store);
           // }}
           fullWidth
-          defaultValue={shop.length && shop[0]}
+          defaultValue={shop?.length && shop[0]}
           value={store}
           size="small"
         >
-          {shop.length > 0
+          {shop?.length > 0
             ? shop.map((item) => (
                 <MenuItem value={item} key={item._id}>
                   {item.shopname}
@@ -212,15 +234,29 @@ export default function Addproduct(props) {
           onChange={(e) => setcatagery(e.target.value)}
           name="catagery"
         /> */}
+        {/* {catagery?.children?.length ? (
+          catagery?.children?.map((item) => (
+            <TreeView
+              onNodeSelect={handleChange}
+              aria-label="rich object"
+              defaultCollapseIcon={<ExpandMoreIcon />}
+              defaultExpanded={["root"]}
+              defaultExpandIcon={<ChevronRightIcon />}
+              sx={{ height: 110, flexGrow: 1 }}
+            >
+              {renderTree(item)}
+            </TreeView>
+          ))
+        ) : (
+          <Typography sx={{ color: "#333", p: 1 }}>""</Typography>
+        )} */}
         <Autocomplete
           id="free-solo-demo"
           // freeSolo={true}
-          options={
-            catageries && catageries[0]?.children ? catageries[0].children : []
-          }
-          getOptionLabel={(option) => option?.name}
+          options={catagerieslist && catagerieslist}
+          getOptionLabel={(option) => option?.catagery_name}
           // value={catagery}
-          onChange={(event, value) => setcatagery(value?.name)}
+          onChange={(event, value) => setcatagery(value?._id)}
           renderInput={(params) => (
             <TextField
               {...params}

@@ -32,7 +32,10 @@ app.use("/profile", profileRoutes);
 // app.use("/order", orderRoutes);
 
 mongoose
-  .connect("mongodb://0.0.0.0:27017/appdb", { useNewUrlParser: true })
+  .connect(
+    "mongodb+srv://asadsaad:123ASasd@cluster0.nx9gnlq.mongodb.net/?retryWrites=true&w=majority",
+    { useNewUrlParser: true }
+  )
   .then(() => {
     console.log("db connected");
   });

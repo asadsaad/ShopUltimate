@@ -74,14 +74,19 @@ export default function Addproduct(props) {
     dispatch(getusershops());
     dispatch(getbrands());
   }, []);
-  useEffect(() => {
-    if (store) {
-      dispatch(getsinglecatagery(store?.catagery));
-    }
-    // setcatagery(null);
-  }, [store]);
+
   const shop = useSelector((state) => state.shop.usershops);
   const catageries = useSelector((state) => state.catageries.catagery);
+  useEffect(() => {
+    console.log("store, catageries");
+    if (store) {
+      setcatagery(catageries?.find((cat) => cat.name == store?.catagery));
+      // dispatch(getsinglecatagery(store?.catagery));
+    }
+    console.log(catagery);
+
+    // setcatagery(null);
+  }, [store]);
   // console.log(catageries);
   const brands = useSelector((state) => state.brands.brands);
   // const catageries = useSelector((state) => state.shop.usershops);
@@ -116,8 +121,8 @@ export default function Addproduct(props) {
     const formData = {
       productTitle: productTitle,
       productDescription: productDescription,
-      catagery: catagery ? catagery : store?.catagery,
-      subcatagery: subcatagery,
+      catagery: catagery,
+      // subcatagery: subcatagery,
       images: productimages,
       price: price,
       instock: instock,

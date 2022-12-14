@@ -44,6 +44,7 @@ import {
   Description,
 } from "@mui/icons-material";
 import { green } from "@mui/material/colors";
+import HeaderV2 from "../layouts/headerV2";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -103,12 +104,12 @@ export default function ShopView() {
     );
   }
   return (
-    <div style={{ background: "#f2faf9", paddingBottom: "30px" }}>
-      <Nav />
+    <div style={{ background: "rgb(243,244,246)", paddingBottom: "30px" }}>
+      <HeaderV2 />
       <Container sx={{ mt: 3 }} maxWidth="xl">
         <Grid container spacing={2}>
           <Grid item md={3} xs={12}>
-            <Paper sx={{ p: 2, height: "80vh", boxShadow: "0" }}>
+            <Paper sx={{ p: 2, height: "80vh", borderRadius: "8px" }}>
               <Box
                 sx={{
                   pb: 2,

@@ -6,12 +6,13 @@ import {
   GET_USER_ORDERS,
   GET_SINGLE_ORDER,
   UPDATE_ORDER,
+  SET_ALERT,
 } from "../types";
 import axios from "axios";
 import { setAlert } from "./alertactions";
 
 export const Createorder =
-  (cartids, selected, navigate, paymentid) => async (dispatch) => {
+  (cartids, selected, navigate, paymentid, amount) => async (dispatch) => {
     try {
       console.log(paymentid);
       // const page = 1;
@@ -21,6 +22,7 @@ export const Createorder =
         cartids,
         deliverydetails: selected,
         paymentid: paymentid,
+        amount,
       });
       dispatch({
         type: CreateOrder,
@@ -34,7 +36,7 @@ export const Createorder =
       );
       navigate("/");
     } catch (error) {
-      console.log(error);
+      dispatch(setAlert(error.response.data.message, "error"));
     }
   };
 export const getorders_s = () => async (dispatch) => {

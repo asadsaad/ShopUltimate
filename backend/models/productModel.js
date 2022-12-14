@@ -27,7 +27,8 @@ const productModel = new mongoose.Schema({
     required: true,
   },
   catagery: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Catagery",
     require: true,
   },
   subcatagery: {

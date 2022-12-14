@@ -1,275 +1,121 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Grid, Paper, Typography, Button } from "@mui/material";
 import demo from "../../images/productdemo.webp";
 import { Add } from "@mui/icons-material";
 import MobileSide from "./mobileside";
+import { useDispatch, useSelector } from "react-redux";
+import { getproductsbycatagery } from "../../redux/actions/productactions";
+import notfound from "../../images/notfound.svg";
 
-export default function ProductGrid() {
+export default function ProductGrid({ group }) {
+  const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getproductsbycatagery(group?._id));
+  // }, [group]);
+  const products = useSelector((state) => state.products.c_products);
   return (
     <Box sx={{ background: "rgba(243,244,246,0.7)" }}>
       <MobileSide />
 
       <Grid container spacing={2} sx={{ p: 3 }}>
-        <Grid item lg={3} md={3} xs={12} sm={6}>
-          <Paper sx={{ p: 2, boxShadow: "0", border: "1px solid #d0d0d0" }}>
-            <Box>
-              <img src={demo} width="100%" />
-            </Box>
-            <Box>
-              <Typography
-                sx={{ color: "#1f2937", fontSize: "16px", fontWeight: "bold" }}
-              >
-                $1
-              </Typography>
-              <Typography sx={{ fontSize: "14px", color: "#6b7280" }}>
-                Wise Cottage Fires Bbq
-              </Typography>
-              <Button
-                fullWidth
-                varinat="contained"
+        {products.length ? (
+          products.map((p) => (
+            <Grid item lg={3} md={3} xs={12} sm={6}>
+              <Paper
                 sx={{
-                  background: "rgb(243,244,246)",
-                  position: "relative",
-                  textTransform: "capitalize",
-                  color: "rgb(75,85,99)",
-                  "&:hover": {
-                    background: "rgb(0,159,127)",
-                    color: "white",
-                    "& .css-1lmlfqd": {
-                      background: "rgb(0,159,127)",
-                      color: "white",
-                    },
-                  },
+                  p: 2,
+                  boxShadow: "0",
+                  border: "1px solid #d0d0d0",
+                  minHeight: 300,
                 }}
               >
-                <Typography>Add</Typography>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    display: "flex",
-                    alignItems: "center",
-                    right: "0",
-                    justifyContent: "center",
-                    width: "50px",
-                    height: "100%",
-                    textAlign: "center",
-                    // background: "rgb(229,231,235)",
-                  }}
-                >
-                  <Add />
+                <Box>
+                  <img
+                    src={p?.images[0]}
+                    width="100%"
+                    style={{ height: 200 }}
+                  />
                 </Box>
-              </Button>
-            </Box>
-          </Paper>
-        </Grid>
-        <Grid item lg={3} md={3} xs={12} sm={6}>
-          <Paper sx={{ p: 2, boxShadow: "0", border: "1px solid #d0d0d0" }}>
-            <Box>
-              <img src={demo} width="100%" />
-            </Box>
-            <Box>
-              <Typography
-                sx={{ color: "#1f2937", fontSize: "16px", fontWeight: "bold" }}
-              >
-                $1
-              </Typography>
-              <Typography sx={{ fontSize: "14px", color: "#6b7280" }}>
-                Wise Cottage Fires Bbq
-              </Typography>
-              <Button
-                fullWidth
-                varinat="contained"
-                sx={{
-                  background: "rgb(243,244,246)",
-                  position: "relative",
-                  textTransform: "capitalize",
-                  color: "rgb(75,85,99)",
-                  "&:hover": {
-                    background: "rgb(0,159,127)",
-                    color: "white",
-                    "& .css-1lmlfqd": {
-                      background: "rgb(0,159,127)",
-                      color: "white",
-                    },
-                  },
-                }}
-              >
-                <Typography>Add</Typography>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    display: "flex",
-                    alignItems: "center",
-                    right: "0",
-                    justifyContent: "center",
-                    width: "50px",
-                    height: "100%",
-                    textAlign: "center",
-                    // background: "rgb(229,231,235)",
-                  }}
-                >
-                  <Add />
+                <Box>
+                  <Typography
+                    sx={{
+                      color: "#1f2937",
+                      fontSize: "16px",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    ${p?.price}
+                  </Typography>
+                  <Typography
+                    sx={{ fontSize: "14px", color: "#6b7280", mb: 1 }}
+                  >
+                    {p?.productTitle}
+                  </Typography>
+                  <Button
+                    fullWidth
+                    varinat="contained"
+                    sx={{
+                      background: "rgb(243,244,246)",
+                      position: "relative",
+                      textTransform: "capitalize",
+                      color: "rgb(75,85,99)",
+                      "&:hover": {
+                        background: "rgb(0,159,127)",
+                        color: "white",
+                        "& .css-1lmlfqd": {
+                          background: "rgb(0,159,127)",
+                          color: "white",
+                        },
+                      },
+                    }}
+                  >
+                    <Typography>Add</Typography>
+                    <Box
+                      sx={{
+                        position: "absolute",
+                        display: "flex",
+                        alignItems: "center",
+                        right: "0",
+                        justifyContent: "center",
+                        width: "50px",
+                        height: "100%",
+                        textAlign: "center",
+                        // background: "rgb(229,231,235)",
+                      }}
+                    >
+                      <Add />
+                    </Box>
+                  </Button>
                 </Box>
-              </Button>
-            </Box>
-          </Paper>
-        </Grid>
-        <Grid item lg={3} md={3} xs={12} sm={6}>
-          <Paper sx={{ p: 2, boxShadow: "0", border: "1px solid #d0d0d0" }}>
-            <Box>
-              <img src={demo} width="100%" />
-            </Box>
-            <Box>
-              <Typography
-                sx={{ color: "#1f2937", fontSize: "16px", fontWeight: "bold" }}
-              >
-                $1
-              </Typography>
-              <Typography sx={{ fontSize: "14px", color: "#6b7280" }}>
-                Wise Cottage Fires Bbq
-              </Typography>
-              <Button
-                fullWidth
-                varinat="contained"
-                sx={{
-                  background: "rgb(243,244,246)",
-                  position: "relative",
-                  textTransform: "capitalize",
-                  color: "rgb(75,85,99)",
-                  "&:hover": {
-                    background: "rgb(0,159,127)",
-                    color: "white",
-                    "& .css-1lmlfqd": {
-                      background: "rgb(0,159,127)",
-                      color: "white",
-                    },
-                  },
-                }}
-              >
-                <Typography>Add</Typography>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    display: "flex",
-                    alignItems: "center",
-                    right: "0",
-                    justifyContent: "center",
-                    width: "50px",
-                    height: "100%",
-                    textAlign: "center",
-                    // background: "rgb(229,231,235)",
-                  }}
-                >
-                  <Add />
-                </Box>
-              </Button>
-            </Box>
-          </Paper>
-        </Grid>
-        <Grid item lg={3} md={3} xs={12} sm={6}>
-          <Paper sx={{ p: 2, boxShadow: "0", border: "1px solid #d0d0d0" }}>
-            <Box>
-              <img src={demo} width="100%" />
-            </Box>
-            <Box>
-              <Typography
-                sx={{ color: "#1f2937", fontSize: "16px", fontWeight: "bold" }}
-              >
-                $1
-              </Typography>
-              <Typography sx={{ fontSize: "14px", color: "#6b7280" }}>
-                Wise Cottage Fires Bbq
-              </Typography>
-              <Button
-                fullWidth
-                varinat="contained"
-                sx={{
-                  background: "rgb(243,244,246)",
-                  position: "relative",
-                  textTransform: "capitalize",
-                  color: "rgb(75,85,99)",
-                  "&:hover": {
-                    background: "rgb(0,159,127)",
-                    color: "white",
-                    "& .css-1lmlfqd": {
-                      background: "rgb(0,159,127)",
-                      color: "white",
-                    },
-                  },
-                }}
-              >
-                <Typography>Add</Typography>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    display: "flex",
-                    alignItems: "center",
-                    right: "0",
-                    justifyContent: "center",
-                    width: "50px",
-                    height: "100%",
-                    textAlign: "center",
-                    // background: "rgb(229,231,235)",
-                  }}
-                >
-                  <Add />
-                </Box>
-              </Button>
-            </Box>
-          </Paper>
-        </Grid>
-        <Grid item lg={3} md={3} xs={12} sm={6}>
-          <Paper sx={{ p: 2, boxShadow: "0", border: "1px solid #d0d0d0" }}>
-            <Box>
-              <img src={demo} width="100%" />
-            </Box>
-            <Box>
-              <Typography
-                sx={{ color: "#1f2937", fontSize: "16px", fontWeight: "bold" }}
-              >
-                $1
-              </Typography>
-              <Typography sx={{ fontSize: "14px", color: "#6b7280" }}>
-                Wise Cottage Fires Bbq
-              </Typography>
-              <Button
-                fullWidth
-                varinat="contained"
-                sx={{
-                  background: "rgb(243,244,246)",
-                  position: "relative",
-                  textTransform: "capitalize",
-                  color: "rgb(75,85,99)",
-                  "&:hover": {
-                    background: "rgb(0,159,127)",
-                    color: "white",
-                    "& .css-1lmlfqd": {
-                      background: "rgb(0,159,127)",
-                      color: "white",
-                    },
-                  },
-                }}
-              >
-                <Typography>Add</Typography>
-                <Box
-                  sx={{
-                    position: "absolute",
-                    display: "flex",
-                    alignItems: "center",
-                    right: "0",
-                    justifyContent: "center",
-                    width: "50px",
-                    height: "100%",
-                    textAlign: "center",
-                    // background: "rgb(229,231,235)",
-                  }}
-                >
-                  <Add />
-                </Box>
-              </Button>
-            </Box>
-          </Paper>
-        </Grid>
+              </Paper>
+            </Grid>
+          ))
+        ) : (
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+              pb: 5,
+            }}
+          >
+            <img
+              src={notfound}
+              style={{
+                width: 300,
+                // display: "block",
+                margin: "10px auto",
+                maxWidth: "100%",
+              }}
+            />
+            <Typography sx={{ color: "#333", fontWeight: "bold", mt: 1 }}>
+              No Products In this catagery{" "}
+            </Typography>
+          </Box>
+        )}
       </Grid>
     </Box>
   );

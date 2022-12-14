@@ -10,6 +10,7 @@ import {
   PRODUCT_ACTION_ATTEMPT,
   GET_USER_PRODUCTS,
   CLEAR_PRODUCT_IMAGE,
+  PRODUCTS_BY_CATAGERY,
 } from "../types";
 import axios from "axios";
 import { setAlert } from "./alertactions";
@@ -24,6 +25,20 @@ export const getproducts = () => async (dispatch) => {
     console.log(res.data.data);
     dispatch({
       type: GET_PRODUCTS,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+export const getproductsbycatagery = (id) => async (dispatch) => {
+  try {
+    // const page = 1;
+    dispatch({ type: PRODUCT_ACTION_ATTEMPT });
+
+    const res = await axios.get(`http://localhost:5000/product/catagery/${id}`);
+    dispatch({
+      type: PRODUCTS_BY_CATAGERY,
       payload: res.data,
     });
   } catch (error) {
